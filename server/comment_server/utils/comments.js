@@ -6,7 +6,7 @@ const { updateArticle } = require('./articles')
 const { regexp, validata, getQQAvatar, uuid, formatRes } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
 const commentsDB = db.collection('db_comments')
-const marked = require('marked')
+//const marked = require('marked')
 
 /**
  * 格式化参数
@@ -129,6 +129,7 @@ const getComments = async (data) => {
         at: 1,
         created: 1,
     }
+    const avatars = config.gavatar_url.split('$hash');
 
     let { data: list } = await commentsDB
         .aggregate()
@@ -143,7 +144,7 @@ const getComments = async (data) => {
             _id: 0,
             id: "$_id",
             ...filed,
-            gavatar: $.concat([config.gavatar_url, '$avatar']),
+            gavatar: $.concat([avatars[0], '$avatar', avatars[1] || '']),
             childer: $.filter({
                 input: '$childer',
                 as: 'item',
@@ -171,7 +172,7 @@ const getComments = async (data) => {
                         ua: '$$item.ua',
                         at: '$$item.at',
                         created: '$$item.created',
-                        gavatar: $.concat([config.gavatar_url, '$$item.avatar']),
+                        gavatar: $.concat([avatars[0], '$$item.avatar', avatars[1] || '']),
                     }
                 })
             })

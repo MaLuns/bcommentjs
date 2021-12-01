@@ -14,7 +14,7 @@ let config = {
     email_template: 0,// 邮件模板
     sender_name: '',// 邮件发送人名称
     subject: '', // 邮件主题
-    sender_emali: null,// 发送邮箱
+    sender_email: null,// 发送邮箱
     sender_pass: null,// 邮箱密钥
     smtp_host: null, // SMTP 服务器配置
     smtp_port: null,
@@ -22,7 +22,7 @@ let config = {
     limit_per_minute_user: 10, // 默认单人每分钟10条
     limit_thirty_minute_all: 150,// 默认所有人三十分钟150条
     is_audit: true, // 是否需要审核
-    gavatar_url: 'https://gravatar.loli.net/avatar/',// 配置 gavatar 国内镜像源
+    gavatar_url: 'https://gravatar.loli.net/avatar/$hash?d=mp',// 配置 gavatar 国内镜像源
     tag: '博主', // 博主标识
     is_use_qq_avatar: false, // 是否启用QQ头像
     form: { // 控制提交评论必填项

@@ -10,7 +10,7 @@ const { getArticle } = require('./articles')
  */
 const getTransporter = async () => {
     try {
-        if (!config.sender_emali || !config.sender_pass) {
+        if (!config.sender_email || !config.sender_pass) {
             throw new Error('未找到邮箱配置信息')
         }
         if (!config.smtp_host || !config.smtp_port) {
@@ -22,7 +22,7 @@ const getTransporter = async () => {
             port: config.smtp_port,
             secure: config.smtp_secure,
             auth: {
-                user: config.sender_emali,
+                user: config.sender_email,
                 pass: config.sender_pass
             }
         });
@@ -57,9 +57,9 @@ const sendEmail = async ({ email, nick, content, articleID = '', type = true }) 
             type
         });
         const mail = {
-            from: `"${config.sender_name}" <${config.sender_emali}>`,
+            from: `"${config.sender_name}" <${config.sender_email}>`,
             subject: config.subject,
-            to: type ? email : config.sender_emali,
+            to: type ? email : config.sender_email,
             html
         }
         const transporter = await getTransporter()

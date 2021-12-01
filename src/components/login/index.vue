@@ -94,7 +94,7 @@ export default {
                     }
                 },
                 password: (val) => {
-                    if (!regexp.password.test(val)) {
+                    if (!regexp.pass.test(val)) {
                         throw new Error('至少包含数字和字母组成，长度8-32位')
                     }
                 },

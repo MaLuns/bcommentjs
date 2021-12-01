@@ -104,7 +104,7 @@ const toDayStart = () => new Date(new Date().setHours(0, 0, 0, 0))
  * 正则
  */
 const regexp = {
-    emali: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
+    email: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
     qq: /^[1-9][0-9]{6,}@qq.com/
 }
 

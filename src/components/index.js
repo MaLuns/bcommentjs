@@ -8,16 +8,18 @@ import mLoading from '+/loading'
 import mLogin from '+/login'
 import message from '+/message'
 import mModel from '+/model'
+import mCheckbox from '+/checkbox'
 
 export {
-    message,
-    mAvatar,
     mButton,
-    mComment,
-    mEditor,
+    mCheckbox,
     mForm,
     mFormItem,
-    mLoading,
-    mLogin,
+    mAvatar,
     mModel,
+    mLoading,
+    message,
+    mEditor,
+    mComment,
+    mLogin,
 }

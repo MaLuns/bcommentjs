@@ -7,8 +7,8 @@
                 <span v-else class="comment-user-nick">{{ comment.nick }}</span>
                 <span class="comment-user-top" v-if="comment.top">置顶</span>
                 <span class="comment-user-tag" v-if="comment.tag">{{ comment.tag }}</span>
-                <span class="comment-user-sys">{{ comment.ua.browser }}</span>
-                <span class="comment-user-sys">{{ comment.ua.os }}</span>
+                <span class="comment-user-sys">{{ comment.ua.browser }} {{ comment.ua.version }}</span>
+                <span class="comment-user-sys">{{ comment.ua.os }} {{ comment.ua.osVersion }}</span>
             </div>
             <div class="comment-user-text">
                 <div v-if="comment.at">
@@ -185,7 +185,7 @@ export default {
 
     //代码块
     pre {
-        font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
+        font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
             Monaco, Consolas, monospace;
         position: relative;
         background: #272822 !important;
@@ -197,12 +197,12 @@ export default {
         line-height: 20px;
 
         code {
-            font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
+            font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
                 Monaco, Consolas, monospace;
         }
 
         &::after {
-            content: ' ';
+            content: " ";
             position: absolute;
             border-radius: 50%;
             background: #ff5f56;

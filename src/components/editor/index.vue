@@ -19,8 +19,10 @@
                 <m-emojis v-for="(item,index) in emojis" :key="index" :emoji="item" @checked="handleChecked"></m-emojis>
             </div>
             <div class="btn-container">
-                <m-button type="dashed" v-if="isCancel" @click="handleCancel">取消</m-button>
+                <input id="check" type="checkbox" class="checkbox-input" />
+                <label for="check">私密评论</label>
                 <m-button type="primary" @click="handleSubmit">提交</m-button>
+                <m-button type="dashed" v-if="isCancel" @click="handleCancel">取消</m-button>
             </div>
         </div>
     </div>
@@ -120,6 +122,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+label {
+    user-select: none;
+    font-size: 0.9em;
+    margin-right: 10px;
+    font-weight: 400;
+}
 .comment-editor {
     margin-top: 10px;
     padding: 5px 0 0;

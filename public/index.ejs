@@ -12,13 +12,19 @@
         padding: 0;
         margin: 0;
     }
+
+    .main {
+        margin: 100px 200px;
+    }
 </style>
 
 <body>
-    <!-- <com-site-count no-statistical env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-site-count> -->
-    <!-- <com-site-count env="<%= htmlWebpackPlugin.options.envId %>"></com-site-count> -->
-    <com-comment-admin env="<%= htmlWebpackPlugin.options.envId %>"></com-comment-admin>
-    <com-comment env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-comment>
+    <div class="main">
+        <!-- <com-site-count no-statistical env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-site-count> -->
+        <!-- <com-site-count env="<%= htmlWebpackPlugin.options.envId %>"></com-site-count> -->
+        <com-comment-admin env="<%= htmlWebpackPlugin.options.envId %>"></com-comment-admin>
+        <com-comment env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-comment>
+    </div>
 </body>
 
 </html>

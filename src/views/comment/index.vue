@@ -124,7 +124,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('~/index.less');
+@import url("~/index.less");
 .comment {
     padding: 0 1em 1em;
     background-color: @cj-background-color;
