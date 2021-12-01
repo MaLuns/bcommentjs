@@ -1,0 +1,49 @@
+<div id="contentDiv" style="position: relative; font-size: 14px; height: auto; padding: 15px 15px 10px; overflow-x: visible; min-height: 100px;" class=" body">
+    <div id="mailContentContainer" class="qmbox" style="font-size:14px;padding:0;height:auto;min-height:auto;font-family: 'lucida Grande',Verdana;position: relative;zoom:1;word-wrap: break-word;white-space: normal;">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+        <style>
+            @media (max-width: 420px) {
+                .footer {
+                    position: static !important;
+                    padding: 60px 50px 30px 50px;
+                }
+            }
+        </style>
+        <div class="container" style="box-shadow: 0 2px 8px 0 rgba(0,0,0,.2);position: relative; max-width: 700px;background: #FFF;border-radius: 2px;margin: 20px auto;">
+            <div style="font-size:0;">
+                <div style="font-size:14px;display: inline-block;width: 88%;background: #2984EF;height: 3px;"></div>
+                <div style="font-size:14px;display: inline-block;width: 11.5%;height: 3px;background: #8BD5FF;margin-left: 1px;"></div>
+            </div>
+            <div style="padding: 20px 50px;">
+                <div style="font-size: 16px;color: #2B2B2B;line-height: 24px;">你好，</div>
+                <div style="font-size: 16px;color: #2B2B2B;line-height: 28px;font-weight:bold;margin-top:10px;">
+                    <% if(type){%>
+                        <span>你在 <%= title %> 中的评论，收到了新的回复。</span>
+                        <% } else {%>
+                            <span>
+                                <%= title %>中，收到了新的评论。
+                            </span>
+                            <% } %>
+                                <span style="color:#4B6EA4;"><a href="<%= href %>" target="_blank"><wbr>查看详情<wbr></a></span>
+                </div>
+                <div style="font-size: 14px;color: #2B2B2B;line-height: 30px;margin-top:20px;">
+                    <div>回复人：<%= nick %>
+                    </div>
+                    <div>回复时间：<span style="border-bottom:1px dashed #ccc;" t="5" times="">
+                            <%= date %>
+                    </div>
+                    <div>回复内容：<%= content %>
+                    </div>
+                </div>
+                <div style="font-weight: 500;font-size: 12px;color: #BEBEBE;letter-spacing: 0.5px;padding-top: 20px;margin-top: 20px;border-top: 1px dashed #BEBEBE;display: flex;justify-content: space-between;align-items: center;">
+                    <div class="logo">
+                        <img class="exmail_logo" src="https://gravatar.loli.net/avatar/61e3a8580070eef6677da00f86580124" width="40" height="40" style="width: 40px;height: 40px;border-radius: 50%;" alt="白云苍狗">
+                    </div>
+                    <div>
+                        <%= from %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

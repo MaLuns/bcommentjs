@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+</style>
+
+<body>
+    <!-- <com-site-count no-statistical env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-site-count> -->
+    <!-- <com-site-count env="<%= htmlWebpackPlugin.options.envId %>"></com-site-count> -->
+    <com-comment-admin env="<%= htmlWebpackPlugin.options.envId %>"></com-comment-admin>
+    <com-comment env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-comment>
+</body>
+
+</html>

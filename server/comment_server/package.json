@@ -1,0 +1,17 @@
+{
+    "name": "cloudbase",
+    "version": "1.0.0",
+    "description": "云开发 Node Starter 项目",
+    "main": "cloudbaserc.js",
+    "dependencies": {
+        "@cloudbase/node-sdk": "^2.7.1",
+        "blueimp-md5": "^2.19.0"
+    },
+    "devDependencies": {
+        "ejs": "^3.1.6",
+        "node-uuid": "^1.4.8",
+        "nodemailer": "^6.4.8"
+    },
+    "author": "",
+    "license": "ISC"
+}
