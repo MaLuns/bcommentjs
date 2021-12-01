@@ -9,8 +9,9 @@ const db = app.database();
 
 let config = {
     site_name: '',// 站点名称
-    is_notice: null,//
+    is_notice: null,// 
     notice_type: null, // 通知方法 0邮件 ... 其他类型待集成
+    email_template: 0,// 邮件模板
     sender_name: '',// 邮件发送人名称
     subject: '', // 邮件主题
     sender_emali: null,// 发送邮箱
@@ -20,8 +21,15 @@ let config = {
     smtp_secure: true,
     limit_per_minute_user: 10, // 默认单人每分钟10条
     limit_thirty_minute_all: 150,// 默认所有人三十分钟150条
+    is_audit: true, // 是否需要审核
     gavatar_url: 'https://gravatar.loli.net/avatar/',// 配置 gavatar 国内镜像源
-    is_audit: true // 审核
+    tag: '博主', // 博主标识
+    is_use_qq_avatar: false, // 是否启用QQ头像
+    form: { // 控制提交评论必填项
+        nick: true,
+        email: true,
+        link: false,
+    }
 };
 
 
@@ -73,6 +81,17 @@ const initConfig = async () => {
     }
 }
 
+/**
+ * 过滤配置信息
+ */
+const filterConfig = () => {
+    let userConfig = {}
+    let keys = ['gavatar_url', 'is_use_qq_avatar', 'form']
+    keys.forEach(key => {
+        userConfig[key] = config[key]
+    })
+    return userConfig
+}
 
 /**
  * 获取IP
@@ -95,7 +114,7 @@ const getUid = async () => {
  * 判断用户是否管理员
  * @returns 
  */
-const isAdmin = async (context) => {
+const isAdministrator = async (context) => {
     try {
         let { TCB_UUID } = tcb.getCloudbaseContext();
         const { userInfo } = await auth.getEndUserInfo(TCB_UUID)
@@ -120,7 +139,8 @@ module.exports = {
     getUid,
     getIp,
     initConfig,
-    isAdmin,
+    filterConfig,
+    isAdministrator,
     get config () {
         return config
     }

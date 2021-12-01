@@ -1,6 +1,6 @@
 <template>
     <div class="comment-item">
-        <m-avatar :src="comment.qqAvatar || comment.gavatar"></m-avatar>
+        <m-avatar :src="getAvatar(comment)"></m-avatar>
         <div class="comment-user-container">
             <div class="comment-user-info">
                 <a v-if="comment.link" class="comment-user-nick" rel="nofollow" :href="comment.link" target="_blank">{{ comment.nick }}</a>
@@ -61,9 +61,18 @@ export default {
     },
     methods: {
         timeAgo,
+        // 
+        getAvatar (comment) {
+            if (this.$root.config && this.$root.config.is_use_qq_avatar) {
+                return comment.qqAvatar || comment.gavatar
+            }
+            return comment.gavatar
+        },
+        // 回复
         handleReply (comment) {
             this.app.setReplyID(comment)
         },
+        // 显示更多
         handleToggle (len) {
             this.len = this.len === 2 ? len : 2
         }

@@ -1,5 +1,5 @@
 const tcb = require("@cloudbase/node-sdk");
-const { initConfig, config, isAdmin } = require('./utils/app')
+const { initConfig, config, filterConfig, isAdministrator } = require('./utils/app')
 const { getComments, addComments, currentLimit } = require('./utils/comments')
 const { addPVUV, getPV, getBatchPV, getUV } = require('./utils/count')
 const { getArticle, updateArticle } = require('./utils/articles')
@@ -16,10 +16,10 @@ const handler = {
     getArticle, // 获取文章信息
     updateArticle,// 更新文章信息
     async getConfig (event, context) {
-        if (await isAdmin(context)) {
+        if (await isAdministrator(context)) {
             return formatRes(config)
         }
-        return formatRes(null, RES_CODE.CONFIG_NOT_EXIST)
+        return formatRes(filterConfig(config))
     }
 }
 

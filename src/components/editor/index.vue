@@ -1,13 +1,13 @@
 <template>
     <div class="comment-editor">
         <m-form ref="form" inline :model="form" :rules="rules">
-            <m-form-item prop="nick" label="昵称">
+            <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
                 <input v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
             </m-form-item>
-            <m-form-item prop="email" label="邮箱">
+            <m-form-item :required="isRequired('email')" prop="email" label="邮箱">
                 <input v-model.trim="form.email" type="text" placeholder="放心不会泄漏～" autocomplete="off" />
             </m-form-item>
-            <m-form-item label="网站">
+            <m-form-item :required="isRequired('link')" prop="link" label="网站">
                 <input v-model.trim="form.link" type="text" placeholder="相信你，不会打广告的" autocomplete="off" />
             </m-form-item>
         </m-form>
@@ -28,7 +28,7 @@
 
 <script>
 import { emojis } from "@/emojis";
-import { insertAtCaret } from "@/util";
+import { insertAtCaret, regexp } from "@/util";
 import mEmojis from "./emojis";
 import mForm from "+/form/form";
 import mFormItem from "+/form/formItem";
@@ -51,8 +51,18 @@ export default {
                 content: ""
             },
             rules: {
-                nick: (val) => /^[\u4E00-\u9FA5A-Za-z0-9_]+$/.test(val),
-                email: (val) => /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(val)
+                nick: (val) => {
+                    if (!regexp.nick.test(val))
+                        throw new Error('昵称只能为中文字符数字组成')
+                },
+                email: (val) => {
+                    if (!regexp.email.test(val))
+                        throw new Error('请填写正确邮箱')
+                },
+                link: (val) => {
+                    if (!regexp.link.test(val))
+                        throw new Error('请填写正确站点(http|https)')
+                }
             },
             emojis
         }
@@ -64,6 +74,9 @@ export default {
         this.content = localStorage.getItem('content') || ''
     },
     methods: {
+        isRequired (key) {
+            return this.$root.config.form[key] || false
+        },
         // 记录光标位置
         updateLastEditRange () {
             this.lastEditRange = this.$root.$el.getRootNode().getSelection().getRangeAt(0)

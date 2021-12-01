@@ -1,42 +1,6 @@
 import md5 from 'md5'
 
 /**
- * 创建dom
- * @param {*} name 
- * @param {*} attrs 
- */
-const create = (name, attrs) => {
-    let el = document.createElement(name)
-    addAttr(el, attrs)
-    return el
-}
-
-/**
- * 添加属性
- * @param {*} el 
- * @param {*} attrs 
- */
-const addAttr = (el, attrs) => {
-    for (const key in attrs) {
-        if (attrs.hasOwnProperty(key)) {
-            el.setAttribute(key, attrs[key])
-        }
-    }
-}
-
-/**
- * 批量添加子dom
- * @param {*} el 
- * @param {*} childers 
- */
-const appendChild = (el, ...childers) => {
-    childers.forEach(element => {
-        el.appendChild(element)
-    });
-}
-
-
-/**
  * 
  */
 class CommentjsError extends Error {
@@ -148,11 +112,11 @@ export const appendStyle = (styleTxt) => {
  */
 export const IsNullOrEmpty = (val) => [null, undefined, ''].includes(val)
 
-let cached;
 /**
  * 获取滚动条宽度
  * @returns 
  */
+let cached;
 export const getScrollWidth = () => {
     if (cached === undefined) {
         const inner = document.createElement('div');
@@ -188,4 +152,15 @@ export const getScrollWidth = () => {
         cached = widthContained - widthScroll;
     }
     return cached;
+}
+
+/**
+ * 正则
+ */
+export const regexp = {
+    emali: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, // 邮箱
+    qq: /^[1-9][0-9]{6,}@qq.com/, // qq邮箱
+    pass: /^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/,//密码
+    link: /^((ht|f)tps?:\/\/)?[\w-]+(\.[\w-]+)+$/, // 网址
+    nick: /^[\u4E00-\u9FA5A-Za-z0-9_]+$/ // 昵称
 }

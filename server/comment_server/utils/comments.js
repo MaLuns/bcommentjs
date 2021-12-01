@@ -1,11 +1,12 @@
 // 评论回复
 
 const md5 = require('blueimp-md5')
-const { db, $, getUid, getIp, config, _ } = require('./app')
+const { db, $, getUid, getIp, config, _, isAdministrator } = require('./app')
 const { updateArticle } = require('./articles')
 const { regexp, validata, getQQAvatar, uuid, formatRes } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
 const commentsDB = db.collection('db_comments')
+const marked = require('marked')
 
 /**
  * 格式化参数
@@ -33,7 +34,7 @@ const parse = async (data) => {
         isAudit: 0, // 审核
         delete: 0 // 删除
     }
-    if (regexp.qq.test(commentDo.email)) {
+    if (config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
         commentDo.qqAvatar = await getQQAvatar(data.email)
     }
     if (data.at) {
@@ -209,14 +210,20 @@ const getCommentByID = async (id) => {
  * 添加评论
  * @param {*} event 
  */
-const addComments = async (event) => {
+const addComments = async (event, context) => {
     await currentLimit()
-    // 数据校验
-    if (event.type === 0) {// type 0评论 1回复
-        validata(event, ['hash', 'nick', 'email', 'ua', 'content'])
-    } else { //firstId:顶层评论id, replyId:被回复评论id 
-        validata(event, ['hash', 'nick', 'email', 'ua', 'content', 'replyId'])
+
+    //#region 数据校验
+    const par = ['hash', 'ua', 'content']
+    Object.keys(config.form).forEach(key => {
+        if (config.form[key]) par.push(key)
+    })
+    if (event.type === 1) {// type 0评论 1回复
+        par.push('replyId')
     }
+    validata(event, par)
+    //#endregion
+
     // 格式化数据
     let data = await parse(event);
     const res = {
@@ -224,6 +231,11 @@ const addComments = async (event) => {
         qqAvatar: data.qqAvatar,
         created: data.created
     }
+    const isAdmin = await isAdministrator(context)
+    if (isAdmin) {
+        data.tag = config.tag
+    }
+
     if (event.type === 0) {
         let { id } = await commentsDB.add(data)
         res.id = id

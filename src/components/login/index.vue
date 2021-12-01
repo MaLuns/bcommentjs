@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { regexp } from "@/util";
 import tcb from '@/tcb'
 import message from '+/message'
 import mForm from "+/form/form.vue";
@@ -88,22 +89,19 @@ export default {
             },
             rules: {
                 email: (val) => {
-                    if (/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(val)) {
-                        return true
+                    if (!regexp.email.test(val)) {
+                        throw new Error('请填写正确邮箱')
                     }
-                    throw new Error('请填写正确邮箱')
                 },
                 password: (val) => {
-                    if (/^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/.test(val) || this.type === 'login') {
-                        return true
+                    if (!regexp.password.test(val)) {
+                        throw new Error('至少包含数字和字母组成，长度8-32位')
                     }
-                    throw new Error('至少包含数字和字母组成，长度8-32位')
                 },
                 password2: (val) => {
-                    if (val === this.form.password) {
-                        return true
+                    if (val !== this.form.password) {
+                        throw new Error('两次输入密码不一致')
                     }
-                    throw new Error('两次输入密码不一致')
                 }
             }
         }

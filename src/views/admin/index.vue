@@ -54,7 +54,7 @@ export default {
     created () {
         /* (n.outerItemNo?(`<span >(${n.outerItemNo})</span>`):'') */
         //  appendStyle(text)
-        tcb.initApp({ env: this.env }).then(_ => {
+        /* tcb.initApp({ env: this.env }).then(_ => {
             let user = tcb.cloudbase.auth.currentUser
             if (user && user.loginType !== "ANONYMOUS") {
                 this.user = tcb.cloudbase.auth.currentUser
@@ -62,7 +62,7 @@ export default {
             tcb.callFunction('getConfig').then(res => {
                 console.log(res)
             })
-        })
+        }) */
 
     }
 }

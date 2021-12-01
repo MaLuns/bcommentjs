@@ -30,7 +30,8 @@ export default {
         return {
             app: {
                 addComments: this.addComments,
-                setReplyID: this.setReplyID
+                setReplyID: this.setReplyID,
+                config: this.config
             }
         }
     },
@@ -47,14 +48,25 @@ export default {
             loading: true,
             loaded: true,
             reply: null,
+            // 评论列表
             list: [],
             page: {
                 pageIndex: 0,
                 pageSize: 10
+            },
+            // 全局配置
+            config: {
+                form: {}
             }
         }
     },
     methods: {
+        async init () {
+            await tcb.initApp({ env: this.env })
+            this.config = await tcb.callFunction('getConfig')
+            console.log(this.config);
+            this.loadData()
+        },
         // 设置回复
         setReplyID (reply) {
             this.reply = reply
@@ -95,7 +107,6 @@ export default {
                 hash: this.pageHash,
                 ...this.page
             }).then(data => {
-                console.log(data);
                 this.loading = false
                 this.loaded = data.length !== this.page.pageSize
                 this.list.push(...data)
@@ -107,16 +118,13 @@ export default {
     },
     created () {
         this.detect = detect();
-        tcb.initApp({ env: this.env }).then(_ => {
-            this.loadData()
-            //tcb.callFunction('currentLimit', console.log)
-        })
+        this.init()
     },
 }
 </script>
 
 <style lang="less" scoped>
-@import url("~/index.less");
+@import url('~/index.less');
 .comment {
     padding: 0 1em 1em;
     background-color: @cj-background-color;
