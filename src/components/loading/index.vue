@@ -3,24 +3,16 @@ import { h } from 'vue'
 export default {
     render () {
         return h('div', {
-            class: 'loading-box',
-            style: ({
-                color: this.color
-            })
+            class: 'loading-box'
         }, [
             h('div'),
             h('div')
         ])
-    },
-    props: {
-        color: {
-            type: String,
-            default: "#f4696b"
-        }
     }
 }
 </script>
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .loading-box {
     position: relative;
     display: block;
@@ -28,10 +20,10 @@ export default {
     font-size: 0;
     width: 32px;
     height: 32px;
-    color: #333;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    color: @ui-loading-color;
 
     div {
         position: absolute;
@@ -59,7 +51,7 @@ export default {
     > div:nth-child(2) {
         bottom: -9%;
         height: 10%;
-        background: #000;
+        background: @ui-loading-shadow-color;
         border-radius: 50%;
         opacity: 0.2;
         -webkit-animation: loading-box-shadow 0.6s -0.1s linear infinite;

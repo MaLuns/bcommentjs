@@ -44,6 +44,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .comment-list {
     > h3 {
         text-align: center;
@@ -51,7 +52,7 @@ export default {
 }
 .list-enter-active {
     opacity: 0;
-    transition: opacity 0.4s;
+    transition: opacity @ui-transition-duration;
 }
 </style>
 <style>

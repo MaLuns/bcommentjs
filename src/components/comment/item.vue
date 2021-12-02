@@ -11,9 +11,7 @@
                 <span class="comment-user-sys">{{ comment.ua.os }} {{ comment.ua.osVersion }}</span>
             </div>
             <div class="comment-user-text">
-                <div v-if="comment.at">
-                    <a class="comment-replylink" rel="nofollow" :href="comment.link" target="_blank">@{{ comment.at.nick }}</a>
-                </div>
+                <a v-if="comment.at" class="comment-replylink" rel="nofollow" :href="comment.link" target="_blank">@{{ comment.at.nick }}</a>
                 <div v-html="comment.content"></div>
             </div>
             <div class="comment-user-meta">
@@ -26,7 +24,7 @@
             <div class="comment-edit-container" v-if="$root.reply && $root.reply.id === comment.id">
                 <m-editor isCancel @cancel="handleReply(null)"></m-editor>
             </div>
-            <div class="comment-reply-container" v-if="comment.childer">
+            <div class="comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">
                     <m-comment-item v-for="element in comment.childer" :key="element.id" :comment="element"></m-comment-item>
                 </template>
@@ -81,9 +79,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .comment-item {
     display: flex;
-    padding: 1.5em 0;
+    padding: 1em 0;
 
     .comment-user-container {
         flex: 1;
@@ -91,7 +90,6 @@ export default {
 
         // 用户信息
         .comment-user-info {
-            line-height: 1.5;
             margin-top: 0;
 
             .comment-user-nick {
@@ -103,10 +101,9 @@ export default {
 
             .comment-user-sys {
                 display: inline-block;
-                padding: 0.2em 0.5em;
                 font-size: 0.75em;
-                border-radius: 0.2em;
                 margin-right: 0.875em;
+                color: @ui-aide-text;
             }
 
             .comment-user-top,
@@ -128,28 +125,23 @@ export default {
 
         // 用户次要信息
         .comment-user-meta {
-            line-height: 1;
             margin-top: 0.8em;
             display: flex;
             justify-content: space-between;
 
-            .comment-reply,
-            .comment-zan,
             .comment-time {
-                color: #bebebe;
-                font-size: 0.8125em;
+                color: @ui-aide-text;
+                font-size: 0.9em;
             }
+
             .comment-reply,
             .comment-zan {
-                margin-left: 0.875em;
                 cursor: pointer;
+                font-size: 0.9em;
+                margin-left: 0.875em;
                 user-select: none;
+                color: @ui-aide-text-stress;
             }
-        }
-
-        // 用户评论内容
-        .comment-user-text {
-            margin: 0.6em 0 0;
         }
     }
 
@@ -160,13 +152,13 @@ export default {
     }
 
     + .comment-item {
-        border-top: 1px dashed var(--color-dashed, #e9e9e9);
+        border-top: 1px dashed @ui-dividing-line;
     }
 
     .comment-item {
         padding: 1.2em 0;
         + .comment-item {
-            border-top: 1px solid var(--color-dashed, #e9e9e9);
+            border-top: 1px dashed @ui-dividing-line;
         }
     }
 }
@@ -175,13 +167,50 @@ export default {
 .comment-reply-container {
     margin-top: 1em;
     padding: 0 1.2em;
-    background-color: #fafafa;
-    border-radius: 3px;
+    border-radius: @ui-border-radius;
+    background-color: @ui-global-bg;
+}
+
+@media screen and (max-width: 600px) {
+    .comment-user-sys {
+        display: none;
+    }
+}
+
+// 编辑器容器
+.comment-edit-container {
+    padding: 5px 10px 10px;
+    margin-top: 10px;
+}
+
+// 显示更多
+.toggle-btn {
+    color: #525252;
+    font-size: 0.8em;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 0 10px 56px;
+    transition: color @ui-transition-duration;
+
+    &:hover {
+        color: #000;
+    }
 }
 
 // 评论内容 样式处理
 .comment-user-text {
-    font-size: 0.9em;
+    margin: 0.6em 0 0;
+    .comment-replylink {
+        font-size: 0.9rem;
+        outline: 0;
+        margin-bottom: 4px;
+        display: inline-block;
+        text-decoration: underline;
+        color: @ui-link;
+        text-decoration-color: @ui-link-decoration;
+        transition: color @ui-transition-duration,
+            background-color @ui-transition-duration;
+    }
 
     //代码块
     pre {
@@ -236,7 +265,7 @@ export default {
         margin: 0;
         padding: 0.6em 1em;
         border-radius: 4px;
-        border-left: 5px solid var(--color-link);
+        border-left: 5px solid @ui-info;
         background-color: rgba(var(--color-head-bg-rgb), 0.4);
     }
 
@@ -251,15 +280,15 @@ export default {
 
     table {
         border-spacing: 0;
-        border-right: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
+        border-right: 1px solid @ui-border-line;
+        border-bottom: 1px solid @ui-border-line;
 
         tr {
             border: 0;
 
             th {
-                border-top: 1px solid #ccc;
-                border-left: 1px solid #ccc;
+                border-top: 1px solid @ui-border-line;
+                border-left: 1px solid @ui-border-line;
                 min-width: 85px;
                 font-weight: bold;
                 padding: 5px 10px;
@@ -267,50 +296,11 @@ export default {
 
             td {
                 padding: 5px 10px;
-                border-top: 1px solid #ccc;
-                border-left: 1px solid #ccc;
+                border-top: 1px solid @ui-border-line;
+                border-left: 1px solid @ui-border-line;
                 min-width: 85px;
             }
         }
-    }
-
-    .comment-replylink {
-        text-decoration: none;
-        outline: 0;
-        font-size: 0.9rem;
-        padding: 0 5px;
-        text-decoration: underline;
-        color: var(--color-link, #6062ce);
-        text-decoration-color: var(--color-link, #6062ce);
-        transition: color var(--transitionTime, 0.3s ease),
-            background-color var(--transitionTime, 0.3s ease);
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .comment-user-sys {
-        display: none;
-    }
-}
-
-//
-.comment-edit-container {
-    padding: 5px 10px 10px;
-    margin-top: 10px;
-}
-
-// 显示更多
-.toggle-btn {
-    color: #525252;
-    font-size: 0.8em;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 0 10px 56px;
-    transition: color 0.3s ease;
-
-    &:hover {
-        color: #000;
-        border-bottom: 1px solid #000;
     }
 }
 </style>

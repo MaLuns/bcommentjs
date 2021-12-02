@@ -1,5 +1,5 @@
 <template>
-    <button type="button" class="btn" :class="{[type]:type,long}" :disabled="disabled" @click="handleClick">
+    <button type="button" class="btn" :class="{ [type]: type, long }" :disabled="disabled" @click="handleClick">
         <slot></slot>
     </button>
 </template>
@@ -28,6 +28,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .btn {
     display: inline-block;
     margin-bottom: 0;
@@ -38,7 +39,7 @@ export default {
     touch-action: manipulation;
     cursor: pointer;
     background-image: none;
-    border: 1px solid #0000;
+    border: 1px solid;
     white-space: nowrap;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -47,11 +48,12 @@ export default {
     height: 2.2em;
     padding: 0 15px;
     border-radius: 4px;
-    transition: color 0.2s linear, background-color 0.2s linear,
-        border 0.2s linear, box-shadow 0.2s linear;
+    transition: color @ui-transition-duration,
+        background-color @ui-transition-duration, border @ui-transition-duration,
+        box-shadow @ui-transition-duration;
     color: #515a6e;
     background-color: #fff;
-    border-color: #dcdee2;
+    border-color: @ui-border-line;
 
     &:hover,
     &:active {

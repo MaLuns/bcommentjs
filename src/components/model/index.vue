@@ -101,6 +101,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .mask {
     position: fixed;
     top: 0;
@@ -116,12 +117,11 @@ export default {
     z-index: 100;
     background: #fff;
     box-shadow: 0 1px 6px #00000033;
-    border-radius: 3px;
+    border-radius: @ui-border-radius;
 
     .header {
-        font-size: 14px;
         height: 3em;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid @ui-border-line;
         padding: 0 1em;
         display: flex;
         align-items: center;
@@ -150,7 +150,7 @@ export default {
 
 .modal-enter-active,
 .modal-leave-active {
-    transition: opacity 0.3s ease;
+    transition: opacity @ui-transition-duration;
 }
 
 .modal-enter-from,

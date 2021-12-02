@@ -2,13 +2,13 @@
     <div class="comment-editor">
         <m-form ref="form" inline :model="form" :rules="rules">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
-                <input v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
+                <input @blur="handleBlur" v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
             </m-form-item>
             <m-form-item :required="isRequired('email')" prop="email" label="邮箱">
-                <input v-model.trim="form.email" type="text" placeholder="放心不会泄漏～" autocomplete="off" />
+                <input @blur="handleBlur" v-model.trim="form.email" type="text" placeholder="放心不会泄漏～" autocomplete="off" />
             </m-form-item>
             <m-form-item :required="isRequired('link')" prop="link" label="网站">
-                <input v-model.trim="form.link" type="text" placeholder="相信你，不会打广告的" autocomplete="off" />
+                <input @blur="handleBlur" v-model.trim="form.link" type="text" placeholder="相信你，不会打广告的~" autocomplete="off" />
             </m-form-item>
         </m-form>
         <div class="editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
@@ -19,10 +19,12 @@
                 <m-emojis v-for="(item,index) in emojis" :key="index" :emoji="item" @checked="handleChecked"></m-emojis>
             </div>
             <div class="btn-container">
-                <input id="check" type="checkbox" class="checkbox-input" />
-                <label for="check">私密评论</label>
-                <m-button type="primary" @click="handleSubmit">提交</m-button>
-                <m-button type="dashed" v-if="isCancel" @click="handleCancel">取消</m-button>
+                <template v-if="!isCancel">
+                    <input v-model="form.isPrivate" id="check" type="checkbox" class="checkbox-input" />
+                    <label for="check">私密评论</label>
+                </template>
+                <m-button type="text" v-if="isCancel" @click="handleCancel">取消</m-button>
+                <m-button class="mgl10" type="primary" @click="handleSubmit">提交</m-button>
             </div>
         </div>
     </div>
@@ -50,7 +52,8 @@ export default {
                 nick: "",
                 email: "",
                 link: "",
-                content: ""
+                content: "",
+                isPrivate: false
             },
             rules: {
                 nick: (val) => {
@@ -72,12 +75,26 @@ export default {
     props: {
         isCancel: Boolean
     },
-    created () {
-        this.content = localStorage.getItem('content') || ''
+    mounted () {
+        this.init()
     },
     methods: {
+        init () {
+            this.form.content = localStorage.getItem('editor_text') || ''
+            let { nick = '', email = '', link = '' } = JSON.parse(localStorage.getItem('user_info') || '{}')
+            this.form.nick = nick
+            this.form.email = email
+            this.form.link = link
+            this.$refs.editor.innerText = this.form.content;
+        },
+        // 是否必填
         isRequired (key) {
             return this.$root.config.form[key] || false
+        },
+        // 存储
+        handleBlur () {
+            let { nick, email, link } = this.form
+            localStorage.setItem('user_info', JSON.stringify({ nick, email, link }))
         },
         // 记录光标位置
         updateLastEditRange () {
@@ -85,7 +102,7 @@ export default {
         },
         handleInput ($event) {
             this.form.content = $event.target.innerText;
-            localStorage.setItem('content', this.form.content)
+            localStorage.setItem('editor_text', this.form.content)
             this.updateLastEditRange()// 重新获取光标位置
         },
         // 取消
@@ -113,7 +130,7 @@ export default {
             if (this.$refs.form.validate()) {
                 this.$root.addComments({ ...this.form }, () => {
                     this.form.content = ''
-                    localStorage.setItem('content', '')
+                    localStorage.setItem('editor_text', '')
                 })
             }
         }
@@ -122,6 +139,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 label {
     user-select: none;
     font-size: 0.9em;
@@ -129,30 +147,35 @@ label {
     font-weight: 400;
 }
 .comment-editor {
-    margin-top: 10px;
     padding: 5px 0 0;
-    transition: all var(--transitionTime, 0.3s ease);
 
     // 编辑框
     .editor-container {
-        border: 0.5px solid #eee;
-        border-radius: 3px;
-        margin-bottom: 10px;
-        padding: 10px;
         display: block;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 0.5px solid @ui-form-control-line;
+        border-radius: @ui-border-radius;
+        transition: all @ui-transition-duration;
 
         &.placeholder-shown::before {
             content: attr(placeholder);
-            color: #99a2aa;
             position: absolute;
             pointer-events: none;
-            font-size: 14px;
-            line-height: 22px;
+            color: @ui-aide-text;
+            font-size: 0.9em;
             letter-spacing: 1px;
+        }
+
+        &:hover {
+            border-color: @ui-form-control-line-hover;
         }
 
         &:focus,
         &:focus-within {
+            outline-offset: 0px;
+            outline: none;
+            border-color: @ui-form-control-line-active;
             &.placeholder-shown::before {
                 display: none;
             }
@@ -161,8 +184,6 @@ label {
         .editor {
             vertical-align: baseline;
             outline: none;
-            font-size: 14px;
-            line-height: 22px;
             letter-spacing: 1px;
             box-sizing: border-box;
             background: transparent;
@@ -181,5 +202,8 @@ label {
         justify-content: space-between;
         align-items: center;
     }
+}
+.mgl10 {
+    margin-left: 10px;
 }
 </style>

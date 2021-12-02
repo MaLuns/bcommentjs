@@ -3,7 +3,7 @@
         <div class="comment-header">
             <slot name="comment-header"></slot>
         </div>
-        <div class="comment-edit-container" v-if="!reply">
+        <div class="comment-edit-container" v-show="!reply">
             <m-editor></m-editor>
         </div>
         <m-comment :list="list"></m-comment>
@@ -124,7 +124,15 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
+.comment {
+    padding: 1em 1.5em;
+    color: @ui-text;
+    font-size: @ui-font-size;
+    line-height: @ui-line-height-base;
+    background-color: @ui-global-bg-normal;
+}
+
 @media screen and (max-width: 520px) {
     .comment-user-sys {
         display: none;
@@ -139,10 +147,5 @@ export default {
             }
         }
     }
-}
-
-.comment {
-    padding: 1em;
-    background-color: @ui-global-bg-normal;
 }
 </style>

@@ -38,6 +38,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .message {
     z-index: 999;
     position: fixed;
@@ -55,7 +56,7 @@ export default {
         padding: 8px 16px;
         border-radius: 4px;
         box-shadow: 0 1px 6px #00000033;
-        background: #fff;
+        background: @ui-global-bg-normal;
         line-height: 1.5;
         display: flex;
         align-items: center;
@@ -77,15 +78,19 @@ export default {
         }
 
         .info {
-            background-color: #19be6b;
+            background-color: @ui-info;
+        }
+
+        .success {
+            background-color: @ui-success;
         }
 
         .warning {
-            background-color: #f90;
+            background-color: @ui-warning;
         }
 
-        .error {
-            background-color: #ed4014;
+        .danger {
+            background-color: @ui-danger;
         }
     }
 }

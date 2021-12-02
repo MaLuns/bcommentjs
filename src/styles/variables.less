@@ -1,25 +1,40 @@
 // 基础颜色
-@ui-global-bg       : var(--ui-global-bg, #f3f6f8); // 全局带底色背景
-@ui-global-bg-normal: var(--ui-global-bg-normal, #ffffff); // 全局白色背景
-@ui-base-bg         : var(--ui-base-bg, #ffffff); // 基础区块背景白色
-
-
+@ui-global-bg                : var(--ui-global-bg, #fcfcfc); // 全局带底色背景
+@ui-global-bg-normal         : var(--ui-global-bg-normal, #ffffff); // 全局白色背景
+@ui-base-bg                  : var(--ui-base-bg, #ffffff); // 基础区块背景白色
+@ui-text                     : var(--ui-text, #252b3a); // 正文文本
+@ui-text-weak                : var(--ui-text-weak, #575d6c); // 弱化的正文信息（手风琴子项，表头）
+@ui-aide-text                : var(--ui-aide-text, #8a8e99); // 辅助文本、帮助信息（面包屑）
+@ui-aide-text-stress         : var(--ui-aide-text-stress, #575d6c); // 辅助文本、帮助信息里的强调色
+@ui-danger                   : var(--ui-danger, #f66f6a); // 失败、错误、告警
+@ui-warning                  : var(--ui-warning, #fac20a); // 警告、需注意类型提示
+@ui-success                  : var(--ui-success, #50d4ab); // 成功、正确
+@ui-info                     : var(--ui-info, #5e7ce0); // 通知、一般提示、执行中
+// 链接
+@ui-link                     : var(--ui-link, #6062ce); // 链接文本颜色
+@ui-link-decoration          : var(--ui-link, #6062ce); // 链接文本颜色
+@ui-link-active              : var(--ui-link-active, #030405); // 链接文本悬停/激活颜色
+// 分割线
+@ui-border-line              : var(--ui-line, #adb0b8); // 边框
+@ui-dividing-line            : var(--ui-dividing-line, #dfe1e6); // 内容分割线，用于内容之间的分割
 // 过渡
-@ui-transition-duration: var(--ui-transition-duration, 0.3s ease); // 阴影
-
-
+@ui-transition-duration      : var(--ui-transition-duration, 0.3s ease); // 阴影
 // 圆角
-@ui-border-radius      : var(--ui-border-radius, 2px); //一般圆角
-@ui-border-radius-card : var(--ui-border-radius-card, 6px); //卡片圆角
-
-
+@ui-border-radius            : var(--ui-border-radius, 4px); //一般圆角
+@ui-border-radius-card       : var(--ui-border-radius-card, 6px); //卡片圆角
+// 表单
+@ui-form-control-line        : var(--ui-form-control-line, #e6e6e6); // 表单控件边框色，同 边框分割线
+@ui-form-control-line-hover  : var(--ui-form-control-line-hover, #acafb4); // 表单控件边框悬停反馈色
+@ui-form-control-line-active : var(--ui-form-control-line-active, #597bec); // 表单控件边框激活色，用于获得焦点
+// 加载动画颜色
+@ui-loading-color            : var(--ui-loading-color, #9dc6f1);
+@ui-loading-shadow-color     : var(--ui-loading-color, #000000);
 // 字体
-@ui-font-size             : var(--ui-font-size, 12px); //正文、卡片副标题
-@ui-font-size-card-title  : var(--ui-font-size-card-title, 14px); //卡片标题
-@ui-font-size-page-title  : var(--ui-font-size-page-title, 16px); //页面标题
-@ui-font-size-modal-title : var(--ui-font-size-modal-title, 18px); //弹窗标题、数字
-@ui-font-size-icon        : var(--ui-font-size-icon, 16px); //图标大小
-
-@ui-font-title-weight  : bold; //标题文字粗细
-@ui-font-content-weight: normal; //内容文字粗细
-@ui-line-height-base   : 1.5; //规范行高
+@ui-font-size                : var(--ui-font-size, 14px); //正文、卡片副标题
+@ui-font-size-card-title     : var(--ui-font-size-card-title, 16px); //卡片标题
+@ui-font-size-page-title     : var(--ui-font-size-page-title, 18px); //页面标题
+@ui-font-size-modal-title    : var(--ui-font-size-modal-title, 20px); //弹窗标题、数字
+@ui-font-size-icon           : var(--ui-font-size-icon, 16px); //图标大小
+@ui-line-height-base         : 1.5; //规范行高
+@ui-font-title-weight        : bold; //标题文字粗细
+@ui-font-content-weight      : normal; //内容文字粗细

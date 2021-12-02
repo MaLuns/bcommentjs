@@ -101,70 +101,40 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import url("../../styles/variables.less");
 .form-item {
     flex: 1;
-    border-radius: 3px;
     display: flex;
     align-items: center;
-    margin-bottom: 1.2em;
+    margin-bottom: 1.5em;
 
     .form-item-label {
         width: 3em;
         text-align: right;
-        font-size: 0.9em;
         margin-right: 6px;
 
         &.required::before {
-            content: '*';
-            color: red;
+            content: "*";
             position: absolute;
             margin-left: -0.8em;
+            color: @ui-danger;
         }
-    }
-
-    ::-webkit-input-placeholder,
-    :-moz-placeholde,
-    ::-moz-placeholder,
-    :-ms-input-placeholder {
-        color: var(--color-meta, #c5c5c5);
-    }
-
-    &:focus,
-    &:focus-within,
-    &:focus-visible {
-        border-color: rgb(0, 140, 255);
     }
 
     .form-item-content {
         flex: 1;
-
-        :deep(input) {
-            box-sizing: border-box;
-            background: transparent;
-            padding: 0 0.5em;
-            width: 100%;
-            height: 2.8em;
-            border: 0.5px solid #eee;
-            border-radius: 4px;
-
-            &:focus {
-                outline-offset: 0px;
-                outline: none;
-                border-color: rgb(0, 140, 255);
-            }
-        }
     }
 
     .error {
         :deep(input) {
-            border-color: red !important;
+            border-color: @ui-danger !important;
         }
     }
 
     .error-msg {
         position: absolute;
-        font-size: 0.8em;
-        color: red;
+        font-size: 0.9em;
+        color: @ui-danger;
     }
 }
 

@@ -18,7 +18,7 @@ const show = (props) => {
 }
 
 const opt = { show }
-const fun = ['info', 'warning', 'error']
+const fun = ['info', 'success', 'warning', 'danger']
 fun.forEach(key => {
     opt[key] = (text) => show({
         text,
