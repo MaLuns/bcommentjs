@@ -1,18 +1,20 @@
 <template>
-    <div class="mask" v-if="modelValue" @click="handleClick"></div>
-    <div class="model" v-if="modelValue" :style="style" v-drag>
-        <div class="header">
-            <p class="title">{{ title }}</p>
-            <span class="close-btn" @click="handleClose">
-                <svg t="1638021668280" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34194" width="16" height="16">
-                    <path d="M548.992 503.744L885.44 167.328a31.968 31.968 0 1 0-45.248-45.248L503.744 458.496 167.328 122.08a31.968 31.968 0 1 0-45.248 45.248l336.416 336.416L122.08 840.16a31.968 31.968 0 1 0 45.248 45.248l336.416-336.416L840.16 885.44a31.968 31.968 0 1 0 45.248-45.248L548.992 503.744z" p-id="34195" />
-                </svg>
-            </span>
+    <transition-group name="modal">
+        <div class="mask" v-if="modelValue" @click="handleClick"></div>
+        <div class="model" v-if="modelValue" :style="style" v-drag>
+            <div class="header">
+                <p class="title">{{ title }}</p>
+                <span class="close-btn" @click="handleClose">
+                    <svg t="1638021668280" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="34194" width="16" height="16">
+                        <path d="M548.992 503.744L885.44 167.328a31.968 31.968 0 1 0-45.248-45.248L503.744 458.496 167.328 122.08a31.968 31.968 0 1 0-45.248 45.248l336.416 336.416L122.08 840.16a31.968 31.968 0 1 0 45.248 45.248l336.416-336.416L840.16 885.44a31.968 31.968 0 1 0 45.248-45.248L548.992 503.744z" p-id="34195" />
+                    </svg>
+                </span>
+            </div>
+            <div class="body" @mousedown.stop>
+                <slot></slot>
+            </div>
         </div>
-        <div class="body" @mousedown.stop>
-            <slot></slot>
-        </div>
-    </div>
+    </transition-group>
 </template>
 <script>
 import { getScrollWidth } from '@/util'
@@ -144,5 +146,15 @@ export default {
     .body {
         padding: 1.2em 1.6em;
     }
+}
+
+.modal-enter-active,
+.modal-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
 }
 </style>

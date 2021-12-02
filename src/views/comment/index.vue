@@ -123,13 +123,8 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-@import url("~/index.less");
-.comment {
-    padding: 0 1em 1em;
-    background-color: @cj-background-color;
-}
-
+<style lang="less">
+@import url('../../styles/index.less');
 @media screen and (max-width: 520px) {
     .comment-user-sys {
         display: none;
@@ -144,5 +139,10 @@ export default {
             }
         }
     }
+}
+
+.comment {
+    padding: 1em;
+    background-color: @ui-global-bg-normal;
 }
 </style>
