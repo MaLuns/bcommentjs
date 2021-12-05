@@ -92,8 +92,8 @@ const login = async (email, password) => {
         .signInWithEmailAndPassword(email, password)
         .then((loginState) => loginState.user)
         .catch(e => {
-            if (msg[e.code]) message.error(msg[e.code])
-            else message.error('用户名或密码错误')
+            if (msg[e.code]) message.danger(msg[e.code])
+            else message.danger('用户名或密码错误')
         });
 }
 
@@ -108,8 +108,8 @@ const regster = async (email, password) => {
         .signUpWithEmailAndPassword(email, password)
         .then(() => true)
         .catch(e => {
-            if (msg[e.code]) message.error(msg[e.code])
-            else message.error('注册失败')
+            if (msg[e.code]) message.danger(msg[e.code])
+            else message.danger('注册失败')
         });
 }
 
@@ -123,8 +123,8 @@ const reset = async (email) => {
         .sendPasswordResetEmail(email)
         .then(() => true)
         .catch(e => {
-            if (msg[e.code]) message.error(msg[e.code])
-            else message.error('注册失败')
+            if (msg[e.code]) message.danger(msg[e.code])
+            else message.danger('注册失败')
         });
 }
 
@@ -144,12 +144,12 @@ const callFunction = async (handlerName, data = {}) => {
             data: { handlerName, ...data }
         }).then(({ result }) => {
             if (result.code === 0) return result.data
-            else message.error(result.message)
+            else message.danger(result.message)
         }).catch(e => {
-            if (msg[e.code]) message.error(msg[e.code])
+            if (msg[e.code]) message.danger(msg[e.code])
         })
     } else {
-        message.error('未找到 CloudBase 初始化数据')
+        message.danger('未找到 CloudBase 初始化数据')
     }
 }
 
@@ -196,7 +196,7 @@ export default {
         if (tcb.app) {
             return tcb
         } else {
-            message.error('未找到 CloudBase 初始化数据')
+            message.danger('未找到 CloudBase 初始化数据')
         }
     }
 }

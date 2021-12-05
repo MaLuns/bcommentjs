@@ -1,7 +1,62 @@
 import md5 from 'md5'
+import { VueElement, defineComponent } from 'vue'
 
 /**
- * 
+ * 修改defineCustomElement，支持将方法挂载到，自定义元素上 
+ * @param {*} options 
+ * @param {*} hydate 
+ * @returns 
+ */
+export const defineCustomElement = (options, hydate) => {
+    const Comp = defineComponent(options);
+    class VueCustomElement extends VueElement {
+        constructor(initialProps) {
+            super(Comp, initialProps, hydate);
+            if (Comp.exportMethods) {
+                Object.keys(Comp.exportMethods).forEach(key => {
+                    this[key] = function (...res) {
+                        if (this._instance) {
+                            return Comp.exportMethods[key].call(this._instance.proxy, ...res)
+                        } else {
+                            throw new Error('')
+                        }
+                    }
+                })
+            }
+        }
+    }
+    VueCustomElement.def = Comp;
+    return VueCustomElement;
+}
+
+/**
+ * 抽取子组件样式  @see https://github.com/vuejs/vue-loader/issues/1881
+ * @param {*} 
+ * @returns 
+ */
+export const deepStylesOf = ({ styles = [], components = {} }) => {
+    const unique = array => [...new Set(array)];
+    return unique([...styles, ...Object.values(components).flatMap(deepStylesOf)]);
+}
+
+/**
+ * 注册customElements
+ * @param {*} data 
+ */
+export const registe = async (data) => {
+    for (const key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+            //处理子组件样式
+            const component = data[key]
+            component.styles = deepStylesOf(component)
+            let name = key.replace(/([A-Z])/g, "-$1").toLowerCase().replace('-', '')
+            !customElements.get(name) && customElements.define(name, defineCustomElement(component))
+        }
+    }
+}
+
+/**
+ * 错误日志
  */
 class CommentjsError extends Error {
     constructor(m) {

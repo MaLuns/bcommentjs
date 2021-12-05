@@ -50,7 +50,7 @@ export const timeAgo = (date) => {
             if (days < 8) {
                 return days + `天前`;
             } else if (days > 7 && days < 31) {
-                return Math.ceil(days / 7) + `周前`
+                return parseInt(days / 7) + `周前`
             } else if (days > 30 && days < 365) {
                 return Math.ceil(days / 31) + `月前`
             } else {

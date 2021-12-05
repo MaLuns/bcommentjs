@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { emojis } from "@/emojis";
 import detect from "@/detect";
 import tcb from '@/tcb';
 import { mComment, mEditor, mLoading } from '+/'
@@ -66,6 +67,7 @@ export default {
             this.config = await tcb.callFunction('getConfig')
             console.log(this.config);
             this.loadData()
+            // this.$root.$el.getRootNode().host.addXXX = this.xxxx
         },
         // 设置回复
         setReplyID (reply) {
@@ -75,6 +77,7 @@ export default {
         addComments (commet, callback) {
             let par = {
                 ...commet,
+                isPrivate: this.reply === null ? false : commet.isPrivate,
                 type: this.reply === null ? 0 : 1,
                 hash: this.pageHash,
                 ua: this.detect
@@ -88,16 +91,18 @@ export default {
                 }
             }
             tcb.callFunction('addComments', par).then(res => {
-                let com = { ...par, ...res }
-                if (par.type === 0) {
-                    let index = this.list.findIndex(item => !item.top)
-                    this.list.splice(index, 0, com)
-                } else {
-                    let item = this.list.find(item => item === this.reply || (item.childer && item.childer.includes(this.reply)))
-                    item.childer.push(com)
-                    this.reply = null
+                if (res) {
+                    let com = { ...par, ...res }
+                    if (par.type === 0) {
+                        let index = this.list.findIndex(item => !item.top)
+                        this.list.splice(index, 0, com)
+                    } else {
+                        let item = this.list.find(item => item === this.reply || (item.childer && item.childer.includes(this.reply)))
+                        item.childer.push(com)
+                        this.reply = null
+                    }
+                    callback()
                 }
-                callback()
             })
         },
         // 加载更多评论
@@ -114,12 +119,18 @@ export default {
                 this.loading = false
                 --this.page.pageIndex
             })
-        }
+        },
     },
     created () {
         this.detect = detect();
         this.init()
     },
+    exportMethods: {
+        // 添加自定义表情
+        addEmojis (emoji) {
+            console.log(emojis);
+        }
+    }
 }
 </script>
 
@@ -127,9 +138,7 @@ export default {
 @import url("../../styles/index.less");
 .comment {
     padding: 1em 1.5em;
-    color: @ui-text;
-    font-size: @ui-font-size;
-    line-height: @ui-line-height-base;
+    
     background-color: @ui-global-bg-normal;
 }
 

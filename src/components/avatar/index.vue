@@ -1,5 +1,5 @@
 <template>
-    <img class="avatar" :class="shape" :src="src">
+    <img class="avatar" :class="shape" :src="src" draggable="false" alt="avatar">
 </template>
 
 <script>

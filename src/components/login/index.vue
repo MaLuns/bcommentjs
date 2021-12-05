@@ -129,18 +129,6 @@ export default {
     cursor: pointer;
 }
 
-.link {
-    display: inline-block;
-    color: #3850fa;
-    font-size: 12px;
-    cursor: pointer;
-    border-bottom: 1px solid transparent;
-    margin-left: 5px;
-
-    &:hover {
-        border-bottom: 1px solid #3850fa;
-    }
-}
 
 .right {
     text-align: right;

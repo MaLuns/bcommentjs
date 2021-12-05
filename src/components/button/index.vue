@@ -112,6 +112,7 @@ export default {
         color: #515a6e;
         background-color: #0000;
         border-color: #0000;
+        padding: 0 5px;
 
         &:hover,
         &:active {

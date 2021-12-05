@@ -12,26 +12,23 @@
             </m-form-item>
         </m-form>
         <div class="editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
-            <div ref="editor" class="editor" contenteditable @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
+            <div ref="editor" class="editor" contenteditable @drop="handleDrop" @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
         </div>
         <div class="emojis-btn">
-            <div class="display: inherit;">
-                <m-emojis v-for="(item,index) in emojis" :key="index" :emoji="item" @checked="handleChecked"></m-emojis>
-            </div>
+            <m-emojis @checked="insertAtCaret"></m-emojis>
             <div class="btn-container">
                 <template v-if="!isCancel">
                     <input v-model="form.isPrivate" id="check" type="checkbox" class="checkbox-input" />
                     <label for="check">私密评论</label>
                 </template>
-                <m-button type="text" v-if="isCancel" @click="handleCancel">取消</m-button>
-                <m-button class="mgl10" type="primary" @click="handleSubmit">提交</m-button>
+                <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
+                <m-button type="text" class="my-face" @click="handleSubmit">发布</m-button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import { emojis } from "@/emojis";
 import { insertAtCaret, regexp } from "@/util";
 import mEmojis from "./emojis";
 import mForm from "+/form/form";
@@ -47,7 +44,6 @@ export default {
     },
     data () {
         return {
-            lastEditRange: null,
             form: {
                 nick: "",
                 email: "",
@@ -68,8 +64,7 @@ export default {
                     if (!regexp.link.test(val))
                         throw new Error('请填写正确站点(http|https)')
                 }
-            },
-            emojis
+            }
         }
     },
     props: {
@@ -80,12 +75,15 @@ export default {
     },
     methods: {
         init () {
+            this.lastEditRange = null;
             this.form.content = localStorage.getItem('editor_text') || ''
             let { nick = '', email = '', link = '' } = JSON.parse(localStorage.getItem('user_info') || '{}')
             this.form.nick = nick
             this.form.email = email
             this.form.link = link
             this.$refs.editor.innerText = this.form.content;
+
+            this.RootNode = this.$root.$el.getRootNode()
         },
         // 是否必填
         isRequired (key) {
@@ -93,29 +91,34 @@ export default {
         },
         // 存储
         handleBlur () {
-            let { nick, email, link } = this.form
+            let { nick, email, link, content } = this.form
+            localStorage.setItem('editor_text', content)
             localStorage.setItem('user_info', JSON.stringify({ nick, email, link }))
         },
         // 记录光标位置
-        updateLastEditRange () {
-            this.lastEditRange = this.$root.$el.getRootNode().getSelection().getRangeAt(0)
+        updateLastEditRange (e) {
+            if (this.RootNode.getSelection) {
+                this.lastEditRange = this.RootNode.getSelection().getRangeAt(0)
+            }
         },
+        // 禁止拖拽输入
+        handleDrop (e) {
+            e.preventDefault();
+        },
+        // 输入
         handleInput ($event) {
             this.form.content = $event.target.innerText;
-            localStorage.setItem('editor_text', this.form.content)
             this.updateLastEditRange()// 重新获取光标位置
         },
-        // 取消
-        handleCancel () {
-            this.$emit('cancel')
-        },
         // 插入表情
-        handleChecked (text) {
-            this.insertAtCaret(text)
-            this.form.content = this.$refs.editor.innerText;
-        },
         insertAtCaret (text) {
-            this.lastEditRange = insertAtCaret(this.$refs.editor, text, this.$root.$el.getRootNode(), this.lastEditRange)
+            if (this.RootNode.getSelection) {
+                this.lastEditRange = insertAtCaret(this.$refs.editor, text, this.RootNode, this.lastEditRange)
+            } else {
+                // fix: 对不支持 ShadowRoot.getSelection() ，插入到末尾
+                this.$refs.editor.appendChild(document.createTextNode(text))
+            }
+            this.form.content = this.$refs.editor.innerText;
         },
         // 粘贴
         handlePaste (e) {
@@ -125,10 +128,15 @@ export default {
             let data = clipboardData.getData("text")
             this.insertAtCaret(data)
         },
+        // 取消回复
+        handleCancel () {
+            this.$emit('cancel')
+        },
         // 提交
         handleSubmit () {
-            if (this.$refs.form.validate()) {
+            if (this.$refs.form.validate() && this.form.content.trim().length) {
                 this.$root.addComments({ ...this.form }, () => {
+                    this.$refs.editor.innerText = ''
                     this.form.content = ''
                     localStorage.setItem('editor_text', '')
                 })
@@ -142,8 +150,9 @@ export default {
 @import url("../../styles/variables.less");
 label {
     user-select: none;
+    cursor: pointer;
+    margin: 0 5px;
     font-size: 0.9em;
-    margin-right: 10px;
     font-weight: 400;
 }
 .comment-editor {
@@ -201,6 +210,11 @@ label {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        .btn-container {
+            display: flex;
+            align-items: center;
+        }
     }
 }
 .mgl10 {

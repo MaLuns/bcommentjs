@@ -1,5 +1,5 @@
 <template>
-    <transition-group name="modal">
+    <transition-group name="opacity">
         <div class="mask" v-if="modelValue" @click="handleClick"></div>
         <div class="model" v-if="modelValue" :style="style" v-drag>
             <div class="header">
@@ -120,8 +120,7 @@ export default {
     border-radius: @ui-border-radius;
 
     .header {
-        height: 3em;
-        border-bottom: 1px solid @ui-border-line;
+        border-bottom: 0.5px solid @ui-dividing-line;
         padding: 0 1em;
         display: flex;
         align-items: center;
@@ -129,8 +128,9 @@ export default {
         cursor: move;
 
         .title {
+            font-size: @ui-font-size-card-title;
+            line-height: 2.6em;
             flex: 1;
-            line-height: 3em;
         }
 
         .close-btn {
@@ -146,15 +146,5 @@ export default {
     .body {
         padding: 1.2em 1.6em;
     }
-}
-
-.modal-enter-active,
-.modal-leave-active {
-    transition: opacity @ui-transition-duration;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-    opacity: 0;
 }
 </style>

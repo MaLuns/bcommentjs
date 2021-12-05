@@ -16,10 +16,12 @@ const handler = {
     getArticle, // 获取文章信息
     updateArticle,// 更新文章信息
     async getConfig (event, context) {
-        if (await isAdministrator(context)) {
-            return formatRes(config)
+        const is_admin = await isAdministrator(context)
+        let _config = { ...config }
+        if (!is_admin) {
+            _config = filterConfig(config)
         }
-        return formatRes(filterConfig(config))
+        return formatRes({ ..._config, is_admin })
     }
 }
 

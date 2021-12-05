@@ -133,11 +133,24 @@ const getComments = async (data) => {
 
     let { data: list } = await commentsDB
         .aggregate()
-        .match({
-            articleID: articleID,
-            //delete: 1,
-            //isAudit: 1
-        })
+        .match(
+            _.and(
+                [
+                    {
+                        articleID: articleID,
+                        //delete: 1,
+                        //isAudit: 1
+                    },
+                    _.or([
+                        { isPrivate: false },
+                        {
+                            isPrivate: true,
+                            uid: await getUid()
+                        }
+                    ])
+                ]
+            )
+        )
         .sort({ top: -1, created: -1 })
         .skip((pageIndex - 1) * pagesize).limit(10)
         .project({
@@ -228,7 +241,7 @@ const addComments = async (event, context) => {
     // 格式化数据
     let data = await parse(event);
     const res = {
-        gavatar: config.gavatar_url + data.avatar,
+        gavatar: config.gavatar_url.replace('$hash', data.avatar),
         qqAvatar: data.qqAvatar,
         created: data.created
     }
