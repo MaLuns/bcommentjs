@@ -6,6 +6,7 @@ const { updateArticle } = require('./articles')
 const { regexp, validata, getQQAvatar, uuid, formatRes } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
 const commentsDB = db.collection('db_comments')
+const dompurify = require('dompurify')
 //const marked = require('marked')
 
 /**
@@ -13,7 +14,16 @@ const commentsDB = db.collection('db_comments')
  * @param {*} data 
  * @returns 
  */
-const parse = async (data) => {
+const parse = async (data, context) => {
+    const isAdmin = await isAdministrator(context)
+    const { email } = await getUserInfo()
+    if (!isAdmin) {
+        if (email === data.email) throw new Error('请先登录管理面板，再使用博主身份发送评论')
+    } else {
+        data.email = email
+        data.nick = config.user_name
+    }
+
     const timestamp = new Date()
     let articleID = await updateArticle(data).then(res => res.data)
     const commentDo = {
@@ -25,21 +35,19 @@ const parse = async (data) => {
         avatar: md5(data.email), // 头像
         link: data.link || '', // 链接
         ua: data.ua, // 浏览器标识
-        content: data.content, // 评论内容
-        // firstId: data.firstId || data.replyId || '', // 顶层评论ID
+        content: dompurify.sanitize(data.content, { FORBID_TAGS: ['style'], FORBID_ATTR: ['style'] }), // 评论内容
         replyId: data.replyId || '', // 被回复ID
         created: timestamp, // 评论时间
         updated: timestamp,
         isPrivate: data.isPrivate || false, // 是否私密消息
-        isAudit: 0, // 审核
-        delete: 0 // 删除
+        isAudit: isAdmin ? true : config.is_audit, // 审核
+        delete: false // 删除
     }
     if (config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
         commentDo.qqAvatar = await getQQAvatar(data.email)
     }
-    if (data.at) {
-        commentDo.at = data.at
-    }
+    if (data.at) commentDo.at = data.at
+    if (isAdmin) commentDo.tag = config.tag
     return commentDo
 }
 
@@ -225,31 +233,25 @@ const getCommentByID = async (id) => {
  * @param {*} event 
  */
 const addComments = async (event, context) => {
-    await currentLimit()
-
     //#region 数据校验
+    const isAdmin = await isAdministrator(context)
     const par = ['hash', 'ua', 'content']
-    Object.keys(config.form).forEach(key => {
-        if (config.form[key]) par.push(key)
-    })
-    if (event.type === 1) {// type 0评论 1回复
-        par.push('replyId')
+    if (!isAdmin) {
+        await currentLimit()
+        Object.keys(config.form).forEach(key => {
+            if (config.form[key]) par.push(key)
+        })
     }
+    if (event.type === 1) par.push('replyId')// type 0评论 1回复
     validata(event, par)
     //#endregion
 
     // 格式化数据
-    let data = await parse(event);
+    let data = await parse(event, context);
     const res = {
+        ...data,
         gavatar: config.gavatar_url.replace('$hash', data.avatar),
-        qqAvatar: data.qqAvatar,
-        created: data.created
     }
-    const isAdmin = await isAdministrator(context)
-    if (isAdmin) {
-        data.tag = config.tag
-    }
-
     if (event.type === 0) {
         let { id } = await commentsDB.add(data)
         res.id = id
@@ -269,7 +271,7 @@ const addComments = async (event, context) => {
     }
 
     // 通知博主
-    if (config.is_notice) {
+    if (!isAdmin) {
         sendNotice(data)
     }
 

@@ -9,6 +9,7 @@ const db = app.database();
 
 let config = {
     site_name: '',// 站点名称
+    user_nama: '',
     is_notice: null,// 
     notice_type: null, // 通知方法 0邮件 ... 其他类型待集成
     email_template: 0,// 邮件模板
@@ -109,6 +110,15 @@ const getUid = async () => {
     return userInfo.uid
 }
 
+/**
+ * 获取登录人信息
+ * @returns 
+ */
+const getUserInfo = async () => {
+    let { TCB_UUID } = tcb.getCloudbaseContext();
+    const { userInfo } = await auth.getEndUserInfo(TCB_UUID)
+    return userInfo
+}
 
 /**
  * 判断用户是否管理员
@@ -138,6 +148,7 @@ module.exports = {
     $: db.command.aggregate,
     getUid,
     getIp,
+    getUserInfo,
     initConfig,
     filterConfig,
     isAdministrator,
