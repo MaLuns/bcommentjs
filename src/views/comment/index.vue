@@ -138,7 +138,6 @@ export default {
 @import url("../../styles/index.less");
 .comment {
     padding: 1em 1.5em;
-    
     background-color: @ui-global-bg-normal;
 }
 

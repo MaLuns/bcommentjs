@@ -210,6 +210,14 @@ export const getScrollWidth = () => {
 }
 
 /**
+ * 是否有滚动条
+ * @returns 
+ */
+export const hasScrollbar = () => {
+    return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)
+}
+
+/**
  * 正则
  */
 export const regexp = {

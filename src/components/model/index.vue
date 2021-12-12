@@ -17,7 +17,7 @@
     </transition-group>
 </template>
 <script>
-import { getScrollWidth } from '@/util'
+import { getScrollWidth, hasScrollbar } from '@/util'
 export default {
     computed: {
         style () {
@@ -28,8 +28,14 @@ export default {
         }
     },
     props: {
-        modelValue: Boolean,
-        maskClose: Boolean,
+        modelValue: {
+            type: Boolean,
+            default: false
+        },
+        maskClose: {
+            type: Boolean,
+            default: false
+        },
         width: {
             type: Number,
             default: 360
@@ -40,29 +46,24 @@ export default {
         },
     },
     methods: {
-        hasScrollbar () {
-            return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)
-        },
         handleClick () {
             if (this.maskClose) {
                 this.handleClose()
             }
         },
         handleClose () {
+            document.body.style.width = "";
+            document.body.style.overflow = "";
             this.$emit('update:modelValue', false)
         }
     },
     watch: {
-        modelValue: function (val) {
-            if (val) {
-                if (this.hasScrollbar()) {
+        modelValue: {
+            immediate: true,
+            handler (val) {
+                if (val && hasScrollbar()) {
                     document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
                     document.body.style.overflow = "hidden";
-                }
-            } else {
-                if (this.hasScrollbar()) {
-                    document.body.style.width = "";
-                    document.body.style.overflow = "";
                 }
             }
         }
@@ -115,12 +116,12 @@ export default {
     position: fixed;
     top: 10vh;
     z-index: 100;
-    background: #fff;
     box-shadow: 0 1px 6px #00000033;
-    border-radius: @ui-border-radius;
+    background: @ui-global-bg-normal;
+    border-radius: @ui-border-radius-card;
 
     .header {
-        border-bottom: 0.5px solid @ui-dividing-line;
+        border-bottom: 0.5px solid @ui-border-line;
         padding: 0 1em;
         display: flex;
         align-items: center;

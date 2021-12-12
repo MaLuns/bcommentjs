@@ -1,9 +1,10 @@
 const tcb = require("@cloudbase/node-sdk");
-const { initConfig, config, filterConfig, isAdministrator } = require('./utils/app')
-const { getComments, addComments, currentLimit } = require('./utils/comments')
+const { initConfig, updateConfig, getConfig } = require('./utils/app')
+const { getComments, addComments, } = require('./utils/comments')
 const { addPVUV, getPV, getBatchPV, getUV } = require('./utils/count')
 const { getArticle, updateArticle } = require('./utils/articles')
 const { validata, RES_CODE, formatRes, } = require('./utils/utils')
+const { testEmail } = require('./utils/notice')
 
 // 处理程序
 const handler = {
@@ -15,14 +16,9 @@ const handler = {
     addPVUV,// 记录访问记录
     getArticle, // 获取文章信息
     updateArticle,// 更新文章信息
-    async getConfig (event, context) {
-        const is_admin = await isAdministrator(context)
-        let _config = { ...config }
-        if (!is_admin) {
-            _config = filterConfig(config)
-        }
-        return formatRes({ ..._config, is_admin })
-    }
+    getConfig, // 获取配置
+    updateConfig, // 更新配置
+    testEmail,// 邮件测试
 }
 
 /**

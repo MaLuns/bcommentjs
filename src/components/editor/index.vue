@@ -18,8 +18,9 @@
             <m-emojis @checked="insertAtCaret"></m-emojis>
             <div class="btn-container">
                 <template v-if="!isCancel">
-                    <input v-model="form.isPrivate" id="check" type="checkbox" class="checkbox-input" />
-                    <label for="check">私密评论</label>
+                    <input v-model="form.isPrivate" id="isPrivate" type="checkbox" />
+                    <label for="isPrivate" class="ui-checkbox"></label>
+                    <label for="isPrivate">私密评论</label>
                 </template>
                 <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
                 <m-button type="text" class="my-face" @click="handleSubmit">发布</m-button>
@@ -148,13 +149,6 @@ export default {
 
 <style lang="less" scoped>
 @import url("../../styles/variables.less");
-label {
-    user-select: none;
-    cursor: pointer;
-    margin: 0 5px;
-    font-size: 0.9em;
-    font-weight: 400;
-}
 .comment-editor {
     padding: 5px 0 0;
 

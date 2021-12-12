@@ -81,6 +81,9 @@ export default {
                 margin: 0 0 1.2em 0.8em;
             }
         }
+        > :deep(div) {
+            flex: 1;
+        }
     }
 }
 

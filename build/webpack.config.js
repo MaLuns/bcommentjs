@@ -9,6 +9,10 @@ module.exports = merge(baseConf, {
         minimize: true,
         minimizer: [new TerserPlugin()],
     },
+    externals: {
+        vue: 'Vue',
+        '@cloudbase/js-sdk': 'cloudbase'
+    },
     plugins: [
         new webpack.DefinePlugin({
             __VUE_OPTIONS_API__: true,

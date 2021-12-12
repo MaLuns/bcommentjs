@@ -1,38 +1,36 @@
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const fs = require('fs');
-const { config, db, isAdministrator } = require('./app')
-const { getArticle } = require('./articles')
+const app = require('./app')
+const { notAdminLimit, getEnvEmail } = app
+const { formatRes } = require('./utils');
 
 /**
  * 获取 nodemailer
  * @returns 
  */
 const getTransporter = async () => {
+    if (!app.config.sender_email || !app.config.sender_pass) {
+        throw new Error('未找到邮箱配置信息')
+    }
+    if (!app.config.smtp_host || !app.config.smtp_port) {
+        throw new Error('SMTP 服务器没有配置')
+    }
+
     try {
-        if (!config.sender_email || !config.sender_pass) {
-            throw new Error('未找到邮箱配置信息')
-        }
-        if (!config.smtp_host || !config.smtp_port) {
-            throw new Error('SMTP 服务器没有配置')
-        }
         const transporter = nodemailer.createTransport({
-            host: config.smtp_host,
-            port: config.smtp_port,
-            secure: config.smtp_secure,
+            host: app.config.smtp_host,
+            port: app.config.smtp_port,
+            secure: app.config.smtp_secure,
             auth: {
-                user: config.sender_email,
-                pass: config.sender_pass
+                user: app.config.sender_email,
+                pass: app.config.sender_pass
             }
         });
-        try {
-            const success = await transporter.verify()
-            if (success) return transporter
-        } catch (error) {
-            throw new Error('SMTP 邮箱配置异常：', error)
-        }
+        const success = await transporter.verify()
+        if (success) return transporter
     } catch (error) {
-        console.error('邮件初始化异常：', e.message)
+        throw new Error('SMTP 邮箱配置异常：', error)
     }
 }
 
@@ -50,40 +48,55 @@ const noticeQueue = {
  * 消息推送
  * @param {*} data 
  */
-const notice = (data) => {
+const sendNotice = (data) => {
     Object.keys(noticeQueue).forEach(key => {
         noticeQueue[key](data)
     })
 }
 
 /**
- * 发送邮件
- * @param {*} type true 通知其他人  false 通知博主 
- * @returns 
- */
-const noticeEmail = async ({ email, nick, content, articleID = '', type = true }) => {
-    let article = await getArticle(articleID)
-
-    const template = fs.readFileSync('../templates/email.template.ejs', { encoding: 'utf8' });
-    const html = ejs.render(template, {
-        date: str,
-        from: `来自于${config.site_name}`,
-        title: article.title,
-        href: article.url,
-        nick,
-        content,
-        type
-    });
-    const mail = {
-        from: `${config.sender_name} <${config.sender_email}>`,
-        subject: config.subject,
-        to: type ? email : config.sender_email,
-        html
+ * 邮件发送
+ * @param {*} param
+ *  */
+const sendEmail = async ({ title, href, type, nick, content, toEmail }) => {
+    let ejsTemplate;
+    if (app.config.is_email_template) {
+        ejsTemplate = app.config.email_template_ejs
+    } else {
+        ejsTemplate = fs.readFileSync('../templates/email.template.ejs', { encoding: 'utf8' });
     }
+    const html = ejs.render(ejsTemplate, {
+        title, href, type, nick, content, datetime: new Date(),
+        siteName: app.config.site_name,
+        siteLogo: app.config.site_logo
+    })
     const transporter = await getTransporter()
-    transporter.sendMail(mail)
+    transporter.sendMail({
+        from: `${app.config.sender_name || app.config.site_name} <${app.config.sender_email}>`,
+        subject: app.config.subject || (`【${app.config.site_name}】收到新的${type === 1 ? '回复' : '留言 '}`),
+        to: toEmail,
+        html
+    })
+}
+
+/**
+ * 发送测试邮件
+ * @param {*} event 
+ */
+const testEmail = async (event, context) => {
+    await notAdminLimit(context)
+    const transporter = await getTransporter()
+    transporter.sendMail({
+        from: app.config.sender_email,
+        to: event.mail || getEnvEmail(context) || app.config.sender_email,
+        subject: '测试邮件',
+        html: '这是一条测试邮件，说明邮件功能配置正确'
+    })
+    return formatRes(true)
 }
 
 module.exports = {
-    notice
+    sendNotice,
+    sendEmail,
+    testEmail
 }

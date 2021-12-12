@@ -266,6 +266,11 @@ diff@^4.0.1:
   resolved "https://registry.npm.taobao.org/diff/download/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha1-YPOuy4nV+uUgwRqhnvwruYKq3n0=
 
+dompurify@^2.3.4:
+  version "2.3.4"
+  resolved "https://registry.npmmirror.com/dompurify/download/dompurify-2.3.4.tgz#1cf5cf0105ccb4debdf6db162525bd41e6ddacc6"
+  integrity sha512-6BVcgOAVFXjI0JTjEvZy901Rghm+7fDQOrNIcxB4+gdhj6Kwp6T9VBhBY/AbagKHJocRkDYGd6wvI+p4/10xtQ==
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.npm.taobao.org/ecc-jsbn/download/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"

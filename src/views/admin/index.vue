@@ -1,7 +1,7 @@
 <template>
     <div class="login-icon pointer">
-        <template v-if="!user" @click="showLoginPanel = true;">
-            <svg t="1638012972106" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15875" width="32" height="32">
+        <template v-if="!user">
+            <svg @click="showLoginPanel = true;" t="1638012972106" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15875" width="32" height="32">
                 <path
                     d="M575.215 547.318c53.367-24.316 90.562-78.011 90.562-140.522 0-85.257-69.149-154.383-154.406-154.383-85.299 0-154.427 69.126-154.427 154.383 0 62.49 37.172 116.185 90.562 140.522-87.156 27.24-150.586 108.698-150.586 204.715 0 12.071 9.779 21.827 21.827 21.827s21.827-9.756 21.827-21.827c0-94.161 76.613-170.774 170.776-170.774 94.184 0 170.797 76.613 170.797 170.774 0 12.071 9.756 21.827 21.827 21.827 12.07 0 21.827-9.756 21.827-21.827 0.021-95.994-63.43-177.475-150.586-204.715zM400.621 406.817c0-61.072 49.678-110.729 110.773-110.729 61.072 0 110.75 49.657 110.75 110.729 0 61.094-49.678 110.794-110.75 110.794-61.095 0-110.773-49.7-110.773-110.794z"
                     p-id="15876"
@@ -10,7 +10,7 @@
             </svg>
         </template>
         <template v-else>
-            <svg t="1638284101714" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="36875" width="32" height="32">
+            <svg @click="handleShowAdminPanel" t="1638284101714" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="36875" width="32" height="32">
                 <path d="M36.5056 512c0 262.656 211.8144 473.5488 475.4944 473.5488s475.4432-210.944 475.4432-473.5488S775.68 38.5024 512 38.5024 36.5056 249.4464 36.5056 512z" fill="#FFFFFF" p-id="36876" />
                 <path d="M36.5056 512c0 262.656 211.8144 475.648 475.4944 475.648s475.4432-212.992 475.4432-475.648S775.68 36.352 512 36.352 36.5056 249.4464 36.5056 512z" fill="#FFFFFF" p-id="36877" />
                 <path d="M512 996.3008C243.968 996.3008 25.7024 778.9056 25.7024 512 25.7024 242.9952 243.968 25.6 512 25.6s486.2464 217.3952 486.2464 486.4c0 266.9056-218.2656 484.3008-486.2464 484.3008zM512 47.104C254.7712 47.104 47.3088 255.8976 47.3088 512S254.7712 976.896 512 976.896s464.64-208.7424 464.64-464.896S769.1776 47.104 512 47.104z" fill="#EFEFEF" p-id="36878" />
@@ -34,19 +34,21 @@
         </template>
     </div>
     <m-login v-if="showLoginPanel" v-model:show="showLoginPanel"></m-login>
-    <m-config></m-config>
+    <transition name="opacity">
+        <m-manger v-if="showAdminPanel" v-model="showAdminPanel"></m-manger>
+    </transition>
 </template>
 
 <script>
-import { appendStyle } from '@/util'
 import tcb from '@/tcb'
-import mConfig from '+/config'
+import { getScrollWidth, hasScrollbar } from '@/util'
 import { mLogin } from '+/'
+import mManger from './layout.vue'
 
 export default {
     components: {
         mLogin,
-        mConfig
+        mManger
     },
     props: {
         env: {
@@ -57,13 +59,32 @@ export default {
     data () {
         return {
             user: null,
-            showLoginPanel: false
+            config: {},
+            showLoginPanel: false,// 登录注册
+            showAdminPanel: false
+        }
+    },
+    watch: {
+        showAdminPanel: function (val) {
+            if (val) {
+                if (hasScrollbar()) {
+                    document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
+                    document.body.style.overflow = "hidden";
+                }
+            } else {
+                if (hasScrollbar()) {
+                    document.body.style.width = "";
+                    document.body.style.overflow = "";
+                }
+            }
         }
     },
     methods: {
-        handleClick (item) {
-            console.log(item);
-        }
+        handleShowAdminPanel () {
+            if (this.config.is_admin) {
+                this.showAdminPanel = true
+            }
+        },
     },
     created () {
         /* (n.outerItemNo?(`<span >(${n.outerItemNo})</span>`):'') */
@@ -74,7 +95,7 @@ export default {
                 this.user = tcb.cloudbase.auth.currentUser
             }
             tcb.callFunction('getConfig').then(res => {
-                console.log(res)
+                this.config = res
             })
         })
 

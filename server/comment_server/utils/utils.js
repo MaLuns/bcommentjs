@@ -37,7 +37,8 @@ const RES_INFO = {
  * @returns 
  */
 const formatRes = (data = null, code = RES_CODE.SUCCESS, message) => ({
-    data, code,
+    data,
+    code,
     message: message || RES_INFO[code] || '调用成功'
 })
 

@@ -30,7 +30,7 @@ import mModle from "+/model/index.vue";
 import mButton from "+/button/index.vue"
 
 export default {
-    emits: ['login'],
+    emits: ['login', 'update:show'],
     components: {
         mModle,
         mForm,
@@ -128,7 +128,6 @@ export default {
 .pointer {
     cursor: pointer;
 }
-
 
 .right {
     text-align: right;

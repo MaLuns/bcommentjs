@@ -1,8 +1,4 @@
-import cloudbase from "@cloudbase/js-sdk/app";
-// 登录模块
-import "@cloudbase/js-sdk/auth";
-// 云函数模块
-import "@cloudbase/js-sdk/functions";
+import cloudbase from "@cloudbase/js-sdk";
 import message from '+/message'
 
 const msg = {

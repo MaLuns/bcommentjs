@@ -17,7 +17,7 @@
             <div style="padding: 20px 50px;">
                 <div style="font-size: 16px;color: #2B2B2B;line-height: 24px;">你好，</div>
                 <div style="font-size: 16px;color: #2B2B2B;line-height: 28px;font-weight:bold;margin-top:10px;">
-                    <% if(type){%>
+                    <% if(type===1){%>
                         <span>你在 <%= title %> 中的评论，收到了新的回复。</span>
                         <% } else {%>
                             <span>
@@ -30,7 +30,7 @@
                     <div>回复人：<%= nick %>
                     </div>
                     <div>回复时间：<span style="border-bottom:1px dashed #ccc;" t="5" times="">
-                            <%= date %>
+                            <%= datetime %>
                     </div>
                     <div>回复内容：<%= content %>
                     </div>
@@ -40,7 +40,7 @@
                         <img class="exmail_logo" src="https://gravatar.loli.net/avatar/61e3a8580070eef6677da00f86580124" width="40" height="40" style="width: 40px;height: 40px;border-radius: 50%;" alt="白云苍狗">
                     </div>
                     <div>
-                        <%= from %>
+                        来自于<%= siteName %>
                     </div>
                 </div>
             </div>

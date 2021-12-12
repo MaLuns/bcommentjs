@@ -1829,9 +1829,9 @@ camelcase@^5.0.0, camelcase@^5.3.1:
   integrity sha1-48mzFWnhBoEd8kL3FXJaH0xJQyA=
 
 caniuse-lite@^1.0.30001274:
-  version "1.0.30001279"
-  resolved "https://registry.npmmirror.com/caniuse-lite/download/caniuse-lite-1.0.30001279.tgz?cache=0&sync_timestamp=1636436999557&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fcaniuse-lite%2Fdownload%2Fcaniuse-lite-1.0.30001279.tgz#eb06818da481ef5096a3b3760f43e5382ed6b0ce"
-  integrity sha512-VfEHpzHEXj6/CxggTwSFoZBBYGQfQv9Cf42KPlO79sWXCD1QNKWKsKzFeWL7QpZHJQYAvocqV6Rty1yJMkqWLQ==
+  version "1.0.30001286"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001286.tgz"
+  integrity sha512-zaEMRH6xg8ESMi2eQ3R4eZ5qw/hJiVsO/HlLwniIwErij0JDr9P+8V4dtx1l+kLq6j3yy8l8W4fst1lBnat5wQ==
 
 chalk@^2.0.0:
   version "2.4.2"

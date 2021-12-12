@@ -1,12 +1,14 @@
 <template>
-    <div class="form-item">
-        <span class="form-item-label" :class="{ required: isValidationEnabled }" :style="{ width: form.labelWidth }">
-            <slot name="title">{{ label }}</slot>
-        </span>
-        <div class="form-item-content" :class="{ error }">
-            <slot></slot>
-            <div class="error-msg" v-if="error && msg">{{ msg }}</div>
+    <div>
+        <div class="form-item">
+            <span class="form-item-label" :class="{ required: isValidationEnabled }" :style="{ width: form.labelWidth }">
+                <slot name="title">{{ label }}</slot>
+            </span>
+            <div class="form-item-content" :class="{ error }">
+                <slot></slot>
+            </div>
         </div>
+        <div class="error-msg" :style="{ paddingLeft: form.labelWidth }" v-if="error && msg">{{ msg }}</div>
     </div>
 </template>
 <script>
@@ -103,10 +105,10 @@ export default {
 <style lang="less" scoped>
 @import url("../../styles/variables.less");
 .form-item {
-    flex: 1;
     display: flex;
     align-items: center;
-    margin-bottom: 1.5em;
+    margin-bottom: 8px;
+    min-height: 32px;
 
     .form-item-label {
         width: 3em;
@@ -130,14 +132,12 @@ export default {
             border-color: @ui-danger !important;
         }
     }
-
-    .error-msg {
-        position: absolute;
-        font-size: 0.9em;
-        color: @ui-danger;
-    }
 }
-
+.error-msg {
+    margin: -4px 0 4px 10px;
+    font-size: 0.9em;
+    color: @ui-danger;
+}
 @media screen and (max-width: 600px) {
     .form-item {
         margin: 10px 0 !important;

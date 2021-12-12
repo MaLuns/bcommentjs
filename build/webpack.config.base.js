@@ -26,9 +26,11 @@ module.exports.baseConf = {
     },
     resolve: {
         alias: {
+            crypto: false,
             '@': path.resolve(__dirname, '../src/utils/'),
             '+': path.resolve(__dirname, '../src/components/'),
             '~': path.resolve(__dirname, '../src/views/'),
+            's': path.resolve(__dirname, '../src/styles/'),
         },
         extensions: ['.js', '.vue']
     },

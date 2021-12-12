@@ -1,12 +1,18 @@
 // 评论回复
 
 const md5 = require('blueimp-md5')
-const { db, $, getUid, getIp, config, _, isAdministrator } = require('./app')
-const { updateArticle } = require('./articles')
+const app = require('./app')
+const { db, $, _, getUid, getIp, getUserInfo, isAdministrator } = app
+const { updateArticle, getArticle } = require('./articles')
 const { regexp, validata, getQQAvatar, uuid, formatRes } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
 const commentsDB = db.collection('db_comments')
-const dompurify = require('dompurify')
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
+const { getEnvEmail } = require('./app')
+
+const window = new JSDOM('').window;
+const DOMPurify = createDOMPurify(window);
 //const marked = require('marked')
 
 /**
@@ -14,14 +20,13 @@ const dompurify = require('dompurify')
  * @param {*} data 
  * @returns 
  */
-const parse = async (data, context) => {
-    const isAdmin = await isAdministrator(context)
+const parse = async (data, isAdmin = false) => {
     const { email } = await getUserInfo()
     if (!isAdmin) {
         if (email === data.email) throw new Error('请先登录管理面板，再使用博主身份发送评论')
     } else {
         data.email = email
-        data.nick = config.user_name
+        data.nick = app.config.user_name
     }
 
     const timestamp = new Date()
@@ -30,24 +35,24 @@ const parse = async (data, context) => {
         uid: await getUid(),// 用户ID 
         ip: getIp(),// 用户IP
         articleID: articleID || '', // 评论归属模块ID（文章id）
-        nick: data.nick, // 昵称
-        email: data.email, // 邮箱
+        nick: DOMPurify.sanitize(data.nick), // 昵称
+        email: DOMPurify.sanitize(data.email), // 邮箱
         avatar: md5(data.email), // 头像
         link: data.link || '', // 链接
-        ua: data.ua, // 浏览器标识
-        content: dompurify.sanitize(data.content, { FORBID_TAGS: ['style'], FORBID_ATTR: ['style'] }), // 评论内容
+        ua: DOMPurify.sanitize(data.ua), // 浏览器标识
+        content: DOMPurify.sanitize(data.content, { FORBID_TAGS: ['style'], FORBID_ATTR: ['style'] }), // 评论内容
         replyId: data.replyId || '', // 被回复ID
         created: timestamp, // 评论时间
         updated: timestamp,
         isPrivate: data.isPrivate || false, // 是否私密消息
-        isAudit: isAdmin ? true : config.is_audit, // 审核
+        isAudit: isAdmin ? true : app.config.is_audit, // 审核
         delete: false // 删除
     }
-    if (config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
+    if (app.config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
         commentDo.qqAvatar = await getQQAvatar(data.email)
     }
     if (data.at) commentDo.at = data.at
-    if (isAdmin) commentDo.tag = config.tag
+    if (isAdmin) commentDo.tag = app.config.tag
     return commentDo
 }
 
@@ -57,7 +62,7 @@ const parse = async (data, context) => {
 const currentLimit = async () => {
     // 一分钟
     const time = 1 * 60 * 1000;
-    const limitPerMinuteUser = parseInt(config.limit_per_minute_user)
+    const limitPerMinuteUser = parseInt(app.config.limit_per_minute_user)
     if (limitPerMinuteUser && limitPerMinuteUser > 0) {
         // 五分钟
         const fiveAgo = new Date(Date.now() - 5 * time)
@@ -84,7 +89,7 @@ const currentLimit = async () => {
         }
     }
 
-    const limitThirtyMinuteAll = parseInt(config.limit_thirty_minute_all)
+    const limitThirtyMinuteAll = parseInt(app.config.limit_thirty_minute_all)
     if (limitThirtyMinuteAll && limitThirtyMinuteAll > 0) {
         // 三十分钟
         const halfHourAgo = new Date(Date.now() - 30 * time)
@@ -137,7 +142,7 @@ const getComments = async (data) => {
         at: 1,
         created: 1,
     }
-    const avatars = config.gavatar_url.split('$hash');
+    const avatars = app.config.gavatar_url.split('$hash');
 
     let { data: list } = await commentsDB
         .aggregate()
@@ -238,8 +243,8 @@ const addComments = async (event, context) => {
     const par = ['hash', 'ua', 'content']
     if (!isAdmin) {
         await currentLimit()
-        Object.keys(config.form).forEach(key => {
-            if (config.form[key]) par.push(key)
+        Object.keys(app.config.form).forEach(key => {
+            if (app.config.form[key]) par.push(key)
         })
     }
     if (event.type === 1) par.push('replyId')// type 0评论 1回复
@@ -247,10 +252,10 @@ const addComments = async (event, context) => {
     //#endregion
 
     // 格式化数据
-    let data = await parse(event, context);
+    let data = await parse(event, isAdmin);
     const res = {
         ...data,
-        gavatar: config.gavatar_url.replace('$hash', data.avatar),
+        gavatar: app.config.gavatar_url.replace('$hash', data.avatar),
     }
     if (event.type === 0) {
         let { id } = await commentsDB.add(data)
@@ -265,14 +270,27 @@ const addComments = async (event, context) => {
         ])).update({ childer: _.push([data]) })
         const comment = await getCommentByID(data.replyId)
         // 通知被回复人
-        if (false && comment.email !== data.email && comment.email !== config.email.auth.user) {
+        if (false && comment.email !== data.email && comment.email !== app.config.email.auth.user) {
             sendEmail({ ...data, email: comment.email })
         }
     }
 
     // 通知博主
-    if (!isAdmin) {
-        sendNotice(data)
+    try {
+        if (!isAdmin) {
+            let { data: { title = '', href = '' } } = await getArticle(data.articleID)
+            sendEmail({
+                title,
+                href,
+                type: 2,
+                nick: data.nick,
+                content: data.content,
+                toEmail: getEnvEmail(context) || app.config.sender_email
+            })
+            sendNotice(data)
+        }
+    } catch (error) {
+
     }
 
     return formatRes(res)
