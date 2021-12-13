@@ -8,6 +8,9 @@ const { merge } = require('webpack-merge')
 module.exports = merge(baseConf, {
     devtool: 'source-map',
     mode: 'development',
+    entry: {
+        'index.all': path.resolve(__dirname, '../src/index.all')
+    },
     devServer: {
         contentBase: '/',
         port: 3000,

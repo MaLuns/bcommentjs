@@ -1,10 +1,15 @@
 const webpack = require('webpack')
+const path = require("path")
 const TerserPlugin = require('terser-webpack-plugin');
 const { baseConf } = require('./webpack.config.base')
 const { merge } = require('webpack-merge')
 
 module.exports = merge(baseConf, {
     mode: 'production',
+    entry: {
+        'index': path.resolve(__dirname, '../src/index'),
+        'index.all': path.resolve(__dirname, '../src/index.all')
+    },
     optimization: {
         minimize: true,
         minimizer: [new TerserPlugin()],

@@ -10,10 +10,6 @@ const banner =
     'Last Update: ' + (new Date()).toLocaleString()
 
 module.exports.baseConf = {
-    entry: {
-        'index': path.resolve(__dirname, '../src/index'),
-        'index.all': path.resolve(__dirname, '../src/index.all')
-    },
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: '[name].min.js',

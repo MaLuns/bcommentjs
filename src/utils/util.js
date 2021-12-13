@@ -12,13 +12,17 @@ export const defineCustomElement = (options, hydate) => {
     class VueCustomElement extends VueElement {
         constructor(initialProps) {
             super(Comp, initialProps, hydate);
+        }
+
+        connectedCallback () {
+            super.connectedCallback()
             if (Comp.exportMethods) {
                 Object.keys(Comp.exportMethods).forEach(key => {
                     this[key] = function (...res) {
                         if (this._instance) {
                             return Comp.exportMethods[key].call(this._instance.proxy, ...res)
                         } else {
-                            throw new Error('')
+                            debugWarn('defineCustomElement', '未找到组件实例！')
                         }
                     }
                 })

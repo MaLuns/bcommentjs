@@ -12,7 +12,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .loading-box {
     position: relative;
     display: block;
@@ -42,6 +42,7 @@ export default {
         top: -25%;
         z-index: 1;
         height: 100%;
+        background-color: @ui-loading-color;
         border-radius: 10%;
         -webkit-animation: loading-box-animate 0.6s -0.1s linear infinite;
         -moz-animation: loading-box-animate 0.6s -0.1s linear infinite;

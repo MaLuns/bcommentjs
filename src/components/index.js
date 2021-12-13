@@ -8,7 +8,7 @@ import mLoading from '+/loading'
 import mLogin from '+/login'
 import message from '+/message'
 import mModel from '+/model'
-import mCard from '+/card'
+import mDropdown from "+/dropdown";
 
 export {
     mButton,
@@ -21,5 +21,5 @@ export {
     mEditor,
     mComment,
     mLogin,
-    mCard
+    mDropdown
 }

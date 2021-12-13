@@ -36,9 +36,11 @@
                     </div>
                 </div>
                 <div style="font-weight: 500;font-size: 12px;color: #BEBEBE;letter-spacing: 0.5px;padding-top: 20px;margin-top: 20px;border-top: 1px dashed #BEBEBE;display: flex;justify-content: space-between;align-items: center;">
-                    <div class="logo">
-                        <img class="exmail_logo" src="https://gravatar.loli.net/avatar/61e3a8580070eef6677da00f86580124" width="40" height="40" style="width: 40px;height: 40px;border-radius: 50%;" alt="白云苍狗">
-                    </div>
+                    <% if(siteLogo){%>
+                        <div class="logo">
+                            <img class="exmail_logo" src="<%= siteLogo %>" width="40" height="40" style="width: 40px;height: 40px;border-radius: 50%;" alt="logo">
+                        </div>
+                    <% } %>
                     <div>
                         来自于<%= siteName %>
                     </div>

@@ -74,6 +74,16 @@ export default {
     mounted () {
         this.init()
     },
+    watch: {
+        '$root.user': {
+            deep: true,
+            handler (val) {
+                let { nick, email } = val
+                if (nick) this.form.nick = nick
+                if (email) this.form.email = email
+            }
+        }
+    },
     methods: {
         init () {
             this.lastEditRange = null;
@@ -148,7 +158,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .comment-editor {
     padding: 5px 0 0;
 

@@ -8,7 +8,7 @@
         </div>
         <m-comment :list="list"></m-comment>
         <m-loading v-if="loading"></m-loading>
-        <h2 v-if="!loaded" style="text-align: center;" @click="loadData">查看更多</h2>
+        <h2 v-if="!loaded && !loading" class="center link" @click="loadData">查看更多</h2>
     </div>
 </template>
 
@@ -20,6 +20,14 @@ import { mComment, mEditor, mLoading } from '+/'
 
 export default {
     components: { mComment, mEditor, mLoading },
+    computed: {
+        pageHash () {
+            if (this.hash === '') {
+                return location.pathname
+            }
+            return this.hash
+        }
+    },
     props: {
         hash: String,
         env: {
@@ -32,16 +40,7 @@ export default {
             app: {
                 addComments: this.addComments,
                 setReplyID: this.setReplyID,
-                config: this.config
             }
-        }
-    },
-    computed: {
-        pageHash () {
-            if (this.hash === '') {
-                return location.pathname
-            }
-            return this.hash
         }
     },
     data () {
@@ -55,19 +54,39 @@ export default {
                 pageIndex: 0,
                 pageSize: 10
             },
+            user: {
+                email: '',
+                nick: ''
+            },
             // 全局配置
             config: {
+                is_admin: false,
                 form: {}
             }
         }
     },
     methods: {
-        async init () {
-            await tcb.initApp({ env: this.env })
+        init () {
+            tcb.initApp({ env: this.env }).then(_ => {
+                const setUser = (user) => {
+                    if (user && user.loginType === "EMAIL") {
+                        let { email, nickName } = user
+                        this.user.email = email
+                        this.user.nick = nickName
+                    }
+                }
+                setUser(tcb.cloudbase.auth.currentUser)
+                tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
+                    setUser(loginState.user)
+                    this.setConfig()
+                });
+                this.setConfig()
+                this.loadData()
+            })
+        },
+        // 获取配置
+        async setConfig () {
             this.config = await tcb.callFunction('getConfig')
-            console.log(this.config);
-            this.loadData()
-            // this.$root.$el.getRootNode().host.addXXX = this.xxxx
         },
         // 设置回复
         setReplyID (reply) {
@@ -107,6 +126,7 @@ export default {
         },
         // 加载更多评论
         loadData () {
+            this.loading = true
             this.page.pageIndex++
             tcb.callFunction('getComments', {
                 hash: this.pageHash,
@@ -135,7 +155,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .comment {
     padding: 1em 1.5em;
     background-color: @ui-global-bg-normal;
