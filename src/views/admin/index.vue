@@ -7,8 +7,8 @@
             </svg>
         </template>
         <template v-else>
-            <m-dropdown :menu="menu">
-                <svg @click="handleShowAdminPanel" t="1638284101714" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="36875" width="32" height="32">
+            <m-dropdown :menu="menu" @item-click="handleNavClick">
+                <svg t="1638284101714" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="36875" width="32" height="32">
                     <path d="M36.5056 512c0 262.656 211.8144 473.5488 475.4944 473.5488s475.4432-210.944 475.4432-473.5488S775.68 38.5024 512 38.5024 36.5056 249.4464 36.5056 512z" fill="#FFFFFF" p-id="36876" />
                     <path d="M36.5056 512c0 262.656 211.8144 475.648 475.4944 475.648s475.4432-212.992 475.4432-475.648S775.68 36.352 512 36.352 36.5056 249.4464 36.5056 512z" fill="#FFFFFF" p-id="36877" />
                     <path d="M512 996.3008C243.968 996.3008 25.7024 778.9056 25.7024 512 25.7024 242.9952 243.968 25.6 512 25.6s486.2464 217.3952 486.2464 486.4c0 266.9056-218.2656 484.3008-486.2464 484.3008zM512 47.104C254.7712 47.104 47.3088 255.8976 47.3088 512S254.7712 976.896 512 976.896s464.64-208.7424 464.64-464.896S769.1776 47.104 512 47.104z" fill="#EFEFEF" p-id="36878" />
@@ -55,7 +55,7 @@ export default {
             showLoginPanel: false,// 登录注册
             showAdminPanel: false,
             menu: [
-                { label: '评论管理', value: 'out' },
+                { label: '评论管理', value: 'mange' },
                 { label: '退出', value: 'out' }
             ]
         }
@@ -81,6 +81,16 @@ export default {
                 this.showAdminPanel = true
             }
         },
+        handleNavClick ({ value }) {
+           switch (value) {
+               case 'out':
+                   tcb.cloudbase.auth.signOut();
+                   break;
+                case 'mange':
+                   this.handleShowAdminPanel()
+                   break;
+           }
+        }
     },
     created () {
         tcb.initApp({ env: this.env }).then(_ => {

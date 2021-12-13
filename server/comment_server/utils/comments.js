@@ -21,9 +21,10 @@ const DOMPurify = createDOMPurify(window);
  * @returns 
  */
 const parse = async (data, isAdmin = false) => {
-    const { email } = await getUserInfo()
+    let email = getEnvEmail()
     if (!isAdmin) {
-        if (email === data.email) throw new Error('请先登录管理面板，再使用博主身份发送评论')
+        // 限制SMTP服务邮箱和管理员邮箱
+        if (email === data.email || data.email === app.config.sender_email) throw new Error('请先登录管理面板，再使用博主身份发送评论')
     } else {
         data.email = email
         data.nick = app.config.user_name
@@ -237,9 +238,9 @@ const getCommentByID = async (id) => {
  * 添加评论
  * @param {*} event 
  */
-const addComments = async (event, context) => {
+const addComments = async (event) => {
     //#region 数据校验
-    const isAdmin = await isAdministrator(context)
+    const isAdmin = await isAdministrator()
     const par = ['hash', 'ua', 'content']
     if (!isAdmin) {
         await currentLimit()
@@ -285,7 +286,7 @@ const addComments = async (event, context) => {
                 type: 2,
                 nick: data.nick,
                 content: data.content,
-                toEmail: getEnvEmail(context) || app.config.sender_email
+                toEmail: getEnvEmail() || app.config.sender_email
             })
             sendNotice(data)
         }

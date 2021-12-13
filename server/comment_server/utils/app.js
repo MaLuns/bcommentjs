@@ -8,6 +8,7 @@ const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV });
 const auth = app.auth()
 const db = app.database();
 
+let admin_email = '';
 let config = {
     site_name: '',// 站点名称
     site_logo: '',// loggo
@@ -76,14 +77,17 @@ const createCollections = async () => {
     return res
 }
 
-
 /**
  * 读取配置
- * @param {*} db 
  * @returns 
  */
-const initConfig = async () => {
+const initConfig = async (context) => {
     try {
+        // 获取环境变量
+        const { environ, environment } = tcb.parseContext(context)
+        const env = environment || environ
+        admin_email = env['ADMIN']
+        // 初始化配置
         const res = await db.collection('db_config').where({ _id: '192771' }).field({ _id: false }).get()
         if (res.data[0]) {
             config = res.data[0]
@@ -113,11 +117,10 @@ const filterConfig = () => {
 /**
  * 获取配置
  * @param {*} event 
- * @param {*} context 
  * @returns 
  */
-const getConfig = async (event, context) => {
-    const is_admin = await isAdministrator(context)
+const getConfig = async (event) => {
+    const is_admin = await isAdministrator()
     let _config = { ...config }
     if (!is_admin) {
         _config = filterConfig(config)
@@ -129,8 +132,8 @@ const getConfig = async (event, context) => {
  * 修改配置
  * @param {*} event 
  */
-const updateConfig = async (event, context) => {
-    const isAdmin = await isAdministrator(context)
+const updateConfig = async (event) => {
+    const isAdmin = await isAdministrator()
     if (isAdmin) {
         validata(event, ['config'])
         let newConfig = {}
@@ -172,24 +175,19 @@ const getUserInfo = async () => {
 
 /**
  * 获取管理员邮箱
- * @param {*} context 
  * @returns 
  */
-const getEnvEmail = (context) => {
-    let { environ, environment } = tcb.parseContext(context)
-    const env = environment || environ
-    return env['ADMIN']
-}
+const getEnvEmail = () => admin_email;
 
 /**
  * 判断用户是否管理员
  * @returns 
  */
-const isAdministrator = async (context) => {
+const isAdministrator = async () => {
     try {
         const { TCB_UUID } = tcb.getCloudbaseContext();
         const { userInfo } = await auth.getEndUserInfo(TCB_UUID)
-        const adminEmail = getEnvEmail(context)
+        const adminEmail = getEnvEmail()
         if (userInfo && userInfo.email) {
             return adminEmail === userInfo.email
         }
@@ -202,10 +200,9 @@ const isAdministrator = async (context) => {
 
 /**
  * 过滤非管理员
- * @param {*} context 
  */
-const notAdminLimit = async (context) => {
-    if (!await isAdministrator(context)) {
+const notAdminLimit = async () => {
+    if (!await isAdministrator()) {
         throw new Error('当前登陆非管理员账户，请切换账户')
     }
 }

@@ -2,7 +2,7 @@
     <div class="dropdown">
         <slot></slot>
         <ul class="dropdown-menu">
-            <li class="dropdown-menu-item" v-for="item,key in menu" :key="key" @click="handleMenuItem(item)">{{item.label}}</li>
+            <li class="dropdown-menu-item" v-for="item,key in menu" :key="key" @click="handleMenuItem(item)">{{ item.label }}</li>
         </ul>
     </div>
 </template>
@@ -22,7 +22,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .dropdown {
     position: relative;
     z-index: 1;
@@ -43,7 +43,7 @@ export default {
 
         .dropdown-menu-item {
             display: block;
-            padding: 10px 20px;
+            padding: 8px 16px;
             transition: all @ui-transition-duration;
 
             &:hover {

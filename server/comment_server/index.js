@@ -32,7 +32,7 @@ exports.main = async (event, context) => {
     let { handlerName } = event
     try {
         validata(event, ['handlerName'], '请指定处理程序')
-        await initConfig()
+        await initConfig(context)
         if (handler[handlerName]) {
             res = await handler[handlerName](event, context)
         } else {

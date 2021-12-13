@@ -83,12 +83,12 @@ const sendEmail = async ({ title, href, type, nick, content, toEmail }) => {
  * 发送测试邮件
  * @param {*} event 
  */
-const testEmail = async (event, context) => {
-    await notAdminLimit(context)
+const testEmail = async (event) => {
+    await notAdminLimit()
     const transporter = await getTransporter()
     transporter.sendMail({
         from: app.config.sender_email,
-        to: event.mail || getEnvEmail(context) || app.config.sender_email,
+        to: event.mail || getEnvEmail() || app.config.sender_email,
         subject: '测试邮件',
         html: '这是一条测试邮件，说明邮件功能配置正确'
     })
