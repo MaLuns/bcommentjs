@@ -42,7 +42,6 @@ const formatRes = (data = null, code = RES_CODE.SUCCESS, message) => ({
     message: message || RES_INFO[code] || '调用成功'
 })
 
-
 /**
  * 空字符校验
  * @param {*} val 
@@ -101,6 +100,44 @@ const uuid = () => nodeuuid.v1().replace(/\-/g, '');
  */
 const toDayStart = () => new Date(new Date().setHours(0, 0, 0, 0))
 
+const isObject = (obj) => {
+    return obj !== null && typeof obj === 'object'
+}
+
+/**
+ * 将一个对象填充到另一个上
+ * @param {*} to 
+ * @param {*} from 
+ * @returns 
+ */
+const extend = (to, from) => {
+    for (const key in to) {
+        if (Object.hasOwnProperty.call(from, key)) {
+            if (isObject(from[key])) {
+                to[key] = extend(to[key], from[key]);
+            } else {
+                to[key] = from[key]
+            }
+        }
+    }
+    return to
+}
+
+/**
+ * 获取对象需要key-val,并返回新的对象
+ * @param {*} obj 
+ * @param {*} keys 
+ */
+const getObjOfKeys = (obj, keys = []) => {
+    let res = {}
+    keys.forEach(key => {
+        if (Object.hasOwnProperty.call(obj, key)) {
+            res[key] = obj[key];
+        }
+    });
+    return res
+}
+
 /**
  * 正则
  */
@@ -111,11 +148,13 @@ const regexp = {
 
 module.exports = {
     uuid,
+    extend,
     regexp,
     validata,
     RES_CODE,
     formatRes,
     getQQAvatar,
+    getObjOfKeys,
     isNullOrEmpty,
     toDayStart,
 }

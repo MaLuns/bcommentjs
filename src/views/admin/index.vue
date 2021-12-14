@@ -76,38 +76,53 @@ export default {
         }
     },
     methods: {
+        init () {
+            tcb.initApp({ env: this.env }).then(_ => {
+                const setUser = (user) => {
+                    if (user && user.loginType !== "ANONYMOUS") {
+                        this.user = tcb.cloudbase.auth.currentUser
+                    }
+                }
+                setUser(tcb.cloudbase.auth.currentUser)
+                tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
+                    if (loginState) {
+                        setUser(loginState.user)
+                        this.setConfig()
+                    }
+                });
+                this.setConfig()
+            })
+
+        },
+        // 获取配置
+        async setConfig () {
+            this.config = await tcb.callFunction('getConfig')
+        },
         handleShowAdminPanel () {
             if (this.config.is_admin) {
                 this.showAdminPanel = true
             }
         },
         handleNavClick ({ value }) {
-           switch (value) {
-               case 'out':
-                   tcb.cloudbase.auth.signOut();
-                   break;
+            switch (value) {
+                case 'out':
+                    tcb.signOut().then(_ => {
+                        this.user = null
+                    });
+                    break;
                 case 'mange':
-                   this.handleShowAdminPanel()
-                   break;
-           }
+                    this.handleShowAdminPanel()
+                    break;
+            }
         }
     },
     created () {
-        tcb.initApp({ env: this.env }).then(_ => {
-            let user = tcb.cloudbase.auth.currentUser
-            if (user && user.loginType !== "ANONYMOUS") {
-                this.user = tcb.cloudbase.auth.currentUser
-            }
-            tcb.callFunction('getConfig').then(res => {
-                this.config = res
-            })
-        })
-
+        this.init()
     }
 }
 </script>
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
 .login-icon {
     display: inline-block;
     width: 32px;

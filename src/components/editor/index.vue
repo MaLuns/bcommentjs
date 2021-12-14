@@ -1,6 +1,6 @@
 <template>
     <div class="comment-editor">
-        <m-form ref="form" inline :model="form" :rules="rules">
+        <m-form ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
                 <input @blur="handleBlur" v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
             </m-form-item>

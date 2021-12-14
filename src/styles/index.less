@@ -6,23 +6,34 @@
     box-sizing : border-box;
     padding    : 0;
     margin     : 0;
-    color      : @ui-text;
     font-size  : @ui-font-size;
     line-height: @ui-line-height-base;
 }
 
+
+
 // 链接
 .link {
-    display      : inline-block;
-    color        : #3850fa;
-    font-size    : 12px;
-    cursor       : pointer;
-    border-bottom: 1px solid transparent;
-    margin-left  : 5px;
+    font-size      : 12px;
+    cursor         : pointer;
+    display        : inline-block;
+    color          : @ui-link ;
+    text-decoration: none;
+    border-bottom  : 1px solid transparent;
+    transition     : all @ui-transition-duration;
 
     &:hover {
-        border-bottom: 1px solid #3850fa;
+        color              : @ui-link-active ;
+        border-bottom-color: @ui-link-active;
     }
+
+    +.link {
+        margin-left: 5px;
+    }
+}
+
+a.link {
+    font-size: inherit;
 }
 
 // 透明的过渡效果

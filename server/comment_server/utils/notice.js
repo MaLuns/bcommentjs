@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
 const fs = require('fs');
+const path = require('path')
 const app = require('./app')
 const { notAdminLimit, getEnvEmail } = app
 const { formatRes } = require('./utils');
@@ -63,7 +64,7 @@ const sendEmail = async ({ title, href, type, nick, content, toEmail }) => {
     if (app.config.is_email_template) {
         ejsTemplate = app.config.email_template_ejs
     } else {
-        ejsTemplate = fs.readFileSync('../templates/email.template.ejs', { encoding: 'utf8' });
+        ejsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/email.template.ejs'), { encoding: 'utf8' });
     }
     const html = ejs.render(ejsTemplate, {
         title, href, type, nick, content, datetime: new Date(),

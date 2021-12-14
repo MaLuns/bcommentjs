@@ -8,14 +8,13 @@
         </div>
         <m-comment :list="list"></m-comment>
         <m-loading v-if="loading"></m-loading>
-        <h2 v-if="!loaded && !loading" class="center link" @click="loadData">查看更多</h2>
+        <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2>
     </div>
 </template>
 
 <script>
-import { emojis } from "@/emojis";
-import detect from "@/detect";
 import tcb from '@/tcb';
+import { emojis } from "@/emojis";
 import { mComment, mEditor, mLoading } from '+/'
 
 export default {
@@ -77,8 +76,10 @@ export default {
                 }
                 setUser(tcb.cloudbase.auth.currentUser)
                 tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
-                    setUser(loginState.user)
-                    this.setConfig()
+                    if (loginState) {
+                        setUser(loginState.user)
+                        this.setConfig()
+                    }
                 });
                 this.setConfig()
                 this.loadData()
@@ -86,7 +87,8 @@ export default {
         },
         // 获取配置
         async setConfig () {
-            this.config = await tcb.callFunction('getConfig')
+            let config = await tcb.callFunction('getConfig')
+            this.config = config || { form: { nick: true, email: true } }
         },
         // 设置回复
         setReplyID (reply) {
@@ -94,20 +96,16 @@ export default {
         },
         // 添加评论
         addComments (commet, callback) {
+            let reply = this.reply
             let par = {
                 ...commet,
-                isPrivate: this.reply === null ? false : commet.isPrivate,
-                type: this.reply === null ? 0 : 1,
+                isPrivate: reply === null ? commet.isPrivate : false,
+                type: reply === null ? 0 : 1,
                 hash: this.pageHash,
-                ua: this.detect
+                ua: window.navigator.userAgent
             }
-            if (this.reply) {
-                let { id, nick, link } = this.reply
-                par.replyId = id
-                par.at = {
-                    nick,
-                    link
-                }
+            if (reply) {
+                par.replyId = reply.id
             }
             tcb.callFunction('addComments', par).then(res => {
                 if (res) {
@@ -116,7 +114,7 @@ export default {
                         let index = this.list.findIndex(item => !item.top)
                         this.list.splice(index, 0, com)
                     } else {
-                        let item = this.list.find(item => item === this.reply || (item.childer && item.childer.includes(this.reply)))
+                        let item = this.list.find(item => item === reply || (item.childer && item.childer.includes(reply)))
                         item.childer.push(com)
                         this.reply = null
                     }
@@ -142,7 +140,6 @@ export default {
         },
     },
     created () {
-        this.detect = detect();
         this.init()
     },
     exportMethods: {
@@ -155,9 +152,11 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
 .comment {
     padding: 1em 1.5em;
+    min-width: 560px;
+    color: @ui-text;
     background-color: @ui-global-bg-normal;
 }
 

@@ -1,10 +1,11 @@
 // 评论回复
 
 const md5 = require('blueimp-md5')
+const bowser = require("bowser")
 const app = require('./app')
 const { db, $, _, getUid, getIp, getUserInfo, isAdministrator } = app
 const { updateArticle, getArticle } = require('./articles')
-const { regexp, validata, getQQAvatar, uuid, formatRes } = require('./utils')
+const { regexp, validata, getQQAvatar, uuid, formatRes, getObjOfKeys } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
 const commentsDB = db.collection('db_comments')
 const createDOMPurify = require('dompurify');
@@ -14,6 +15,18 @@ const { getEnvEmail } = require('./app')
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
 //const marked = require('marked')
+
+// 获取浏览器标识
+const getua = (uaStr) => {
+    const ua = bowser.getParser(uaStr)
+    const os = ua.getOS()
+    return {
+        browser: ua.getBrowserName(),
+        version: ua.getBrowserVersion(),
+        os: os.name,
+        osVersion: os.versionName ? os.versionName : os.version
+    }
+}
 
 /**
  * 格式化参数
@@ -27,7 +40,7 @@ const parse = async (data, isAdmin = false) => {
         if (email === data.email || data.email === app.config.sender_email) throw new Error('请先登录管理面板，再使用博主身份发送评论')
     } else {
         data.email = email
-        data.nick = app.config.user_name
+        data.nick = app.config.nick
     }
 
     const timestamp = new Date()
@@ -40,7 +53,7 @@ const parse = async (data, isAdmin = false) => {
         email: DOMPurify.sanitize(data.email), // 邮箱
         avatar: md5(data.email), // 头像
         link: data.link || '', // 链接
-        ua: DOMPurify.sanitize(data.ua), // 浏览器标识
+        ua: getua(data.ua), // 浏览器标识
         content: DOMPurify.sanitize(data.content, { FORBID_TAGS: ['style'], FORBID_ATTR: ['style'] }), // 评论内容
         replyId: data.replyId || '', // 被回复ID
         created: timestamp, // 评论时间
@@ -52,8 +65,8 @@ const parse = async (data, isAdmin = false) => {
     if (app.config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
         commentDo.qqAvatar = await getQQAvatar(data.email)
     }
-    if (data.at) commentDo.at = data.at
-    if (isAdmin) commentDo.tag = app.config.tag
+    //if (data.at) commentDo.at = data.at
+    if (isAdmin) commentDo.tag = app.config.tag || '博主'
     return commentDo
 }
 
@@ -131,40 +144,47 @@ const getComments = async (data) => {
     }
     let articleID = await updateArticle(data).then(res => res.data)
 
-    const filed = {
-        articleID: 1,
-        nick: 1,
-        link: 1,
-        qqAvatar: 1,
-        tag: 1,
-        content: 1,
-        top: 1,
-        ua: 1,
-        at: 1,
-        created: 1,
-    }
+    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, }
     const avatars = app.config.gavatar_url.split('$hash');
+
+    const isAdmin = await isAdministrator()
+    let matchWhere;
+    let projectWhere;
+    if (isAdmin) {
+        matchWhere = { articleID: articleID }
+        projectWhere = $.eq(['$$item.isAudit', 0], ['$$item.isPrivate', 0])
+    } else {
+        matchWhere = _.and(
+            [
+                {
+                    articleID: articleID,
+                    delete: false
+                },
+                _.or([
+                    {
+                        isPrivate: false,
+                        isAudit: true
+                    },
+                    {
+                        isPrivate: true,
+                        uid: await getUid()
+                    }
+                ])
+            ]
+        )
+        projectWhere = _.or([
+            {
+                isAudit: true
+            },
+            {
+                uid: await getUid()
+            }
+        ])
+    }
 
     let { data: list } = await commentsDB
         .aggregate()
-        .match(
-            _.and(
-                [
-                    {
-                        articleID: articleID,
-                        //delete: 1,
-                        //isAudit: 1
-                    },
-                    _.or([
-                        { isPrivate: false },
-                        {
-                            isPrivate: true,
-                            uid: await getUid()
-                        }
-                    ])
-                ]
-            )
-        )
+        .match(matchWhere)
         .sort({ top: -1, created: -1 })
         .skip((pageIndex - 1) * pagesize).limit(10)
         .project({
@@ -175,7 +195,7 @@ const getComments = async (data) => {
             childer: $.filter({
                 input: '$childer',
                 as: 'item',
-                cond: $.eq(['$$item.isAudit', 0], ['$$item.isPrivate', 0])
+                cond: projectWhere
             }),
         })
         .project({
@@ -262,14 +282,18 @@ const addComments = async (event) => {
         let { id } = await commentsDB.add(data)
         res.id = id
     } else {
-        data.id = uuid();
+        // 查找被回复评论
+        const comment = await getCommentByID(data.replyId)
+        data.at = getObjOfKeys(comment, ['link', 'nick', 'tag'])
+        data.id = uuid(); // 唯一id
         res.id = data.id
+        res.at = data.at
+
         // 将回复评论插入到, 顶层评论下
         await commentsDB.where(_.or([
             { _id: data.replyId },
             { 'childer.id': data.replyId }
         ])).update({ childer: _.push([data]) })
-        const comment = await getCommentByID(data.replyId)
         // 通知被回复人
         if (false && comment.email !== data.email && comment.email !== app.config.email.auth.user) {
             sendEmail({ ...data, email: comment.email })
@@ -291,7 +315,7 @@ const addComments = async (event) => {
             sendNotice(data)
         }
     } catch (error) {
-
+        console.error('通知失败', error);
     }
 
     return formatRes(res)

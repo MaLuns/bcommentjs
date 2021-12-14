@@ -78,6 +78,14 @@ const auth = () => {
 }
 
 /**
+ * 退出-切换匿名登录
+ */
+const signOut = async () => {
+    await tcb.auth.signOut();
+    await tcb.auth.anonymousAuthProvider().signIn()
+}
+
+/**
  * 邮箱登录
  * @param {*} email 
  * @param {*} password 
@@ -184,6 +192,7 @@ const getBatchPV = (() => {
 export default {
     initApp,
     login,
+    signOut,
     regster,
     reset,
     callFunction,

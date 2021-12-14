@@ -3,7 +3,7 @@
  * 初始化cloudbase
  */
 const tcb = require("@cloudbase/node-sdk");
-const { validata, formatRes, RES_CODE } = require("./utils");
+const { validata, formatRes, RES_CODE, extend } = require("./utils");
 const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV });
 const auth = app.auth()
 const db = app.database();
@@ -12,6 +12,7 @@ let admin_email = '';
 let config = {
     site_name: '',// 站点名称
     site_logo: '',// loggo
+    nick: '',// 昵称
     tag: '博主',// 评论标识
     limit_per_minute_user: 10,// 个人限流
     limit_thirty_minute_all: 150,// 全部限流
@@ -44,7 +45,7 @@ let config = {
  */
 const writeConfig = async (newConfig) => {
     if (!Object.keys(newConfig).length) return 0
-    console.log('写入配置：', newConfig)
+    console.info('写入配置：', newConfig)
     try {
         let { updated } = await db
             .collection('db_config')
@@ -89,9 +90,9 @@ const initConfig = async (context) => {
         admin_email = env['ADMIN']
         // 初始化配置
         const res = await db.collection('db_config').where({ _id: '192771' }).field({ _id: false }).get()
+        console.log(res);
         if (res.data[0]) {
-            config = res.data[0]
-            console.log('config', config);
+            config = extend(config, res.data[0])
         } else {
             await writeConfig(config)
         }
@@ -223,7 +224,6 @@ module.exports = {
     notAdminLimit,
     getEnvEmail,
     get config () {
-        console.log('config', config);
         return config
     }
 }

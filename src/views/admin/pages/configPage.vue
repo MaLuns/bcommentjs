@@ -9,9 +9,13 @@
                 <input class="w200" v-model.trim="config.site_logo" type="text" placeholder="博客logo" autocomplete="off" />
                 <p class="tip">为空，默认使用邮箱的Gavatar</p>
             </m-form-item>
+            <m-form-item label="博主昵称">
+                <input class="w200" v-model.trim="config.nick" type="text" placeholder="站点名称" autocomplete="off" />
+                <p class="tip">用于评论时，显示昵称，如果为空则仅显示标识</p>
+            </m-form-item>
             <m-form-item label="评论标识">
                 <input class="w200" v-model.trim="config.tag" type="text" placeholder="博主评论标识" autocomplete="off" />
-                <p class="tip">用于标识为博主评论</p>
+                <p class="tip">用于标识为博主评论，如果为空默认为‘博主’</p>
             </m-form-item>
             <m-form-item label="个人限流">
                 <input class="w200" v-model.number="config.limit_per_minute_user" step="1" min="0" type="number" placeholder="个人限流" autocomplete="off" />
