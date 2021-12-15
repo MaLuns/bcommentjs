@@ -4,7 +4,7 @@
             <slot name="comment-header"></slot>
         </div>
         <div class="comment-edit-container" v-show="!reply">
-            <m-editor></m-editor>
+            <m-editor :is-admin="isAdmin"></m-editor>
         </div>
         <m-comment :list="list"></m-comment>
         <m-loading v-if="loading"></m-loading>
@@ -21,14 +21,15 @@ export default {
     components: { mComment, mEditor, mLoading },
     computed: {
         pageHash () {
-            if (this.hash === '') {
-                return location.pathname
-            }
-            return this.hash
+            return this.hash ? this.hash : location.pathname
+        },
+        pageTitle () {
+            return this.title ? this.title : document.title
         }
     },
     props: {
         hash: String,
+        title: String,
         env: {
             type: String,
             required: true
@@ -127,6 +128,7 @@ export default {
             this.loading = true
             this.page.pageIndex++
             tcb.callFunction('getComments', {
+                title: this.pageTitle,
                 hash: this.pageHash,
                 ...this.page
             }).then(data => {
@@ -152,7 +154,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;

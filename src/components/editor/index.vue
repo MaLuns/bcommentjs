@@ -1,6 +1,9 @@
 <template>
     <div class="comment-editor">
-        <m-form ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
+        <div v-if="isAdmim">
+
+        </div>
+        <m-form v-else ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
                 <input @blur="handleBlur" v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
             </m-form-item>
@@ -69,7 +72,8 @@ export default {
         }
     },
     props: {
-        isCancel: Boolean
+        isCancel: Boolean,
+        isAdmim: Boolean
     },
     mounted () {
         this.init()
@@ -145,12 +149,14 @@ export default {
         },
         // 提交
         handleSubmit () {
-            if (this.$refs.form.validate() && this.form.content.trim().length) {
-                this.$root.addComments({ ...this.form }, () => {
-                    this.$refs.editor.innerText = ''
-                    this.form.content = ''
-                    localStorage.setItem('editor_text', '')
-                })
+            if (this.form.content.trim().length) {
+                if (this.isAdmim || this.$refs.form.validate()) {
+                    this.$root.addComments({ ...this.form }, () => {
+                        this.$refs.editor.innerText = ''
+                        this.form.content = ''
+                        localStorage.setItem('editor_text', '')
+                    })
+                }
             }
         }
     },

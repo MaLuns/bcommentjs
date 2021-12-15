@@ -27,12 +27,16 @@
             <div class="comment-user-meta">
                 <span class="comment-time">{{ timeAgo(new Date(comment.created)) }}</span>
                 <div>
+                    <template v-if="isAdmin">
+                        <span v-if="!comment.isAudit" class="comment-reply" @click="handleAudit(comment)">审核</span>
+                        <span v-if="!comment.isAudit" class="comment-reply" @click="handleDelete(comment)">删除</span>
+                    </template>
                     <span class="comment-reply" @click="handleReply(comment)">回复</span>
                     <!-- <span class="comment-zan" @click="handleReply(comment)">赞</span> -->
                 </div>
             </div>
             <div class="comment-edit-container" v-if="$root.reply && $root.reply.id === comment.id">
-                <m-editor isCancel @cancel="handleReply(null)"></m-editor>
+                <m-editor :is-admin="isAdmin" isCancel @cancel="handleReply(null)"></m-editor>
             </div>
             <div class="comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">
@@ -66,7 +70,8 @@ export default {
         }
     },
     props: {
-        comment: Object
+        comment: Object,
+        isAdmin: Boolean
     },
     methods: {
         timeAgo,
@@ -94,7 +99,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .comment-item {
     display: flex;
     padding: 1em 0;
@@ -232,7 +237,7 @@ export default {
 
     //代码块
     pre {
-        font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+        font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
             Monaco, Consolas, monospace;
         position: relative;
         background: #272822 !important;
@@ -244,12 +249,12 @@ export default {
         line-height: 20px;
 
         code {
-            font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+            font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
                 Monaco, Consolas, monospace;
         }
 
         &::after {
-            content: " ";
+            content: ' ';
             position: absolute;
             border-radius: 50%;
             background: #ff5f56;

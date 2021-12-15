@@ -36,16 +36,6 @@ const getTransporter = async () => {
 }
 
 /**
- * 开启推送列表
- * @param {*} data 
- */
-const noticeQueue = {
-    noticeWeChat (data) {
-
-    }
-}
-
-/**
  * 消息推送
  * @param {*} data 
  */
@@ -96,6 +86,15 @@ const testEmail = async (event) => {
     return formatRes(true)
 }
 
+/**
+ * 推送列表-
+ * @param {*} data 
+ */
+const noticeQueue = {
+    noticeWeChat (data) {
+
+    }
+}
 module.exports = {
     sendNotice,
     sendEmail,

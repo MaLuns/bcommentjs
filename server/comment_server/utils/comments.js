@@ -144,7 +144,7 @@ const getComments = async (data) => {
     }
     let articleID = await updateArticle(data).then(res => res.data)
 
-    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, }
+    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, isAudit: 1 }
     const avatars = app.config.gavatar_url.split('$hash');
 
     const isAdmin = await isAdministrator()
@@ -152,33 +152,21 @@ const getComments = async (data) => {
     let projectWhere;
     if (isAdmin) {
         matchWhere = { articleID: articleID }
-        projectWhere = $.eq(['$$item.isAudit', 0], ['$$item.isPrivate', 0])
+        projectWhere = true
     } else {
-        matchWhere = _.and(
-            [
-                {
-                    articleID: articleID,
-                    delete: false
-                },
-                _.or([
-                    {
-                        isPrivate: false,
-                        isAudit: true
-                    },
-                    {
-                        isPrivate: true,
-                        uid: await getUid()
-                    }
-                ])
-            ]
-        )
-        projectWhere = _.or([
-            {
-                isAudit: true
-            },
-            {
-                uid: await getUid()
-            }
+        matchWhere = _.and([
+            { articleID: articleID, delete: false },
+            _.or([
+                { isPrivate: false, isAudit: true },
+                { isPrivate: true, uid: await getUid() }
+            ])
+        ])
+        projectWhere = _.and([
+            { delete: false },
+            _.or([
+                { isAudit: true },
+                { uid: await getUid() }
+            ])
         ])
     }
 
@@ -219,6 +207,7 @@ const getComments = async (data) => {
                         ua: '$$item.ua',
                         at: '$$item.at',
                         created: '$$item.created',
+                        isAudit: '$$item.isAudit',
                         gavatar: $.concat([avatars[0], '$$item.avatar', avatars[1] || '']),
                     }
                 })
