@@ -287,3 +287,39 @@ a.link {
         transform: translate(0, 0) rotate(0deg);
     }
 }
+
+// 
+.w100p {
+    width: 100%;
+}
+
+// padding margin 生成
+each(range(10, 20, 10), .(@v) {
+        @type: {
+            padding: p;
+            margin : m;
+        }
+
+        each(@type, .(@k, @x) {
+
+                @set: {
+                    left  : l;
+                    right : r;
+                    top   : t;
+                    bottom: b;
+                }
+
+                each(@set, {
+                        .@{k}@{value}-@{v} {
+                            @{x}-@{key}:(@v*1px);
+                        }
+                    }
+
+                )
+            }
+
+        );
+
+    }
+
+)

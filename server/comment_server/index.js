@@ -1,6 +1,6 @@
 const tcb = require("@cloudbase/node-sdk");
 const { initConfig, updateConfig, getConfig } = require('./utils/app')
-const { getComments, addComments, } = require('./utils/comments')
+const { getComments, addComment, } = require('./utils/comments')
 const { addPVUV, getPV, getBatchPV, getUV } = require('./utils/count')
 const { getArticle, updateArticle } = require('./utils/articles')
 const { validata, RES_CODE, formatRes, } = require('./utils/utils')
@@ -9,7 +9,7 @@ const { testEmail } = require('./utils/notice')
 // 处理程序
 const handler = {
     getComments,// 获取评论
-    addComments,// 添加评论
+    addComment,// 添加评论
     getPV,// 获取文章pv
     getBatchPV,// 批量获取
     getUV,// 获取站点UV

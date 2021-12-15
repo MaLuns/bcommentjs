@@ -59,7 +59,7 @@ const parse = async (data, isAdmin = false) => {
         created: timestamp, // 评论时间
         updated: timestamp,
         isPrivate: data.isPrivate || false, // 是否私密消息
-        isAudit: isAdmin ? true : app.config.is_audit, // 审核
+        isAudit: isAdmin ? true : !app.config.is_audit, // 审核
         delete: false // 删除
     }
     if (app.config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
@@ -144,7 +144,7 @@ const getComments = async (data) => {
     }
     let articleID = await updateArticle(data).then(res => res.data)
 
-    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, isAudit: 1 }
+    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, isAudit: 1, isPrivate: 1 }
     const avatars = app.config.gavatar_url.split('$hash');
 
     const isAdmin = await isAdministrator()
@@ -247,7 +247,7 @@ const getCommentByID = async (id) => {
  * 添加评论
  * @param {*} event 
  */
-const addComments = async (event) => {
+const addComment = async (event) => {
     //#region 数据校验
     const isAdmin = await isAdministrator()
     const par = ['hash', 'ua', 'content']
@@ -313,6 +313,6 @@ const addComments = async (event) => {
 
 module.exports = {
     getComments,
-    addComments,
+    addComment,
     currentLimit
 }

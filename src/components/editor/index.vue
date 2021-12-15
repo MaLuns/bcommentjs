@@ -1,7 +1,6 @@
 <template>
     <div class="comment-editor">
-        <div v-if="isAdmim">
-
+        <div v-if="isAdmin" class="admin-tips">
         </div>
         <m-form v-else ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
@@ -73,7 +72,7 @@ export default {
     },
     props: {
         isCancel: Boolean,
-        isAdmim: Boolean
+        isAdmin: Boolean
     },
     mounted () {
         this.init()
@@ -150,8 +149,8 @@ export default {
         // 提交
         handleSubmit () {
             if (this.form.content.trim().length) {
-                if (this.isAdmim || this.$refs.form.validate()) {
-                    this.$root.addComments({ ...this.form }, () => {
+                if (this.isAdmin || this.$refs.form.validate()) {
+                    this.$root.addComment({ ...this.form }, () => {
                         this.$refs.editor.innerText = ''
                         this.form.content = ''
                         localStorage.setItem('editor_text', '')
@@ -164,7 +163,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .comment-editor {
     padding: 5px 0 0;
 
@@ -229,5 +228,10 @@ export default {
 }
 .mgl10 {
     margin-left: 10px;
+}
+
+.admin-tips {
+    height: 42px;
+    line-height: 42px;
 }
 </style>

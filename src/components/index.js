@@ -9,6 +9,7 @@ import mLogin from '+/login'
 import message from '+/message'
 import mModel from '+/model'
 import mDropdown from "+/dropdown";
+import mAudit from "+/audit";
 
 export {
     mButton,
@@ -21,5 +22,6 @@ export {
     mEditor,
     mComment,
     mLogin,
-    mDropdown
+    mDropdown,
+    mAudit
 }

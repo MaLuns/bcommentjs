@@ -4,21 +4,22 @@
             <slot name="comment-header"></slot>
         </div>
         <div class="comment-edit-container" v-show="!reply">
-            <m-editor :is-admin="isAdmin"></m-editor>
+            <m-editor :isAdmin="config.is_admin"></m-editor>
         </div>
-        <m-comment :list="list"></m-comment>
+        <m-comment :list="list" :isAdmin="config.is_admin"></m-comment>
         <m-loading v-if="loading"></m-loading>
         <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2>
+        <m-audit v-if="audit.show" v-model:show="audit.show" :comment="audit.comment"></m-audit>
     </div>
 </template>
 
 <script>
 import tcb from '@/tcb';
 import { emojis } from "@/emojis";
-import { mComment, mEditor, mLoading } from '+/'
+import { mComment, mEditor, mLoading, mAudit } from '+/'
 
 export default {
-    components: { mComment, mEditor, mLoading },
+    components: { mComment, mEditor, mLoading, mAudit },
     computed: {
         pageHash () {
             return this.hash ? this.hash : location.pathname
@@ -38,8 +39,9 @@ export default {
     provide () {
         return {
             app: {
-                addComments: this.addComments,
-                setReplyID: this.setReplyID,
+                addComment: this.addComment,
+                replyComment: this.replyComment,
+                auditComment: this.auditComment
             }
         }
     },
@@ -62,6 +64,10 @@ export default {
             config: {
                 is_admin: false,
                 form: {}
+            },
+            audit: {
+                show: false,
+                comment: {}
             }
         }
     },
@@ -89,18 +95,24 @@ export default {
         // 获取配置
         async setConfig () {
             let config = await tcb.callFunction('getConfig')
+            console.log(config);
             this.config = config || { form: { nick: true, email: true } }
         },
         // 设置回复
-        setReplyID (reply) {
+        replyComment (reply) {
             this.reply = reply
         },
+        // 审核评论
+        auditComment (comment) {
+            this.audit.comment = comment
+            this.audit.show = true
+        },
         // 添加评论
-        addComments (commet, callback) {
+        addComment (comment, callback) {
             let reply = this.reply
             let par = {
-                ...commet,
-                isPrivate: reply === null ? commet.isPrivate : false,
+                ...comment,
+                isPrivate: reply === null ? comment.isPrivate : false,
                 type: reply === null ? 0 : 1,
                 hash: this.pageHash,
                 ua: window.navigator.userAgent
@@ -108,7 +120,7 @@ export default {
             if (reply) {
                 par.replyId = reply.id
             }
-            tcb.callFunction('addComments', par).then(res => {
+            tcb.callFunction('addComment', par).then(res => {
                 if (res) {
                     let com = { ...par, ...res }
                     if (par.type === 0) {
@@ -132,6 +144,7 @@ export default {
                 hash: this.pageHash,
                 ...this.page
             }).then(data => {
+                console.log(data);
                 this.loading = false
                 this.loaded = data.length !== this.page.pageSize
                 this.list.push(...data)
@@ -154,7 +167,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;
