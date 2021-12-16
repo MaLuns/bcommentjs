@@ -34,7 +34,7 @@ export default {
         width: max-content;
         cursor: pointer;
         box-shadow: 0 1px 6px @ui-shadow;
-        background-color: @ui-global-bg-normal;
+        background-color: @ui-bg;
         border-radius: @ui-border-radius-card;
         transition: opacity @ui-transition-duration;
         opacity: 0;

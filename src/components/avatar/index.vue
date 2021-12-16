@@ -17,6 +17,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import url('../../styles/variables.less');
 .avatar {
     width: 40px;
     height: 40px;
@@ -26,7 +27,7 @@ export default {
     }
 
     &.square {
-        border-radius: 4px;
+        border-radius: @ui-border-radius;
     }
 }
 </style>

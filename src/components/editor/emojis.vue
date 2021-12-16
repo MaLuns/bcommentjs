@@ -86,7 +86,7 @@ export default {
     }
 
     .emoji-container {
-        background: #fff;
+        background-color: @ui-bg;
         position: absolute;
         z-index: 2;
         width: 330px;
@@ -101,7 +101,7 @@ export default {
         .emoji-nav {
             height: 32px;
             line-height: 32px;
-            background-color: #ffffff;
+            background-color: @ui-bg;
 
             span {
                 padding: 0 5px;
@@ -109,7 +109,7 @@ export default {
                 cursor: pointer;
 
                 &.current {
-                    background-color: #eee;
+                    background-color: @ui-bg-weak;
                 }
             }
         }
@@ -128,7 +128,7 @@ export default {
 
             .emoji-item {
                 list-style-type: none;
-                background: #f7f7f7;
+                background: @ui-aide-bg;
                 padding: 5px 10px;
                 border-radius: 5px;
                 display: inline-block;
@@ -152,9 +152,8 @@ export default {
                 }
 
                 &:hover {
-                    background: #eee;
-                    box-shadow: 0 2px 2px 0 #00000024, 0 3px 1px -2px #00000033,
-                        0 1px 5px 0 #0000001f;
+                    box-shadow: 0 2px 2px 0 @ui-shadow,
+                        0 3px 1px -2px @ui-shadow, 0 1px 5px 0 @ui-light-shadow;
                 }
             }
         }

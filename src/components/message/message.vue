@@ -38,7 +38,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .message {
     z-index: 999;
     position: fixed;
@@ -55,8 +55,8 @@ export default {
         width: max-content;
         padding: 8px 16px;
         border-radius: 4px;
-        box-shadow: 0 1px 6px #00000033;
-        background: @ui-global-bg-normal;
+        box-shadow: 0 1px 6px @ui-shadow;
+        background: @ui-bg;
         line-height: 1.5;
         display: flex;
         align-items: center;
@@ -66,7 +66,7 @@ export default {
         // transition: transform 0.3s ease, opacity 0.3s ease;
 
         .title {
-            color: #515a6e;
+            color: @ui-text-weak;
         }
 
         .tag {

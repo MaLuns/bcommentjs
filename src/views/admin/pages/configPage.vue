@@ -164,10 +164,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("s/variables.less");
+@import url('s/variables.less');
 .config {
     border-radius: @ui-border-radius;
-    background-color: @ui-global-bg-normal;
+    background-color: @ui-bg;
     padding: 1em;
 
     .w200 {
@@ -188,7 +188,7 @@ export default {
         margin-left: 10px;
         display: inline-block;
         font-size: 12px;
-        color: #aaa;
+        color: @ui-aide-text;
     }
 }
 </style>

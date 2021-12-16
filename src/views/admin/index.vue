@@ -48,16 +48,28 @@ export default {
             required: true
         }
     },
+    computed: {
+        menu () {
+            if (this.config.is_admin) {
+                return [
+                    { label: '个人信息', value: 'user' },
+                    { label: '评论管理', value: 'mange' },
+                    { label: '退出', value: 'out' }
+                ]
+            } else {
+                return [
+                    { label: '个人信息', value: 'user' },
+                    { label: '退出', value: 'out' }
+                ]
+            }
+        }
+    },
     data () {
         return {
             user: null,
             config: {},
-            showLoginPanel: false,// 登录注册
-            showAdminPanel: false,
-            menu: [
-                { label: '评论管理', value: 'mange' },
-                { label: '退出', value: 'out' }
-            ]
+            showLoginPanel: false,// 登录面板
+            showAdminPanel: false,// 管理面板
         }
     },
     watch: {
@@ -122,13 +134,17 @@ export default {
 }
 </script>
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .login-icon {
     display: inline-block;
     width: 32px;
     height: 32px;
-    background-color: rgb(255, 255, 255);
+    background-color: @ui-bg;
     border-radius: 50%;
+}
+.admin-container {
+    color: @ui-text;
+    background-color: @ui-bg;
 }
 </style>
 

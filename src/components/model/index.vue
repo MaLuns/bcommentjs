@@ -102,7 +102,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .mask {
     position: fixed;
     top: 0;
@@ -116,8 +116,8 @@ export default {
     position: fixed;
     top: 10vh;
     z-index: 100;
-    box-shadow: 0 1px 6px #00000033;
-    background: @ui-global-bg-normal;
+    box-shadow: 0 1px 6px @ui-shadow;
+    background: @ui-bg;
     border-radius: @ui-border-radius-card;
 
     .header {

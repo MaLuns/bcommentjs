@@ -124,13 +124,4 @@ export default {
     },
 }
 </script>
-<style lang="less" scoped>
-.pointer {
-    cursor: pointer;
-}
-
-.right {
-    text-align: right;
-}
-</style>
 

@@ -14,7 +14,7 @@ export default {
             type: String,
             default: 'default',
             validator (value) {
-                return ['default', 'primary', 'error', 'dashed', 'text'].includes(value)
+                return ['default', 'primary', 'error', 'text'].includes(value)
             }
         },
     },
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .btn {
     display: inline-block;
     margin-bottom: 0;
@@ -51,74 +51,64 @@ export default {
     transition: color @ui-transition-duration,
         background-color @ui-transition-duration, border @ui-transition-duration,
         box-shadow @ui-transition-duration;
-    color: #515a6e;
-    background-color: #fff;
-    border-color: @ui-border-line;
-
-    &:hover,
-    &:active {
-        color: #57a3f3;
-        background-color: #fff;
-        border-color: #57a3f3;
-    }
 
     &.long {
         width: 100%;
     }
 
     &:focus {
-        box-shadow: 0 0 0 2px #2d8cf033;
+        box-shadow: 0 0 0 2px @ui-light-shadow;
     }
 
-    &.primary {
-        color: #fff;
-        background-color: #2d8cf0;
-        border-color: #2d8cf0;
+    &.default {
+        color: @ui-text-weak;
+        background-color: @ui-bg;
+        border-color: @ui-border-line;
 
         &:hover,
         &:active {
-            background-color: #57a3f3;
-            border-color: #57a3f3;
+            color: @ui-info-weak;
+            border-color: @ui-info-weak;
+        }
+    }
+
+    &.primary {
+        color: @ui-text-inversion;
+        background-color: @ui-info;
+        border-color: @ui-info;
+
+        &:hover,
+        &:active {
+            background-color: @ui-info-weak;
+            border-color: @ui-info-weak;
         }
     }
 
     &.error {
-        color: #fff;
-        background-color: #ed4014;
-        border-color: #ed4014;
+        color: @ui-text-inversion;
+        background-color: @ui-danger;
+        border-color: @ui-danger;
 
         &:hover,
         &:active {
-            background-color: #f16643;
-            border-color: #f16643;
-        }
-    }
-
-    &.dashed {
-        color: #515a6e;
-        background-color: #fff;
-        border-color: #dcdee2;
-        border-style: dashed;
-
-        &:hover,
-        &:active {
-            color: #57a3f3;
-            background-color: #fff;
-            border-color: #57a3f3;
+            background-color: @ui-danger-weak;
+            border-color: @ui-danger-weak;
         }
     }
 
     &.text {
-        color: #515a6e;
-        background-color: #0000;
-        border-color: #0000;
+        color: @ui-text-weak;
+        background-color: transparent;
+        border-color: transparent;
         padding: 0 5px;
 
         &:hover,
         &:active {
-            color: #57a3f3;
-            background-color: #fff;
-            border-color: #0000;
+            color: @ui-info-weak;
+        }
+
+        &:focus {
+            box-shadow: none;
         }
     }
 

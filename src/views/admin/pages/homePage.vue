@@ -26,7 +26,7 @@ export default {
 
     > div {
         border-radius: @ui-border-radius;
-        background-color: @ui-global-bg-normal;
+        background-color: @ui-bg;
     }
     .div1 {
         height: 140px;

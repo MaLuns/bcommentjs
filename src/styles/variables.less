@@ -1,14 +1,23 @@
-// 基础颜色
-@ui-global-bg                : var(--ui-global-bg, #fcfcfc); // 全局带底色背景
-@ui-global-bg-normal         : var(--ui-global-bg-normal, #ffffff); // 全局白色背景
+// 背景颜色
+@ui-bg                       : var(--ui-bg, #ffffff); // 
+@ui-bg-weak                  : var(--ui-bg-weak, #fcfcfc); // 
+@ui-aide-bg                  : var(--ui-bg-weak, #eeeeee); // 
+// 文本
 @ui-text                     : var(--ui-text, #252b3a); // 正文文本
 @ui-text-weak                : var(--ui-text-weak, #575d6c); // 弱化的正文信息（手风琴子项，表头）
 @ui-aide-text                : var(--ui-aide-text, #8a8e99); // 辅助文本、帮助信息（面包屑）
+@ui-text-inversion           : var(--ui-text, #f0f0f0); // 文本反转色
 @ui-aide-text-stress         : var(--ui-aide-text-stress, #575d6c); // 辅助文本、帮助信息里的强调色
-@ui-danger                   : var(--ui-danger, #f66f6a); // 失败、错误、告警
+// 按钮 提示
+@ui-danger                   : var(--ui-danger, #ed4014); // 失败、错误、告警
+@ui-danger-weak              : var(--ui-danger-weak, #f16643);
 @ui-warning                  : var(--ui-warning, #fac20a); // 警告、需注意类型提示
-@ui-success                  : var(--ui-success, #50d4ab); // 成功、正确
-@ui-info                     : var(--ui-info, #5e7ce0); // 通知、一般提示、执行中
+@ui-warning-weak             : var(--ui-warning-weak, #fac20a);
+@ui-success                  : var(--ui-success, #32d4a1); // 成功、正确
+@ui-success-weak             : var(--ui-success-weak, #50d4ab);
+@ui-info                     : var(--ui-info, #2d8cf0); // 通知、一般提示、执行中
+@ui-info-weak                : var(--ui-info-weak, #57a3f3);
+// 阴影
 @ui-shadow                   : var(--ui-shadow, rgba(0, 0, 0, 0.2)); // 阴影色
 @ui-light-shadow             : var(--ui-light-shadow, rgba(0, 0, 0, 0.1)); // 弱化阴影色
 // 下拉菜单
@@ -33,10 +42,11 @@
 @ui-loading-color            : var(--ui-loading-color, #a29df1);
 @ui-loading-shadow-color     : var(--ui-loading-color, #000000);
 // 字体
+@ui-font-size                : var(--ui-font-size, 12px); // 提示、辅助文本
 @ui-font-size                : var(--ui-font-size, 14px); //正文、卡片副标题
 @ui-font-size-card-title     : var(--ui-font-size-card-title, 16px); //卡片标题
 @ui-font-size-page-title     : var(--ui-font-size-page-title, 18px); //页面标题
 @ui-font-size-icon           : var(--ui-font-size-icon, 16px); //图标大小
-@ui-line-height-base         : 1.5; //规范行高
-@ui-font-title-weight        : bold; //标题文字粗细
-@ui-font-content-weight      : normal; //内容文字粗细
+@ui-line-height-base         : var(--ui-line-height-base, 1.5); //规范行高
+@ui-font-title-weight        : var(--ui-font-title-weight, bold); //标题文字粗细
+@ui-font-content-weight      : var(--ui-font-content-weight, normal); //内容文字粗细

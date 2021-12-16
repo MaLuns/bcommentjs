@@ -172,7 +172,7 @@ export default {
     padding: 1em 1.5em;
     min-width: 560px;
     color: @ui-text;
-    background-color: @ui-global-bg-normal;
+    background-color: @ui-bg;
 }
 
 @media screen and (max-width: 520px) {

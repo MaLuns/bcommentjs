@@ -66,7 +66,7 @@ export default {
         height: 48px;
         position: relative;
         z-index: 1;
-        background-color: @ui-global-bg-normal;
+        background-color: @ui-bg;
         box-shadow: 2px 0 4px 0 @ui-shadow;
         padding: 0 1em;
         display: flex;

@@ -113,7 +113,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .comment-item {
     display: flex;
     padding: 1em 0;
@@ -143,8 +143,8 @@ export default {
         }
         // 标识
         .comment-user-tag {
-            color: #fff;
-            background-color: #723b9d;
+            color: @ui-text-inversion;
+            background-color: @ui-info;
             display: inline-block;
             padding: 0.2em 0.5em;
             font-size: 0.75em;
@@ -201,7 +201,7 @@ export default {
     margin-top: 1em;
     padding: 0 1.2em;
     border-radius: @ui-border-radius;
-    background-color: @ui-global-bg;
+    background-color: @ui-bg-weak;
     .comment-reply {
         margin-right: 0;
     }
@@ -243,7 +243,6 @@ export default {
         outline: 0;
         margin-bottom: 4px;
         display: inline-block;
-        //text-decoration: underline;
         color: @ui-aide-text-stress;
         transition: color @ui-transition-duration,
             background-color @ui-transition-duration;
@@ -251,7 +250,7 @@ export default {
 
     //代码块
     pre {
-        font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+        font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
             Monaco, Consolas, monospace;
         position: relative;
         background: #272822 !important;
@@ -263,21 +262,21 @@ export default {
         line-height: 20px;
 
         code {
-            font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+            font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
                 Monaco, Consolas, monospace;
         }
 
         &::after {
-            content: " ";
+            content: ' ';
             position: absolute;
             border-radius: 50%;
-            background: #ff5f56;
+            background: @ui-danger-weak;
             width: 12px;
             height: 12px;
             top: 0;
             left: 12px;
             margin-top: 12px;
-            box-shadow: 20px 0 #ffbd2e, 40px 0 #27c93f;
+            box-shadow: 20px 0 @ui-warning-weak, 40px 0 @ui-success-weak;
         }
     }
 
