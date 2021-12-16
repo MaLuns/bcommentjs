@@ -30,6 +30,7 @@ import mModle from "+/model/index.vue";
 import mButton from "+/button/index.vue"
 
 export default {
+    name: 'm-login',
     emits: ['login', 'update:show'],
     components: {
         mModle,

@@ -9,17 +9,14 @@
         <m-comment :list="list" :isAdmin="config.is_admin"></m-comment>
         <m-loading v-if="loading"></m-loading>
         <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2>
-        <m-audit v-if="audit.show" v-model:show="audit.show" :comment="audit.comment"></m-audit>
+        <m-audit v-model:show="audit.show" :comment="audit.comment"></m-audit>
     </div>
 </template>
 
 <script>
 import tcb from '@/tcb';
-import { emojis } from "@/emojis";
-import { mComment, mEditor, mLoading, mAudit } from '+/'
 
 export default {
-    components: { mComment, mEditor, mLoading, mAudit },
     computed: {
         pageHash () {
             return this.hash ? this.hash : location.pathname
@@ -156,12 +153,6 @@ export default {
     },
     created () {
         this.init()
-    },
-    exportMethods: {
-        // 添加自定义表情
-        addEmojis (emoji) {
-            console.log(emojis);
-        }
     }
 }
 </script>

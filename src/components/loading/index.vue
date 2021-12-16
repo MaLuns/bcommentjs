@@ -1,6 +1,7 @@
 <script>
 import { h } from 'vue'
 export default {
+    name: 'm-loading',
     render () {
         return h('div', {
             class: 'loading-box'
@@ -12,7 +13,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .loading-box {
     position: relative;
     display: block;

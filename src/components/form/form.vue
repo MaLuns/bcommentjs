@@ -7,6 +7,7 @@
 import { debugWarn } from "@/util";
 
 export default {
+    name: 'm-form',
     data () {
         return {
             fields: []

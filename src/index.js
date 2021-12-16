@@ -1,6 +1,6 @@
 import { registe } from '@/util'
 import ComSiteCount from '~/siteCount'
-import ComComment from '~/comment/index.vue'
+import ComComment from '~/comment/index.js'
 
 const customElementObj = {
     ComSiteCount,

@@ -19,6 +19,7 @@
 <script>
 import { getScrollWidth, hasScrollbar } from '@/util'
 export default {
+    name: 'm-model',
     computed: {
         style () {
             return {
@@ -102,7 +103,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .mask {
     position: fixed;
     top: 0;

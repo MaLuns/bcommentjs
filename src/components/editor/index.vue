@@ -1,7 +1,6 @@
 <template>
     <div class="comment-editor">
-        <div v-if="isAdmin" class="admin-tips">
-        </div>
+        <div v-if="isAdmin" class="admin-tips"></div>
         <m-form v-else ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
                 <input @blur="handleBlur" v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
@@ -34,16 +33,11 @@
 <script>
 import { insertAtCaret, regexp } from "@/util";
 import mEmojis from "./emojis";
-import mForm from "+/form/form";
-import mFormItem from "+/form/formItem";
-import mButton from "+/button"
 
 export default {
+    name: 'm-editor',
     components: {
         mEmojis,
-        mForm,
-        mFormItem,
-        mButton
     },
     data () {
         return {

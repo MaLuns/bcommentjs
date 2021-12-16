@@ -15,6 +15,7 @@
 import { debugWarn, IsNullOrEmpty } from "@/util";
 
 export default {
+    name: 'm-form-item',
     data () {
         return {
             error: false,

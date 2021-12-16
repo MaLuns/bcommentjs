@@ -10,6 +10,7 @@
 import mItem from './item.vue'
 
 export default {
+    name: 'm-comment',
     components: {
         mItem
     },
@@ -45,7 +46,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .comment-list {
     > h3 {
         text-align: center;

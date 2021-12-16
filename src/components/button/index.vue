@@ -6,6 +6,7 @@
 
 <script>
 export default {
+    name: 'm-button',
     emits: ['click'],
     props: {
         disabled: Boolean,
@@ -28,7 +29,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .btn {
     display: inline-block;
     margin-bottom: 0;

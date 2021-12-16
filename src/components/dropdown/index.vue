@@ -9,6 +9,7 @@
 
 <script>
 export default {
+    name: 'm-dropdown',
     emits: ['item-click'],
     props: {
         menu: Array

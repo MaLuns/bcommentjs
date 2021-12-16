@@ -1,9 +1,10 @@
 <template>
-    <img class="avatar" :class="shape" :src="src" draggable="false" alt="avatar">
+    <img class="avatar" :class="shape" :src="src" draggable="false" alt="avatar" />
 </template>
 
 <script>
 export default {
+    name: 'm-avatar',
     props: {
         src: String,
         shape: {
@@ -17,7 +18,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .avatar {
     width: 40px;
     height: 40px;

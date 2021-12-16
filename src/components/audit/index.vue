@@ -1,13 +1,17 @@
 <template>
-    <m-modle v-model="shows" title="评论审核" :width="500">
-        <h4 class="p-10">@{{ comment.nick }}</h4>
+    <m-model v-model="shows" title="评论审核" :width="500">
+        <h4 class="pb-10">@{{ comment.nick }}</h4>
         <textarea v-model="comment.content" rows="5" class="w100p"></textarea>
-    </m-modle>
+        <div class="right mt-10">
+            <m-button type="primary">通过</m-button>
+            <m-button class="ml-10" @click="shows = false;">关闭</m-button>
+        </div>
+    </m-model>
 </template>
 <script>
-import mModle from "../model";
 export default {
-    components: { mModle },
+    name: 'm-audit',
+    emits: ['login', 'update:show'],
     props: {
         show: Boolean,
         comment: Object
