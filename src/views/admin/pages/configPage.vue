@@ -115,11 +115,9 @@
 </template>
 <script>
 import tcb from '@/tcb'
-import { mForm, mFormItem, mButton, message } from '+/'
 import { IsNullOrEmpty } from "@/util";
 
 export default {
-    components: { mForm, mFormItem, mButton },
     data () {
         return {
             config: {

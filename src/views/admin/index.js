@@ -1,13 +1,10 @@
-
 import { createApp, h } from 'vue'
 import { deepStylesOf } from '@/util'
-import App from './comment.vue'
+import App from './admin.vue'
 import coms from '+/'
 
 export default {
     props: {
-        hash: String,
-        title: String,
         env: {
             type: String,
             required: true
@@ -29,13 +26,7 @@ export default {
             app.component(item.name, item)
         })
         styles = [...new Set(styles)]
-        this.$refs.style.innerHTML = styles.join('')// 注入样式
+        this.$refs.style.innerHTML = styles.join('')
         app.mount(this.$refs.app)
-    },
-    exportMethods: {
-        // 添加自定义表情
-        addEmojis (emoji) {
-            console.log(emojis);
-        }
     }
 }

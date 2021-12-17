@@ -33,15 +33,10 @@
 <script>
 import tcb from '@/tcb'
 import { getScrollWidth, hasScrollbar } from '@/util'
-import { mLogin, mDropdown } from '+/'
 import mManger from './layout.vue'
 
 export default {
-    components: {
-        mLogin,
-        mManger,
-        mDropdown
-    },
+    components: { mManger },
     props: {
         env: {
             type: String,
