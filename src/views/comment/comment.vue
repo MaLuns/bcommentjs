@@ -7,9 +7,10 @@
             <m-editor :isAdmin="config.is_admin"></m-editor>
         </div>
         <m-comment :list="list" :isAdmin="config.is_admin"></m-comment>
-        <m-loading v-if="loading"></m-loading>
-        <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2>
-        <m-audit v-model:show="audit.show" :comment="audit.comment"></m-audit>
+        <!-- <m-loading v-if="loading"></m-loading> -->
+        <m-page class="mt-10" v-bind="page" @change="loadData"></m-page>
+        <!-- <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2> -->
+        <m-audit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit"></m-audit>
     </div>
 </template>
 
@@ -38,7 +39,8 @@ export default {
             app: {
                 addComment: this.addComment,
                 replyComment: this.replyComment,
-                auditComment: this.auditComment
+                auditComment: this.auditComment,
+                deleteComment: this.deleteComment
             }
         }
     },
@@ -50,7 +52,8 @@ export default {
             // 评论列表
             list: [],
             page: {
-                pageIndex: 0,
+                total: 0,
+                pageIndex: 1,
                 pageSize: 10
             },
             user: {
@@ -92,7 +95,6 @@ export default {
         // 获取配置
         async setConfig () {
             let config = await tcb.callFunction('getConfig')
-            console.log(config);
             this.config = config || { form: { nick: true, email: true } }
         },
         // 设置回复
@@ -103,6 +105,36 @@ export default {
         auditComment (comment) {
             this.audit.comment = comment
             this.audit.show = true
+        },
+        // 审核通过
+        handlePassAudit (content) {
+            tcb.callFunction('updateComment', {
+                id: this.audit.comment.id,
+                isAudit: true,
+                content
+            }).then(res => {
+                if (res) {
+                    this.audit.comment.isAudit = true
+                    this.audit.comment.content = content
+                    this.audit = {
+                        show: false,
+                        comment: {}
+                    }
+                    this.$message.info('审核成功')
+                }
+            })
+        },
+        // 删除评论
+        deleteComment (comment) {
+            tcb.callFunction('updateComment', {
+                id: comment.id,
+                delete: true,
+            }).then(res => {
+                if (res) {
+                    comment.delete = true
+                    this.$message.info('删除成功')
+                }
+            })
         },
         // 添加评论
         addComment (comment, callback) {
@@ -128,26 +160,26 @@ export default {
                         item.childer.push(com)
                         this.reply = null
                     }
+                    this.$message.info('评论成功')
                     callback()
                 }
             })
         },
         // 加载更多评论
-        loadData () {
+        loadData (pageIndex = this.page.pageIndex) {
             this.loading = true
-            this.page.pageIndex++
             tcb.callFunction('getComments', {
                 title: this.pageTitle,
                 hash: this.pageHash,
-                ...this.page
+                url: location.pathname,
+                ...this.page,
+                pageIndex
             }).then(data => {
-                console.log(data);
-                this.loading = false
-                this.loaded = data.length !== this.page.pageSize
-                this.list.push(...data)
+                let { list, total } = data
+                this.page.total = total
+                this.list = list
             }).catch(_ => {
                 this.loading = false
-                --this.page.pageIndex
             })
         },
     },

@@ -118,6 +118,10 @@ export default {
         color: #c5c8ce !important;
         background-color: #f7f7f7 !important;
         border-color: #dcdee2 !important;
+        &.text {
+            background-color: transparent !important;
+            border-color: transparent !important;
+        }
     }
 }
 </style>

@@ -2,7 +2,9 @@
     <div class="dropdown">
         <slot></slot>
         <ul class="dropdown-menu">
-            <li class="dropdown-menu-item" v-for="item,key in menu" :key="key" @click="handleMenuItem(item)">{{ item.label }}</li>
+            <slot name="items">
+                <li class="dropdown-menu-item" v-for="item,key in menu" :key="key" @click="handleMenuItem(item)">{{ item.label }}</li>
+            </slot>
         </ul>
     </div>
 </template>
@@ -25,10 +27,11 @@ export default {
 <style lang="less" scoped>
 @import url("../../styles/variables.less");
 .dropdown {
+    display: inline-block;
     position: relative;
     z-index: 1;
 
-    .dropdown-menu {
+    :deep(.dropdown-menu) {
         padding: 10px 0;
         position: absolute;
         list-style: none;

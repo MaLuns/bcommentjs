@@ -143,7 +143,7 @@ export default {
                 tcb.callFunction('testEmail', {
                     smtp_host, smtp_port, sender_email, sender_pass
                 }).then(res => {
-                    if (res) message.success('测试邮件发送成功！')
+                    if (res) this.$message.success('测试邮件发送成功！')
                 })
             } else {
 
@@ -155,7 +155,7 @@ export default {
                     ...this.config
                 }
             }).then(res => {
-                message.success('更新成功！')
+                this.$message.success('更新成功！')
             })
         }
     }

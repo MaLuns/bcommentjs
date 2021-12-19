@@ -53,8 +53,6 @@ export default {
             }
         },
         handleClose () {
-            document.body.style.width = "";
-            document.body.style.overflow = "";
             this.$emit('update:modelValue', false)
         }
     },
@@ -62,9 +60,14 @@ export default {
         modelValue: {
             immediate: true,
             handler (val) {
-                if (val && hasScrollbar()) {
-                    document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
-                    document.body.style.overflow = "hidden";
+                if (val) {
+                    if (hasScrollbar()) {
+                        document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
+                        document.body.style.overflow = "hidden";
+                    }
+                } else {
+                    document.body.style.width = "";
+                    document.body.style.overflow = "";
                 }
             }
         }

@@ -26,8 +26,10 @@
 <script>
 import HomePage from './pages/homePage.vue'
 import ConfigPage from './pages/configPage.vue';
+import CommentPage from './pages/commentPage.vue'
+
 export default {
-    components: { HomePage, ConfigPage },
+    components: { HomePage, ConfigPage, CommentPage },
     props: {
         modelValue: {
             type: Boolean,
@@ -52,7 +54,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .admin-container {
     position: fixed;
     left: 0;

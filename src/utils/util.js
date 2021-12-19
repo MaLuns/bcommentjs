@@ -43,6 +43,11 @@ export const deepStylesOf = ({ styles = [], components = {} }) => {
     return unique([...styles, ...Object.values(components).flatMap(deepStylesOf)]);
 }
 
+
+export const createVueApp = (com, props = {}) => {
+
+}
+
 /**
  * 注册customElements
  * @param {*} data 
@@ -140,7 +145,7 @@ export const insertAtCaret = (edit, val, shadowRoot, lastEditRange) => {
 }
 
 /**
- * 
+ * 打印提示
  * @param {*} name 
  * @param {*} message 
  */

@@ -1,5 +1,5 @@
 <template>
-    <m-modle v-model="shows" :title="info.title" :width="400">
+    <m-model v-model="shows" :title="info.title" :width="400">
         <m-form ref="form" :model="form" :rules="rules" labelWidth="4.5em" :key="type">
             <m-form-item prop="email" label="邮箱">
                 <input v-model.trim="form.email" type="text" placeholder="请输入邮箱" autocomplete="off" />
@@ -17,27 +17,16 @@
             </m-form-item>
             <m-button long @click="submit" :type="info.btntype">{{ info.btn }}</m-button>
         </m-form>
-    </m-modle>
+    </m-model>
 </template>
 
 <script>
 import { regexp } from "@/util";
 import tcb from '@/tcb'
-import message from '+/message'
-import mForm from "+/form/form.vue";
-import mFormItem from "+/form/formItem.vue";
-import mModle from "+/model/index.vue";
-import mButton from "+/button/index.vue"
 
 export default {
     name: 'm-login',
     emits: ['login', 'update:show'],
-    components: {
-        mModle,
-        mForm,
-        mFormItem,
-        mButton
-    },
     computed: {
         info () {
             let _info = new Map([
@@ -113,7 +102,7 @@ export default {
                 let { email, password } = this.form
                 tcb[this.info.fun](email, password).then(res => {
                     if (res) {
-                        message.info(this.info.msg)
+                        this.$message.info(this.info.msg)
                         this.shows = false
                         if (this.type === 'login') {
                             this.$emit("login", res)

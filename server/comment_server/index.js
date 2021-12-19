@@ -1,8 +1,8 @@
 const tcb = require("@cloudbase/node-sdk");
 const { initConfig, updateConfig, getConfig } = require('./utils/app')
-const { getComments, addComment, } = require('./utils/comments')
+const { getComments, addComment, updateComment } = require('./utils/comments')
 const { addPVUV, getPV, getBatchPV, getUV } = require('./utils/count')
-const { getArticle, updateArticle } = require('./utils/articles')
+const { getArticles, updateArticle } = require('./utils/articles')
 const { validata, RES_CODE, formatRes, } = require('./utils/utils')
 const { testEmail } = require('./utils/notice')
 
@@ -10,11 +10,12 @@ const { testEmail } = require('./utils/notice')
 const handler = {
     getComments,// 获取评论
     addComment,// 添加评论
+    updateComment,// 修改评论
     getPV,// 获取文章pv
     getBatchPV,// 批量获取
     getUV,// 获取站点UV
     addPVUV,// 记录访问记录
-    getArticle, // 获取文章信息
+    getArticles, // 获取文章信息
     updateArticle,// 更新文章信息
     getConfig, // 获取配置
     updateConfig, // 更新配置

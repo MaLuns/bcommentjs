@@ -57,7 +57,12 @@ const sendEmail = async ({ title, href, type, nick, content, toEmail }) => {
         ejsTemplate = fs.readFileSync(path.resolve(__dirname, '../templates/email.template.ejs'), { encoding: 'utf8' });
     }
     const html = ejs.render(ejsTemplate, {
-        title, href, type, nick, content, datetime: new Date(),
+        title,
+        href,
+        type,
+        nick,
+        content,
+        datetime: new Date(),
         siteName: app.config.site_name,
         siteLogo: app.config.site_logo
     })

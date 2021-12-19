@@ -5,12 +5,12 @@ const bowser = require("bowser")
 const app = require('./app')
 const { db, $, _, getUid, getIp, getUserInfo, isAdministrator } = app
 const { updateArticle, getArticle } = require('./articles')
-const { regexp, validata, getQQAvatar, uuid, formatRes, getObjOfKeys } = require('./utils')
+const { regexp, validata, getQQAvatar, uuid, formatRes, getObjOfKeys, RES_CODE } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
 const commentsDB = db.collection('db_comments')
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
-const { getEnvEmail } = require('./app')
+const { getEnvEmail, notAdminLimit } = require('./app')
 
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
@@ -142,9 +142,14 @@ const getComments = async (data) => {
     if (isNaN(parseInt(pageIndex)) || pageIndex < 1) {
         throw new Error(`参数pageIndex不合法`)
     }
-    let articleID = await updateArticle(data).then(res => res.data)
+    let articleID;
+    if (data.articleID) {
+        articleID = data.articleID
+    } else {
+        articleID = await updateArticle(data).then(res => res.data)
+    }
 
-    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, isAudit: 1, isPrivate: 1 }
+    const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, isAudit: 1, delete: 1, isPrivate: 1 }
     const avatars = app.config.gavatar_url.split('$hash');
 
     const isAdmin = await isAdministrator()
@@ -208,13 +213,27 @@ const getComments = async (data) => {
                         at: '$$item.at',
                         created: '$$item.created',
                         isAudit: '$$item.isAudit',
+                        delete: '$$item.delete',
                         gavatar: $.concat([avatars[0], '$$item.avatar', avatars[1] || '']),
                     }
                 })
             })
         }).end()
 
-    return formatRes(list)
+    let total = await commentsDB
+        .aggregate()
+        .match(matchWhere)
+        .count('total')
+        .end()
+        .then(res => {
+            if (res.data.length === 0) return 0
+            return res.data[0].total
+        })
+
+    return formatRes({
+        total,
+        list
+    })
 };
 
 /**
@@ -243,10 +262,7 @@ const getCommentByID = async (id) => {
     }
 }
 
-/**
- * 添加评论
- * @param {*} event 
- */
+// 添加评论
 const addComment = async (event) => {
     //#region 数据校验
     const isAdmin = await isAdministrator()
@@ -310,9 +326,30 @@ const addComment = async (event) => {
     return formatRes(res)
 }
 
+// 修改评论
+const updateComment = async (event) => {
+    await notAdminLimit();
+    validata(event, ['id']);
+    let newData = {}, tag = false;
+    ['content', 'isAudit', 'delete'].forEach(key => {
+        if (Object.hasOwnProperty.call(event, key)) {
+            newData[key] = event[key]
+            tag = true;
+        }
+    })
+    if (!tag) {
+        return formatRes(null, RES_CODE.FAIL)
+    }
+    let { updated } = await commentsDB.doc(event.id).update(newData)
+    if (updated === 0) {
+
+    }
+    return formatRes(true)
+}
 
 module.exports = {
     getComments,
     addComment,
+    updateComment,
     currentLimit
 }
