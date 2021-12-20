@@ -1,6 +1,6 @@
 <template>
     <div class="comment-editor">
-        <div v-if="isAdmin" class="admin-tips"></div>
+        <div v-if="$store.config.is_admin" class="admin-tips"></div>
         <m-form v-else ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
                 <input @blur="handleBlur" v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
@@ -66,13 +66,12 @@ export default {
     },
     props: {
         isCancel: Boolean,
-        isAdmin: Boolean
     },
     mounted () {
         this.init()
     },
     watch: {
-        '$root.user': {
+        '$store.user': {
             deep: true,
             handler (val) {
                 let { nick, email } = val
@@ -95,7 +94,7 @@ export default {
         },
         // 是否必填
         isRequired (key) {
-            return this.$root.config.form[key] || false
+            return this.$store.config.form[key] || false
         },
         // 存储
         handleBlur () {
@@ -143,7 +142,7 @@ export default {
         // 提交
         handleSubmit () {
             if (this.form.content.trim().length) {
-                if (this.isAdmin || this.$refs.form.validate()) {
+                if (this.$store.config.is_admin || this.$refs.form.validate()) {
                     this.$root.addComment({ ...this.form }, () => {
                         this.$refs.editor.innerText = ''
                         this.form.content = ''
@@ -157,7 +156,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .comment-editor {
     padding: 5px 0 0;
 

@@ -11,7 +11,7 @@
                     <path d="M199.295 450.63c4.067 0 8.002 1.69 10.832 4.562L279.45 526.3c4.996 5.154 3.67 9.844 2.83 11.619-0.796 1.816-3.493 5.957-10.876 5.957h-28.87c-0.09 0-0.178 0.084-0.178 0.169v50.785c0 8.07-6.897 14.66-15.341 14.66h-55.487c-8.444 0-15.341-6.59-15.341-14.66v-50.743c0-0.084-0.089-0.169-0.177-0.169h-28.87c-7.384 0-10.081-4.183-10.877-5.957-0.796-1.775-2.166-6.507 2.874-11.661l69.325-71.108c2.83-2.915 6.764-4.563 10.832-4.563z m82.798-42.282a1 1 0 0 1 1 1v31.524a1 1 0 0 1-1 1H116.474a1 1 0 0 1-1-1v-31.524a1 1 0 0 1 1-1h165.619z" fill="#ff5252" />
                 </svg>
             </span>
-            <template v-if="isAdmin">
+            <template v-if="$store.config.is_admin">
                 <span class="comment-user-top" v-if="comment.delete">
                     <svg viewBox="0 0 1649 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="48">
                         <path d="M538.590319 487.372328a578.241489 578.241489 0 0 1-28.045949 63.94249c-10.211456 15.246074-25.514419 20.309136-48.952413 12.714543l-197.942965-51.284835c-22.954443-5.063062-30.605925-20.280692-25.485974-43.633353-12.771431-7.623037-22.954443-20.309136-22.954444-20.309136s12.742987-2.559975 30.605925-7.623037l25.485974-91.874663 238.731902 63.999378-7.651481 25.343754 33.165899 10.154568 51.512388-189.295938L266.237412 170.674963 255.997511 201.110223l287.712758 76.657032-28.074393 104.560761-238.703457-63.430494 15.302962-56.347897-33.1659-7.623037-56.603894 209.633518c-10.2399 43.633354 2.559975 69.005551 43.860907 79.160119l213.217483 56.319452c35.697431 10.154568 64.283819 0 79.558337-27.903728 7.679925-15.21763 17.862937-35.526766 30.605925-63.94249a97.59194 97.59194 0 0 1-31.11792-20.821131z m106.608742-55.323906l25.030867 7.111042 41.300932-148.70611 87.209819 23.864657-41.300932 148.70611 29.06994 8.106587 41.329376-148.706109 86.697823 23.864657-41.300931 148.706109 22.954443 6.087052-7.679925 26.908183-22.926-6.087052-43.377356 154.793162c-5.091506 19.285146-17.834493 25.884193-36.692976 20.792687l-22.982888-6.599047 0.511995-26.367744c7.139486 3.043526 14.278972 5.063062 21.418459 7.111042 7.139486 1.991092 12.230992-1.535985 14.790967-11.178558l40.817381-146.203023-35.697431-9.614129-1.535985 5.575057c-20.906463 73.101512-45.396892 129.932959-73.954836 171.034782l-15.302963-24.348208c23.949989-38.058297 45.396892-88.319141 63.74338-151.749636l2.047981-7.623037-29.06994-8.106588-42.865361 154.281167c-5.603501 19.285146-18.346488 26.396188-39.252952 20.821131l-24.490428-6.599047 0.511995-26.396188c8.163476 3.043526 15.302962 5.575057 22.442448 7.594593 9.159022 2.559975 14.790967-0.995546 17.834493-10.638119l40.817381-145.662584-35.69743-10.154567c-21.930453 75.092603-50.004847 132.976485-84.194737 174.590302l-15.786514-24.860203c30.09393-38.598736 55.096353-90.850672 74.466832-156.841141l-25.002424-7.111042 6.115497-26.396188z m86.754712 23.864657l34.133001-123.333912-35.697431-10.154568-34.701884 123.333912 36.23787 10.154568z m115.255768 31.971244l34.18989-123.333912-35.725875-9.642573-34.161446 123.333912 35.697431 9.671018z m9.671017 227.382679l1.564429-27.932173c21.902009 7.111042 37.233416 12.202548 46.932877 14.734079 12.230992 3.555521 20.394468-1.535985 23.94999-14.734079l91.305779-327.335485 27.021959 7.594593-93.325315 333.962976c-7.139486 25.372198-22.470893 34.502776-46.932877 27.903728l-50.488398-14.222084z m88.262253-338.030492l26.026414 7.111042-71.394862 255.286407-26.026413-7.111042 71.394861-255.286407z m167.820591 23.864657l117.332192 32.48324-6.627491 23.324217a1396.210426 1396.210426 0 0 1-71.9353 106.096747c13.254982 42.097368 16.326952 77.652578 10.211456 107.092292-5.11995 17.749161-12.230992 29.439714-22.470893 35.526766-13.738533 7.111042-34.133001 7.111042-60.67141-0.511995l-1.535985-32.48324c8.675471 3.555521 13.766977 5.575057 15.814957 6.087052 13.254982 3.043526 22.442448 3.043526 27.533955 0.511995 5.603501-2.559975 9.699461-8.135032 11.747441-17.26561 7.651481-27.903729 4.067516-61.922954-11.235446-102.512781a1247.845646 1247.845646 0 0 0 71.394861-106.096746l-58.139879-16.213176-92.81332 332.938985-29.098383-8.135032 100.493245-360.842714z m123.447688 295.392684c-27.02196 31.971245-54.584358 57.343442-83.654297 77.652578l-19.370479-23.864657c29.06994-19.285146 56.091899-43.633354 81.065879-73.101511l21.958897 19.31359z m-42.836916 110.647813l1.50754-30.463704c17.862937 6.087052 30.605925 10.154568 38.769401 12.686099 7.679925 2.019536 12.230992-1.535985 15.302963-11.178558l32.141909-115.19888-96.425729-26.908183 8.191921-28.927719 96.425729 26.908183 13.738533-48.724859-54.584358-15.21763 7.679925-27.420178 135.166686 37.546302-7.679925 27.420177-50.488399-13.710089-13.766977 48.72486 92.329769 25.372198-8.163476 28.927719-92.329769-25.372198-34.161446 122.309922c-6.115496 22.869111-19.910918 30.975699-40.817381 25.400642l-42.836916-12.202548z m175.472071-346.165523c12.742987 49.236855 40.276942 94.434637 81.606318 136.532005l-24.461984 20.309136a316.782698 316.782698 0 0 1-79.586782-132.46449c-43.377356 35.526766-89.798238 60.386968-139.774641 74.609053l-9.671017-29.951709c54.043919-15.729625 102.000786-41.613818 142.789723-77.140583l29.098383 8.106588z m-17.862937 251.247335c12.742987 39.594282 21.418458 74.097057 26.026414 102.512781l-29.581935 10.154568c-4.09596-29.439714-12.230992-64.454484-23.466439-105.072757l27.02196-7.594592z" fill="#ff5252" />
@@ -46,22 +46,22 @@
             <div class="comment-user-meta">
                 <span class="comment-time">{{ timeAgo(new Date(comment.created)) }}</span>
                 <div>
-                    <span v-if="!comment.delete && comment.isAudit" class="comment-reply" @click="handleReply(comment)">回复</span>
-                    <template v-if="isAdmin">
-                        <span v-if="!comment.delete && !comment.isAudit" class="comment-reply" @click="handleAudit(comment)">审核</span>
-                        <span v-if="!comment.delete" class="comment-reply c-danger" @click="handleDelete(comment)">删除</span>
+                    <span v-if="!comment.delete && comment.isAudit" class="comment-reply" @click="handleEmits('reply',comment)">回复</span>
+                    <template v-if="$store.config.is_admin">
+                        <span v-if="!comment.delete && !comment.isAudit" class="comment-reply" @click="handleEmits('audit',comment)">审核</span>
+                        <span v-if="!comment.delete" class="comment-reply c-danger" @click="handleEmits('delete',comment)">删除</span>
                     </template>
                 </div>
             </div>
             <div class="comment-edit-container" v-if="$root.reply && $root.reply.id === comment.id">
-                <m-editor :is-admin="isAdmin" isCancel @cancel="handleReply(null)"></m-editor>
+                <m-editor isCancel @cancel="handleEmits('reply',null)"></m-editor>
             </div>
             <div class="comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">
-                    <m-comment-item v-for="element in comment.childer" :key="element.id" :comment="element" :is-admin="isAdmin"></m-comment-item>
+                    <m-comment-item v-for="element in comment.childer" :key="element.id" :comment="element"></m-comment-item>
                 </template>
                 <template v-else>
-                    <m-comment-item v-for="idx in len" :key="comment.childer[idx - 1].id" :comment="comment.childer[idx - 1]" :is-admin="isAdmin"></m-comment-item>
+                    <m-comment-item v-for="idx in len" :key="comment.childer[idx - 1].id" :comment="comment.childer[idx - 1]"></m-comment-item>
                     <span class="toggle-btn link" @click="handleToggle(comment.childer.length)">{{ len === 2 ? '显示更多' : '折叠评论' }}</span>
                 </template>
             </div>
@@ -78,6 +78,7 @@ import { parse } from "@/emojis";
 export default {
     name: "mCommentItem",
     inject: ['app'],
+    emits: ['reply', 'audit', 'delete'],
     components: {
         mAvatar,
         mEditor
@@ -89,7 +90,6 @@ export default {
     },
     props: {
         comment: Object,
-        isAdmin: Boolean
     },
     methods: {
         timeAgo,
@@ -99,22 +99,14 @@ export default {
         },
         // 头像显示
         getAvatar (comment) {
-            if (this.$root.config && this.$root.config.is_use_qq_avatar) {
+            if (this.$store.config && this.$store.config.is_use_qq_avatar) {
                 return comment.qqAvatar || comment.gavatar
             }
             return comment.gavatar
         },
-        // 回复
-        handleReply (comment) {
-            this.app.replyComment(comment)
-        },
-        // 审核
-        handleAudit (comment) {
-            this.app.auditComment(comment)
-        },
-        // 删除
-        handleDelete (comment) {
-            this.app.deleteComment(comment)
+        // 事件
+        handleEmits (emit, data) {
+            this.$emit(emit, data)
         },
         // 显示更多
         handleToggle (len) {
@@ -125,7 +117,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .comment-item {
     display: flex;
     padding: 1em 0;
@@ -261,7 +253,7 @@ export default {
 
     //代码块
     pre {
-        font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+        font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
             Monaco, Consolas, monospace;
         position: relative;
         background: #272822 !important;
@@ -273,12 +265,12 @@ export default {
         line-height: 20px;
 
         code {
-            font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono",
+            font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono',
                 Monaco, Consolas, monospace;
         }
 
         &::after {
-            content: " ";
+            content: ' ';
             position: absolute;
             border-radius: 50%;
             background: @ui-danger-weak;

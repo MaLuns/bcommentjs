@@ -1,4 +1,4 @@
-import { registe } from '@/util'
+import { registe } from './views/app'
 import ComSiteCount from '~/siteCount'
 import ComComment from '~/comment'
 

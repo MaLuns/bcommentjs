@@ -3,13 +3,14 @@
         <div class="xxx-left">
             <div class="xxx-left-title">文章列表</div>
             <ul>
-                <li class="article-item" :class="{ current: item === curArticle }" v-for="item in articles" @click="handleCurArticle(item)">
+                <li class="article-item" :key="item._id" :class="{ current: item === curArticle }" v-for="item in articles" @click="handleCurArticle(item)">
                     <p>{{ item.title || item.url }}</p>
                 </li>
             </ul>
         </div>
         <div class="xxx-right">
             <m-comment :list="comments" isAdmin></m-comment>
+            <m-page class="mt-10" v-bind="page" @change="getComments"></m-page>
         </div>
     </div>
 </template>
@@ -23,7 +24,7 @@ export default {
             curArticle: {},
             page: {
                 total: 0,
-                pageIndex: 0,
+                pageIndex: 1,
                 pageSize: 10
             },
         }
@@ -41,30 +42,28 @@ export default {
             this.curArticle = item
             this.page = {
                 total: 0,
-                pageIndex: 0,
+                pageIndex: 1,
                 pageSize: 10
             }
             this.getComments()
         },
-        getComments () {
-            this.page.pageIndex++
+        getComments (pageIndex = this.page.pageIndex) {
             tcb.callFunction('getComments', {
                 hash: this.curArticle.hash,
-                articleID: null, //this.curArticle._id,
-                ...this.page
+                articleID: this.curArticle._id,
+                ...this.page,
+                pageIndex
             }).then(data => {
-                this.loading = false
-                this.comments = data
-            }).catch(_ => {
-                this.loading = false
-                --this.page.pageIndex
+                let { list, page } = data
+                this.page = page
+                this.comments = list
             })
         }
     },
 }
 </script>
 <style lang="less" scoped>
-@import url("s/variables.less");
+@import url('css/variables.less');
 .xxx {
     display: flex;
     height: 100%;

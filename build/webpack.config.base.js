@@ -26,7 +26,8 @@ module.exports.baseConf = {
             '@': path.resolve(__dirname, '../src/utils/'),
             '+': path.resolve(__dirname, '../src/components/'),
             '~': path.resolve(__dirname, '../src/views/'),
-            's': path.resolve(__dirname, '../src/styles/'),
+            'css': path.resolve(__dirname, '../src/styles/'),
+            's': path.resolve(__dirname, '../src/store/'),
         },
         extensions: ['.js', '.vue']
     },

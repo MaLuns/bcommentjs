@@ -1,7 +1,7 @@
 <template>
     <div class="comment-list">
         <transition-group name="list" @enter="enter">
-            <m-item v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index" :is-admin="isAdmin"></m-item>
+            <m-item v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index"></m-item>
         </transition-group>
     </div>
 </template>
@@ -15,8 +15,8 @@ export default {
         mItem
     },
     props: {
+        // 列表
         list: Array,
-        isAdmin: Boolean,
     },
     computed: {
         len () {
@@ -46,7 +46,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .comment-list {
     > h3 {
         text-align: center;

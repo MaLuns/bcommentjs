@@ -1,5 +1,5 @@
 <template>
-    <div v-if="total > 0" class="center">
+    <div v-if="total > pageSize" class="center">
         <m-button type="text" :disabled="pageIndex < 2" @click="handleLast">上一页</m-button>
         <span class="ml-10 mr-10">{{ pageIndex }} / {{ maxPageIndex }}</span>
         <m-button type="text" :disabled="maxPageIndex === pageIndex" @click="handleNext">下一页</m-button>

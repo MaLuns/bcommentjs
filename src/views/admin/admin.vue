@@ -94,19 +94,15 @@ export default {
                 tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
                     if (loginState) {
                         setUser(loginState.user)
-                        this.setConfig()
+                        this.$store.refreshConfig()
                     }
                 });
-                this.setConfig()
+                this.$store.refreshConfig()
             })
 
         },
-        // 获取配置
-        async setConfig () {
-            this.config = await tcb.callFunction('getConfig')
-        },
         handleShowAdminPanel () {
-            if (this.config.is_admin) {
+            if (this.$store.config.is_admin) {
                 this.showAdminPanel = true
             }
         },

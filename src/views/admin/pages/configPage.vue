@@ -162,7 +162,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('s/variables.less');
+@import url('css/variables.less');
 .config {
     border-radius: @ui-border-radius;
     background-color: @ui-bg;

@@ -138,7 +138,7 @@ const currentLimit = async () => {
  */
 const getComments = async (data) => {
     validata(data, ['pageIndex', 'hash'])
-    let { pageIndex, pagesize = 10 } = data
+    let { pageIndex = 1, pagesize = 10 } = data
     if (isNaN(parseInt(pageIndex)) || pageIndex < 1) {
         throw new Error(`参数pageIndex不合法`)
     }
@@ -179,7 +179,7 @@ const getComments = async (data) => {
         .aggregate()
         .match(matchWhere)
         .sort({ top: -1, created: -1 })
-        .skip((pageIndex - 1) * pagesize).limit(10)
+        .skip((pageIndex - 1) * pagesize).limit(pagesize)
         .project({
             _id: 0,
             id: "$_id",
@@ -231,8 +231,12 @@ const getComments = async (data) => {
         })
 
     return formatRes({
-        total,
-        list
+        list,
+        page: {
+            total,
+            pageIndex,
+            pagesize
+        },
     })
 };
 

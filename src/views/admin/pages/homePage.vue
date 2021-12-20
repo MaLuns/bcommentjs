@@ -16,7 +16,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("s/variables.less");
+@import url("css/variables.less");
 .parent {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

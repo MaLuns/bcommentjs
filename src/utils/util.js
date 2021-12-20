@@ -1,68 +1,5 @@
 import md5 from 'md5'
-import { VueElement, defineComponent } from 'vue'
 
-/**
- * 修改defineCustomElement，支持将方法挂载到，自定义元素上 
- * @param {*} options 
- * @param {*} hydate 
- * @returns 
- */
-export const defineCustomElement = (options, hydate) => {
-    const Comp = defineComponent(options);
-    class VueCustomElement extends VueElement {
-        constructor(initialProps) {
-            super(Comp, initialProps, hydate);
-        }
-
-        connectedCallback () {
-            super.connectedCallback()
-            if (Comp.exportMethods) {
-                Object.keys(Comp.exportMethods).forEach(key => {
-                    this[key] = function (...res) {
-                        if (this._instance) {
-                            return Comp.exportMethods[key].call(this._instance.proxy, ...res)
-                        } else {
-                            debugWarn('defineCustomElement', '未找到组件实例！')
-                        }
-                    }
-                })
-            }
-        }
-    }
-    VueCustomElement.def = Comp;
-    return VueCustomElement;
-}
-
-/**
- * 抽取子组件样式  @see https://github.com/vuejs/vue-loader/issues/1881
- * @param {*} 
- * @returns 
- */
-export const deepStylesOf = ({ styles = [], components = {} }) => {
-    const unique = array => [...new Set(array)];
-    return unique([...styles, ...Object.values(components).flatMap(deepStylesOf)]);
-}
-
-
-export const createVueApp = (com, props = {}) => {
-
-}
-
-/**
- * 注册customElements
- * @param {*} data 
- */
-export const registe = async (data) => {
-    for (const key in data) {
-        if (Object.hasOwnProperty.call(data, key)) {
-            //处理子组件样式
-            const component = data[key]
-            component.styles = deepStylesOf(component)
-            let name = key.replace(/([A-Z])/g, "-$1").toLowerCase().replace('-', '')
-            !customElements.get(name) && customElements.define(name, defineCustomElement(component))
-        }
-    }
-}
 
 /**
  * 错误日志
@@ -176,10 +113,7 @@ export const appendStyle = (styleTxt) => {
  */
 export const IsNullOrEmpty = (val) => [null, undefined, ''].includes(val)
 
-/**
- * 获取滚动条宽度
- * @returns 
- */
+// 获取滚动条宽度
 let cached;
 export const getScrollWidth = () => {
     if (cached === undefined) {
@@ -218,17 +152,37 @@ export const getScrollWidth = () => {
     return cached;
 }
 
-/**
- * 是否有滚动条
- * @returns 
- */
+// 是否有滚动条
 export const hasScrollbar = () => {
     return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)
 }
 
-/**
- * 正则
- */
+// 防抖
+export const debounce = function (fn, time = 300) {
+    let _setTimeout = null;
+    return function (...args) {
+        _setTimeout && clearTimeout(_setTimeout);
+        _setTimeout = setTimeout(() => {
+            fn(...args)
+        }, time);
+    }
+}
+
+// 节流
+export const throttle = function (fn, time) {
+    let isRun = false;
+    return function (...args) {
+        if (!isRun) {
+            isRun = true;
+            setTimeout(() => {
+                fn(...args);
+                isRun = false
+            }, time);
+        }
+    }
+}
+
+// 正则
 export const regexp = {
     email: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, // 邮箱
     qq: /^[1-9][0-9]{6,}@qq.com/, // qq邮箱

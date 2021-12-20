@@ -1,4 +1,4 @@
-import { registe } from '@/util'
+import { registe } from './views/app'
 import './index'
 import ComCommentAdmin from '~/admin'
 

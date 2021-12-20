@@ -4,9 +4,9 @@
             <slot name="comment-header"></slot>
         </div>
         <div class="comment-edit-container" v-show="!reply">
-            <m-editor :isAdmin="config.is_admin"></m-editor>
+            <m-editor :isAdmin="$store.config.is_admin"></m-editor>
         </div>
-        <m-comment :list="list" :isAdmin="config.is_admin"></m-comment>
+        <m-comment :list="list" :isAdmin="$store.config.is_admin"></m-comment>
         <!-- <m-loading v-if="loading"></m-loading> -->
         <m-page class="mt-10" v-bind="page" @change="loadData"></m-page>
         <!-- <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2> -->
@@ -60,11 +60,6 @@ export default {
                 email: '',
                 nick: ''
             },
-            // 全局配置
-            config: {
-                is_admin: false,
-                form: {}
-            },
             audit: {
                 show: false,
                 comment: {}
@@ -85,17 +80,17 @@ export default {
                 tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
                     if (loginState) {
                         setUser(loginState.user)
-                        this.setConfig()
+                        this.$store.refreshConfig()
                     }
                 });
-                this.setConfig()
+                this.$store.refreshConfig()
                 this.loadData()
             })
         },
         // 获取配置
         async setConfig () {
             let config = await tcb.callFunction('getConfig')
-            this.config = config || { form: { nick: true, email: true } }
+            this.$store.cofing = (config || { form: { nick: true, email: true } })
         },
         // 设置回复
         replyComment (reply) {
@@ -167,7 +162,6 @@ export default {
         },
         // 加载更多评论
         loadData (pageIndex = this.page.pageIndex) {
-            this.loading = true
             tcb.callFunction('getComments', {
                 title: this.pageTitle,
                 hash: this.pageHash,
@@ -175,11 +169,9 @@ export default {
                 ...this.page,
                 pageIndex
             }).then(data => {
-                let { list, total } = data
-                this.page.total = total
+                let { list, page } = data
+                this.page = page
                 this.list = list
-            }).catch(_ => {
-                this.loading = false
             })
         },
     },
@@ -190,7 +182,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;
