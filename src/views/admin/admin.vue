@@ -45,7 +45,7 @@ export default {
     },
     computed: {
         menu () {
-            if (this.config.is_admin) {
+            if (this.$store.config.is_admin) {
                 return [
                     { label: '个人信息', value: 'user' },
                     { label: '评论管理', value: 'mange' },
@@ -125,7 +125,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
 .login-icon {
     display: inline-block;
     width: 32px;

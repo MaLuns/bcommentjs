@@ -56,6 +56,10 @@ export default {
             this.$emit('update:modelValue', false)
         }
     },
+    unmounted () {
+        document.body.style.width = null;
+        document.body.style.overflow = null;
+    },
     watch: {
         modelValue: {
             immediate: true,
@@ -66,8 +70,8 @@ export default {
                         document.body.style.overflow = "hidden";
                     }
                 } else {
-                    document.body.style.width = "";
-                    document.body.style.overflow = "";
+                    document.body.style.width = null;
+                    document.body.style.overflow = null;
                 }
             }
         }

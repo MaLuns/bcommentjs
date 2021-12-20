@@ -129,10 +129,13 @@ export default {
             }
         }
     },
+    watch: {
+        '$store.config' (newVal) {
+            this.config = newVal
+        }
+    },
     created () {
-        tcb.callFunction('getConfig').then(res => {
-            this.config = res
-        })
+        this.config = this.$store.config
     },
     methods: {
         // 测试邮箱
@@ -162,7 +165,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('css/variables.less');
+@import url("css/variables.less");
 .config {
     border-radius: @ui-border-radius;
     background-color: @ui-bg;
