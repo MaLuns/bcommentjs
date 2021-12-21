@@ -10,10 +10,12 @@ import loading from './loading'
 import login from './login'
 import model from './model'
 import page from './page'
+import skeleton from './skeleton'
 
 export default [
     audit,
-    avatar, button,
+    avatar,
+    button,
     comment,
     dropdown,
     editor,
@@ -22,5 +24,6 @@ export default [
     loading,
     login,
     model,
-    page
+    page,
+    skeleton
 ]

@@ -6,7 +6,7 @@
         <div class="comment-edit-container" v-show="!reply">
             <m-editor :isAdmin="$store.config.is_admin"></m-editor>
         </div>
-        <m-comment :list="list" :isAdmin="$store.config.is_admin"></m-comment>
+        <m-comment :list="list"></m-comment>
         <!-- <m-loading v-if="loading"></m-loading> -->
         <m-page class="mt-10" v-bind="page" @change="loadData"></m-page>
         <!-- <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2> -->
@@ -170,8 +170,8 @@ export default {
                 pageIndex
             }).then(data => {
                 let { list, page } = data
-                this.page = page
-                this.list = list
+                this.page = page;
+                this.list = list;
             })
         },
     },
@@ -182,7 +182,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;
