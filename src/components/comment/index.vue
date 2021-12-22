@@ -1,33 +1,33 @@
 <template>
-    <div class="comment-list">
-        <template v-if="loading">
-            <div class="comment-item" v-for="item in 5" :key="item">
-                <m-skeleton type="circle" style="width: 40px;height:40px;"></m-skeleton>
+    <m-skeleton class="m-comment-list" :count="3" :loading="loading">
+        <template #template>
+            <div class="comment-item">
+                <m-skeleton-item type="circle" style="width: 40px;height:40px;"></m-skeleton-item>
                 <div class="comment-user-container">
                     <div class="comment-user-info">
-                        <m-skeleton class="mr-10" type="text" style="width: 60px;"></m-skeleton>
-                        <m-skeleton class="mr-10" type="text" style="width: 80px;"></m-skeleton>
-                        <m-skeleton class="mr-10" type="text" style="width: 80px;"></m-skeleton>
+                        <m-skeleton-item class="mr-10" type="text" style="width: 60px;"></m-skeleton-item>
+                        <m-skeleton-item class="mr-10" type="text" style="width: 80px;"></m-skeleton-item>
+                        <m-skeleton-item class="mr-10" type="text" style="width: 80px;"></m-skeleton-item>
                     </div>
                     <div class="comment-user-text">
-                        <m-skeleton type="text"></m-skeleton>
-                        <m-skeleton type="text" style="width: 30%;"></m-skeleton>
+                        <m-skeleton-item type="text"></m-skeleton-item>
+                        <m-skeleton-item type="text" style="width: 30%;"></m-skeleton-item>
                     </div>
                     <div class="comment-user-meta">
                         <span class="comment-time">
-                            <m-skeleton type="text" style="width: 30px;"></m-skeleton>
+                            <m-skeleton-item type="text" style="width: 30px;"></m-skeleton-item>
                         </span>
                         <span class="comment-reply">
-                            <m-skeleton type="text" style="width: 30px;"></m-skeleton>
+                            <m-skeleton-item type="text" style="width: 30px;"></m-skeleton-item>
                         </span>
                     </div>
                 </div>
             </div>
         </template>
-        <template v-else>
+        <template #default>
             <m-item v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index"></m-item>
         </template>
-    </div>
+    </m-skeleton>
 </template>
 
 <script>
@@ -42,24 +42,9 @@ export default {
         // 列表
         list: Array,
     },
-    data () {
-        return {
-            loading: true
-        }
-    },
     computed: {
-        len () {
-            return this.list.length
-        }
-    },
-    watch: {
-        len (val) {
-            if (val > 0) {
-                setTimeout(() => {
-                    this.loading = false
-                }, 300);
-            }
-
+        loading () {
+            return this.list.length === 0
         }
     },
     methods: {
@@ -69,7 +54,7 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("../../styles/variables.less");
-.comment-list {
+.m-comment-list {
     > h3 {
         text-align: center;
     }

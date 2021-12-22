@@ -1,11 +1,3 @@
-<template>
-    <div v-if="total > pageSize" class="center">
-        <m-button type="text" :disabled="pageIndex < 2" @click="handleLast">上一页</m-button>
-        <span class="ml-10 mr-10">{{ pageIndex }} / {{ maxPageIndex }}</span>
-        <m-button type="text" :disabled="maxPageIndex === pageIndex" @click="handleNext">下一页</m-button>
-    </div>
-</template>
-<script>
 export default {
     name: 'm-page',
     emits: ['change'],
@@ -13,6 +5,13 @@ export default {
         return {
             page: this.pageIndex
         }
+    },
+    render () {
+        return this.total > this.pageSize ? (<div class="center">
+            <m-button type="text" disabled={this.pageIndex < 2} onClick={this.handleLast}>上一页</m-button>
+            <span class="ml-10 mr-10">{this.pageIndex} / {this.maxPageIndex}</span>
+            <m-button type="text" disabled={this.maxPageIndex === this.pageIndex} onClick={this.handleNext}> 下一页</m-button>
+        </div>) : null;
     },
     props: {
         pageIndex: {
@@ -42,4 +41,3 @@ export default {
         }
     },
 }
-</script>

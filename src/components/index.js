@@ -11,6 +11,7 @@ import login from './login'
 import model from './model'
 import page from './page'
 import skeleton from './skeleton'
+import skeletonItem from './skeleton/item'
 
 export default [
     audit,
@@ -25,5 +26,6 @@ export default [
     login,
     model,
     page,
-    skeleton
+    skeleton,
+    skeletonItem
 ]

@@ -1,0 +1,46 @@
+.m-model-mask {
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    width           : 100vw;
+    height          : 100vh;
+    z-index         : 99;
+    background-color: #0000005c;
+}
+
+.m-model {
+    position     : fixed;
+    top          : 10vh;
+    z-index      : 100;
+    box-shadow   : 0 1px 6px @ui-shadow;
+    background   : @ui-bg;
+    border-radius: @ui-border-radius-card;
+
+    .header {
+        border-bottom: 0.5px solid @ui-border-line;
+        padding      : 0 1em;
+        display      : flex;
+        align-items  : center;
+        user-select  : none;
+        cursor       : move;
+
+        .title {
+            font-size  : @ui-font-size-card-title;
+            line-height: 2.6em;
+            flex       : 1;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            fill  : #c3c3c3;
+
+            &:hover {
+                fill: #000;
+            }
+        }
+    }
+
+    .body {
+        padding: 1.2em 1.6em;
+    }
+}
