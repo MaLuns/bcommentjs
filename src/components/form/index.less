@@ -1,0 +1,55 @@
+.m-form {
+    display: block;
+
+    &.inline {
+        display        : flex;
+        justify-content: space-around;
+
+        >div {
+            flex: 1;
+        }
+    }
+
+    .m-form-item {
+        display      : flex;
+        align-items  : center;
+        margin-bottom: 8px;
+        min-height   : 32px;
+
+        +.m-form-item {
+            margin: 0 0 1.2em 0.8em;
+        }
+
+
+        .m-form-item-label {
+            width       : 3em;
+            text-align  : right;
+            margin-right: 6px;
+
+            &.required::before {
+                content    : "*";
+                position   : absolute;
+                margin-left: -0.8em;
+                color      : @ui-danger;
+            }
+        }
+
+        .m-form-item-content {
+            flex: 1;
+        }
+
+        .error {
+            input {
+                border-color: @ui-danger  !important;
+            }
+        }
+
+
+        .error-msg {
+            margin   : -4px 0 4px 10px;
+            font-size: 0.9em;
+            color    : @ui-danger;
+        }
+
+    }
+}

@@ -12,6 +12,17 @@
 }
 
 
+.pointer {
+    cursor: pointer;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
 
 // 链接
 .link {
@@ -49,36 +60,27 @@ a.link {
 }
 
 // 位移过渡
-.tt-enter-active,
-.tt-leave-active {
+.staggered-fade-enter-active,
+.staggered-fade-leave-active {
     transition: opacity @ui-transition-duration, transform @ui-transition-duration;
 }
 
-.tt-enter-from {
+// 交替位移过渡
+.staggered-fade-enter-from {
     overflow : hidden;
     transform: translateX(50px);
     opacity  : 0;
 }
 
-.tt-leave-to {
+.staggered-fade-leave-to {
     overflow : hidden;
     transform: translateX(-50px);
     opacity  : 0;
 }
 
-.pointer {
-    cursor: pointer;
-}
-
-.center {
-    text-align: center;
-}
-
-.right {
-    text-align: right;
-}
 
 
+// 表情
 .emoji-icon {
     img {
         width         : 24px;

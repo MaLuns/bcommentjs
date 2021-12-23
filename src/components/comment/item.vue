@@ -1,5 +1,5 @@
 <template>
-    <div class="comment-item" :class="{ delete: comment.delete }">
+    <div class="m-comment-item" :class="{ delete: comment.delete }">
         <m-avatar :src="getAvatar(comment)"></m-avatar>
         <div class="comment-user-container">
             <span class="comment-user-top" v-if="comment.top">
@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="comment-edit-container" v-if="$root.reply && $root.reply.id === comment.id">
-                <m-editor isCancel @cancel="handleEmits('reply', null)"></m-editor>
+                <m-editor isCancel @sumbit="handleEmits('sumbit', ...$event)" @cancel="handleEmits('reply', null)"></m-editor>
             </div>
             <div class="comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">
@@ -76,9 +76,8 @@ import { timeAgo } from "@/timeago.js";
 import { parse } from "@/emojis";
 
 export default {
-    name: "mCommentItem",
-    inject: ['app'],
-    emits: ['reply', 'audit', 'delete'],
+    name: "m-comment-item",
+    emits: ['sumbit', 'reply', 'audit', 'delete'],
     components: {
         mAvatar,
         mEditor
@@ -105,8 +104,8 @@ export default {
             return comment.gavatar
         },
         // 事件
-        handleEmits (emit, data) {
-            this.$emit(emit, data)
+        handleEmits (emit, ...data) {
+            this.$emit(emit, ...data)
         },
         // 显示更多
         handleToggle (len) {
@@ -115,6 +114,3 @@ export default {
     }
 }
 </script>
-
-<style lang="less" scoped>
-</style>

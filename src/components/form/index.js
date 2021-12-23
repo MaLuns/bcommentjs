@@ -1,9 +1,5 @@
-<template>
-    <div class="form" :class="{ inline }">
-        <slot></slot>
-    </div>
-</template>
-<script>
+
+
 import { debugWarn } from "@/util";
 
 export default {
@@ -40,6 +36,13 @@ export default {
         }
         return { form }
     },
+    render (h) {
+        return (
+            <div class="m-form" class={{ inline: this.inline }}>
+                {this.$slots.default?.()}
+            </div>
+        )
+    },
     methods: {
         addField (field) {
             if (field) {
@@ -68,29 +71,3 @@ export default {
         }
     }
 }
-</script>
-<style lang="less" scoped>
-.form {
-    display: block;
-
-    &.inline {
-        display: flex;
-        justify-content: space-around;
-
-        :deep(.form-item) {
-            + .form-item {
-                margin: 0 0 1.2em 0.8em;
-            }
-        }
-        > :deep(div) {
-            flex: 1;
-        }
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .form {
-        display: block;
-    }
-}
-</style>

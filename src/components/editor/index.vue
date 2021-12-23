@@ -143,11 +143,15 @@ export default {
         handleSubmit () {
             if (this.form.content.trim().length) {
                 if (this.$store.config.is_admin || this.$refs.form.validate()) {
-                    this.$root.addComment({ ...this.form }, () => {
-                        this.$refs.editor.innerText = ''
-                        this.form.content = ''
-                        localStorage.setItem('editor_text', '')
-                    })
+                    this.$emit(
+                        'sumbit',
+                        { ...this.form },
+                        () => {
+                            this.$refs.editor.innerText = ''
+                            this.form.content = ''
+                            localStorage.setItem('editor_text', '')
+                        }
+                    )
                 }
             }
         }
@@ -156,7 +160,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .comment-editor {
     padding: 5px 0 0;
 
@@ -218,9 +222,6 @@ export default {
             align-items: center;
         }
     }
-}
-.mgl10 {
-    margin-left: 10px;
 }
 
 .admin-tips {

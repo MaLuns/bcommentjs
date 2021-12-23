@@ -7,7 +7,7 @@ export default {
         }
     },
     render () {
-        return this.total > this.pageSize ? (<div class="center">
+        return this.total > this.pageSize ? (<div class="m-page center">
             <m-button type="text" disabled={this.pageIndex < 2} onClick={this.handleLast}>上一页</m-button>
             <span class="ml-10 mr-10">{this.pageIndex} / {this.maxPageIndex}</span>
             <m-button type="text" disabled={this.maxPageIndex === this.pageIndex} onClick={this.handleNext}> 下一页</m-button>

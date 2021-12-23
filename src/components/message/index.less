@@ -1,0 +1,66 @@
+@import url("../../styles/variables.less");
+
+.m-message {
+    z-index       : 999;
+    position      : fixed;
+    top           : 30px;
+    pointer-events: none;
+    left          : 50%;
+    transform     : translateX(-50%);
+    display       : flex;
+    flex-direction: column;
+    align-items   : center;
+
+    .m-message-item {
+        margin-top   : 10px;
+        width        : max-content;
+        padding      : 8px 16px;
+        border-radius: 4px;
+        box-shadow   : 0 1px 6px @ui-shadow;
+        background   : @ui-bg;
+        line-height  : 1.5;
+        display      : flex;
+        align-items  : center;
+        font-size    : 14px;
+        transition   : all 0.3s ease;
+
+        .m-message-title {
+            color: @ui-text-weak;
+        }
+
+        .m-message-tag {
+            display      : inline-block;
+            width        : 12px;
+            height       : 12px;
+            border-radius: 50%;
+            margin-right : 8px;
+        }
+
+        .info {
+            background-color: @ui-info;
+        }
+
+        .success {
+            background-color: @ui-success;
+        }
+
+        .warning {
+            background-color: @ui-warning;
+        }
+
+        .danger {
+            background-color: @ui-danger;
+        }
+    }
+}
+
+// 偏移过度
+.offset-enter-from,
+.offset-leave-to {
+    opacity  : 0;
+    transform: translateY(-30px);
+}
+
+.offset-leave-active {
+    position: absolute;
+}

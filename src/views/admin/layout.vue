@@ -14,7 +14,7 @@
                 </div>
             </header>
             <main>
-                <transition name="tt" mode="out-in">
+                <transition name="staggered-fade" mode="out-in">
                     <keep-alive>
                         <component :is="componentName" :key="componentName"></component>
                     </keep-alive>

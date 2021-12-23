@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="form-item">
-            <span class="form-item-label" :class="{ required: isValidationEnabled }" :style="{ width: form.labelWidth }">
+        <div class="m-form-item">
+            <span class="m-form-item-label" :class="{ required: isValidationEnabled }" :style="{ width: form.labelWidth }">
                 <slot name="title">{{ label }}</slot>
             </span>
-            <div class="form-item-content" :class="{ error }">
+            <div class="m-form-item-content" :class="{ error }">
                 <slot></slot>
             </div>
         </div>
@@ -102,46 +102,3 @@ export default {
     }
 }
 </script>
-
-<style lang="less" scoped>
-@import url("../../styles/variables.less");
-.form-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
-    min-height: 32px;
-
-    .form-item-label {
-        width: 3em;
-        text-align: right;
-        margin-right: 6px;
-
-        &.required::before {
-            content: "*";
-            position: absolute;
-            margin-left: -0.8em;
-            color: @ui-danger;
-        }
-    }
-
-    .form-item-content {
-        flex: 1;
-    }
-
-    .error {
-        :deep(input) {
-            border-color: @ui-danger !important;
-        }
-    }
-}
-.error-msg {
-    margin: -4px 0 4px 10px;
-    font-size: 0.9em;
-    color: @ui-danger;
-}
-@media screen and (max-width: 600px) {
-    .form-item {
-        margin: 10px 0 !important;
-    }
-}
-</style>
