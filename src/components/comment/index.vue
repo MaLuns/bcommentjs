@@ -25,7 +25,7 @@
             </div>
         </template>
         <template #default>
-            <m-comment-item @reply="reply" @audit="audit" @delete="delete" v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index"></m-comment-item>
+            <m-comment-item v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index"></m-comment-item>
         </template>
     </m-skeleton>
 </template>
@@ -35,6 +35,7 @@ import mCommentItem from './item.vue'
 
 export default {
     name: 'm-comment',
+    emits: ['audit', 'delete', 'sumbit'],
     components: { mCommentItem },
     props: {
         list: Array,
@@ -44,15 +45,20 @@ export default {
             return this.list.length === 0
         }
     },
+    provide () {
+        return {
+            app: this
+        }
+    },
     data () {
         return {
-            comment: null
+            replyComment: null
         }
     },
     methods: {
         // 回复
         reply (comment) {
-            this.comment = comment
+            this.replyComment = comment
         },
         // 
         audit (comment) {
@@ -63,9 +69,12 @@ export default {
 
         },
         // 提交
-        sumbit () {
-
+        sumbit (comment, callback) {
+            this.$emit('sumbit', comment, () => {
+                this.replyComment = null
+                callback()
+            }, this.replyComment)
         }
     },
 }
-</script>
+</script>,

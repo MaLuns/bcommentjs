@@ -53,8 +53,8 @@
                     </template>
                 </div>
             </div>
-            <div class="comment-edit-container" v-if="$root.reply && $root.reply.id === comment.id">
-                <m-editor isCancel @sumbit="handleEmits('sumbit', ...$event)" @cancel="handleEmits('reply', null)"></m-editor>
+            <div class="comment-edit-container" v-if="app.replyComment && app.replyComment.id === comment.id">
+                <m-editor isCancel @sumbit="app.sumbit" @cancel="handleEmits('reply', null)"></m-editor>
             </div>
             <div class="comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">
@@ -77,19 +77,21 @@ import { parse } from "@/emojis";
 
 export default {
     name: "m-comment-item",
-    emits: ['sumbit', 'reply', 'audit', 'delete'],
+    //emits: ['sumbit', 'reply', 'audit', 'delete'],
     components: {
         mAvatar,
         mEditor
+    },
+    props: {
+        comment: Object,
+        replyComment: Object
     },
     data () {
         return {
             len: 2
         }
     },
-    props: {
-        comment: Object,
-    },
+    inject: ['app'],
     methods: {
         timeAgo,
         // 格式化内容
@@ -105,7 +107,9 @@ export default {
         },
         // 事件
         handleEmits (emit, ...data) {
-            this.$emit(emit, ...data)
+            console.log(emit, data);
+            //this.$emit(emit, ...data)
+            this.app[emit](...data)
         },
         // 显示更多
         handleToggle (len) {

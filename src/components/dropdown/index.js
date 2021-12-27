@@ -10,7 +10,6 @@ export default {
         }
     },
     render () {
-        console.log(this.$slots);
         return (
             <div class="m-dropdown">
                 {this.$slots.default?.()}

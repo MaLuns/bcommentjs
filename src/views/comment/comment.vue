@@ -4,9 +4,9 @@
             <slot name="comment-header"></slot>
         </div>
         <div class="comment-edit-container" v-show="!reply">
-            <m-editor :isAdmin="$store.config.is_admin"></m-editor>
+            <m-editor @sumbit="addComment"></m-editor>
         </div>
-        <m-comment :list="list"></m-comment>
+        <m-comment :list="list" @sumbit="addComment"></m-comment>
         <!-- <m-loading v-if="loading"></m-loading> -->
         <m-page class="mt-10" v-bind="page" @change="loadData"></m-page>
         <!-- <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2> -->
@@ -32,16 +32,6 @@ export default {
         env: {
             type: String,
             required: true
-        }
-    },
-    provide () {
-        return {
-            app: {
-                addComment: this.addComment,
-                replyComment: this.replyComment,
-                auditComment: this.auditComment,
-                deleteComment: this.deleteComment
-            }
         }
     },
     data () {
@@ -87,11 +77,6 @@ export default {
                 this.loadData()
             })
         },
-        // 获取配置
-        async setConfig () {
-            let config = await tcb.callFunction('getConfig')
-            this.$store.cofing = (config || { form: { nick: true, email: true } })
-        },
         // 设置回复
         replyComment (reply) {
             this.reply = reply
@@ -132,8 +117,7 @@ export default {
             })
         },
         // 添加评论
-        addComment (comment, callback) {
-            let reply = this.reply
+        addComment (comment, callback, reply = null) {
             let par = {
                 ...comment,
                 isPrivate: reply === null ? comment.isPrivate : false,
@@ -153,7 +137,6 @@ export default {
                     } else {
                         let item = this.list.find(item => item === reply || (item.childer && item.childer.includes(reply)))
                         item.childer.push(com)
-                        this.reply = null
                     }
                     this.$message.info('评论成功')
                     callback()

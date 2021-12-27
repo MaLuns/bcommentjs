@@ -35,6 +35,7 @@ import { insertAtCaret, regexp } from "@/util";
 import mEmojis from "./emojis";
 
 export default {
+    emits: ['cancel', 'sumbit'],
     name: 'm-editor',
     components: {
         mEmojis,
