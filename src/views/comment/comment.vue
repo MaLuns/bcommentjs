@@ -6,10 +6,8 @@
         <div class="comment-edit-container" v-show="!reply">
             <m-editor @sumbit="addComment"></m-editor>
         </div>
-        <m-comment :list="list" @sumbit="addComment"></m-comment>
-        <!-- <m-loading v-if="loading"></m-loading> -->
+        <m-comment :list="list" @audit="auditComment" @delete="deleteComment" @sumbit="addComment"></m-comment>
         <m-page class="mt-10" v-bind="page" @change="loadData"></m-page>
-        <!-- <h2 v-if="!loaded && !loading" class="center" @click="loadData">查看更多</h2> -->
         <m-audit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit"></m-audit>
     </div>
 </template>

@@ -26,6 +26,7 @@
         </template>
         <template #default>
             <m-comment-item v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index"></m-comment-item>
+            <slot></slot>
         </template>
     </m-skeleton>
 </template>
@@ -60,20 +61,25 @@ export default {
         reply (comment) {
             this.replyComment = comment
         },
-        // 
+        // 审核
         audit (comment) {
-
+            this.$emit('audit', comment)
         },
         // 删除
         delete (comment) {
-
+            this.$emit('delete', comment)
         },
         // 提交
         sumbit (comment, callback) {
-            this.$emit('sumbit', comment, () => {
-                this.replyComment = null
-                callback()
-            }, this.replyComment)
+            this.$emit(
+                'sumbit',
+                comment,
+                () => {
+                    this.replyComment = null
+                    callback()
+                },
+                this.replyComment
+            )
         }
     },
 }
