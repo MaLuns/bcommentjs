@@ -4,8 +4,10 @@ import button from './button'
 import comment from './comment'
 import dropdown from './dropdown'
 import editor from './editor'
+import empty from "./empty";
 import form from './form'
 import formItem from './form/item'
+import icon from "./icon";
 import loading from './loading'
 import login from './login'
 import model from './model'
@@ -20,8 +22,10 @@ export default [
     comment,
     dropdown,
     editor,
+    empty,
     form,
     formItem,
+    icon,
     loading,
     login,
     model,

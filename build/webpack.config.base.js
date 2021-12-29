@@ -1,6 +1,7 @@
 const path = require("path")
 const webpack = require('webpack')
 const { VueLoaderPlugin } = require('vue-loader')
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const { version, author } = require('../package.json')
 
 const banner =
@@ -34,6 +35,13 @@ module.exports.baseConf = {
     module: {
         strictExportPresence: true,
         rules: [
+            {
+                test: /\.svg$/,
+                loader: 'svg-sprite-loader',
+                options: {
+                    runtimeGenerator: require.resolve('./svg-to-icon'),
+                }
+            },
             { test: /\.vue$/, use: [{ loader: 'vue-loader', options: { customElement: true } }] },
             {
                 test: /\.js$/,
@@ -54,6 +62,6 @@ module.exports.baseConf = {
     },
     plugins: [
         new webpack.BannerPlugin(banner),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
     ]
 }

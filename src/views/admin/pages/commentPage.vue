@@ -24,6 +24,9 @@
             <m-comment :list="comments" v-if="comments.length > 0">
                 <m-page class="mt-10" v-bind="page" @change="getComments"></m-page>
             </m-comment>
+            <div v-else>
+                <m-empty></m-empty>
+            </div>
         </div>
     </div>
 </template>

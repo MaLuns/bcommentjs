@@ -81,8 +81,13 @@ export const createVueApp = (com, props) => {
     app.config.globalProperties.$message = message
     app.config.globalProperties.$store = store
 
+    const requireAll = requireContext => requireContext.keys().map(requireContext).map(e => e.default.content);
+    const req = require.context('../assets/', true, /\.svg$/);
+    const icons = requireAll(req)
+
     return {
         app,
-        styles
+        styles,
+        icons
     }
 }
