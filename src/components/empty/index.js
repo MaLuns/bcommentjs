@@ -8,13 +8,13 @@ export default {
         },
         width: {
             type: String,
-            default: '200px'
+            default: '200'
         }
     },
     render () {
         return (
             <div class="m-empty">
-                <m-icon name="empty" style={{ width: this.width }}></m-icon>
+                <m-icon name="empty" width={this.width}></m-icon>
                 <p class="m-empty-description">{this.description}</p>
             </div >
         )

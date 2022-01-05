@@ -4,9 +4,6 @@
             <div class="layout-left-title">文章列表</div>
             <m-skeleton class="m-comment-list" :count="6" :loading="articles.length < 1">
                 <template #default>
-                    <div class="pl-20 pr-20">
-                        <m-skeleton-item class="mt-10 mb-10" type="text"></m-skeleton-item>
-                    </div>
                     <ul>
                         <li class="article-item" :key="item._id" :class="{ current: item === curArticle }" v-for="item in articles" @click="handleCurArticle(item)">
                             <p>{{ item.title || item.url }}</p>
