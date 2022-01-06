@@ -13,7 +13,7 @@ export default {
     },
     render () {
         return (
-            <div class="m-empty">
+            <div class="m-empty p-20">
                 <m-icon name="empty" width={this.width}></m-icon>
                 <p class="m-empty-description">{this.description}</p>
             </div >

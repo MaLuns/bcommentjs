@@ -57,6 +57,13 @@
                 </div>
                 <p class="tip">开启后，将优先使用qq头像作为用户头像</p>
             </m-form-item>
+            <m-form-item label="显示已删除">
+                <div class="w200 inline">
+                    <input v-model="config.is_show_deleted" id="is_show_deleted" type="checkbox" />
+                    <label for="is_show_deleted" class="ui-switch"></label>
+                </div>
+                <p class="tip">开启后，将显示已删除评论</p>
+            </m-form-item>
 
             <m-form-item label="SMTP地址">
                 <input class="w200" v-model.trim="config.smtp_host" type="text" placeholder="SMTP服务地址" autocomplete="off" />

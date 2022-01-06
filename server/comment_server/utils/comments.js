@@ -158,6 +158,10 @@ const getComments = async (data) => {
     if (isAdmin) {
         matchWhere = { articleID: articleID }
         projectWhere = true
+        if (!app.config.is_show_deleted) {
+            matchWhere.delete = false
+            projectWhere = _.and([{ delete: false }])
+        }
     } else {
         matchWhere = _.and([
             { articleID: articleID, delete: false },
@@ -346,7 +350,11 @@ const updateComment = async (event) => {
     }
     let { updated } = await commentsDB.doc(event.id).update(newData)
     if (updated === 0) {
-
+        await commentsDB.where({
+            'childer.id': event.id
+        }).update({
+            'childer.$': newData
+        })
     }
     return formatRes(true)
 }

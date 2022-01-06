@@ -100,9 +100,7 @@ export default {
                         <div class="m-model-header">
                             <p class="m-model-title">{this.title}</p>
                             <span class="close-btn" onClick={this.handleClose}>
-                                <svg t="1638021668280" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"  width="16" height="16">
-                                    <path d="M548.992 503.744L885.44 167.328a31.968 31.968 0 1 0-45.248-45.248L503.744 458.496 167.328 122.08a31.968 31.968 0 1 0-45.248 45.248l336.416 336.416L122.08 840.16a31.968 31.968 0 1 0 45.248 45.248l336.416-336.416L840.16 885.44a31.968 31.968 0 1 0 45.248-45.248L548.992 503.744z"  />
-                                </svg>
+                                <m-icon name="close2" width="16"></m-icon>
                             </span>
                         </div>
                         <div class="m-model-body" onMousedown={(e) => e.stopPropagation()}>

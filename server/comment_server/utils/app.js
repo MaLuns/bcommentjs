@@ -24,6 +24,7 @@ let config = {
     },
     gavatar_url: 'https://gravatar.loli.net/avatar/$hash?d=mp',// 配置 gavatar 国内镜像源
     is_use_qq_avatar: false, // 是否启用QQ头像
+    is_show_deleted: false,// 显示已删除
 
     smtp_host: null, // SMTP 服务器配置
     smtp_port: null,// SMTP 端口
