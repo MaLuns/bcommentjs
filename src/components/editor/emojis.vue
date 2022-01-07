@@ -6,14 +6,14 @@
         <transition name="opacity">
             <template v-if="first">
                 <div v-show="show" class="emoji-container" @click="handleCheckEmojis">
-                    <ul v-for="item,key in emojis" :key="key" class="emoji-items" :class="{ show: key === currentEmoji }">
+                    <ul v-for="item,key in $store.emojis" :key="key" class="emoji-items" :class="{ show: key === currentEmoji }">
                         <li :data-text="['text', 'emoji'].includes(item.type) ? element.icon : `::${element.text}::`" class="emoji-item my-face" :key="element.text" :class="[item.type]" v-for="element in item.container">
                             <template v-if="['text', 'emoji'].includes(item.type)">{{ element.icon }}</template>
                             <img v-else alt referrerpolicy="no-referrer" :src="element.icon" />
                         </li>
                     </ul>
                     <div class="emoji-nav" @click.stop>
-                        <span :class="{ current: key === currentEmoji }" @click="currentEmoji = key;" v-for="item,key  in emojis" :key="key">{{ key }}</span>
+                        <span :class="{ current: key === currentEmoji }" @click="currentEmoji = key;" v-for="item,key  in $store.emojis" :key="key">{{ key }}</span>
                     </div>
                 </div>
             </template>
@@ -21,14 +21,13 @@
     </div>
 </template>
 <script>
-import { emojis } from "@/emojis";
+
 export default {
     data () {
         return {
             first: false,
             show: false,
-            emojis,
-            currentEmoji: Object.keys(emojis)[0],
+            currentEmoji: Object.keys(this.$store.emojis)[0],
         }
     },
     mounted () {
@@ -65,7 +64,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .emoji {
     position: relative;
     user-select: none;

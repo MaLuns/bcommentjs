@@ -160,7 +160,7 @@ const getComments = async (data) => {
         projectWhere = true
         if (!app.config.is_show_deleted) {
             matchWhere.delete = false
-            projectWhere = _.and([{ delete: false }])
+            projectWhere = $.eq(['$$item.delete', false])
         }
     } else {
         matchWhere = _.and([
@@ -170,11 +170,11 @@ const getComments = async (data) => {
                 { isPrivate: true, uid: await getUid() }
             ])
         ])
-        projectWhere = _.and([
-            { delete: false },
-            _.or([
-                { isAudit: true },
-                { uid: await getUid() }
+        projectWhere = $.and([
+            $.eq(['$$item.delete', false]),
+            $.or([
+                $.eq(['$$item.isAudit', true]),
+                $.eq(['$$item.uid', await getUid()]),
             ])
         ])
     }

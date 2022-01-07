@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import { debounce } from '@/util'
+import { emojis } from "@/emojis";
 import tcb from '@/tcb';
 
 // 全局状态管理
@@ -20,6 +21,10 @@ const store = {
         reply: reactive({
             data: null
         }),
+        // 表情
+        emojis: reactive({
+            data: emojis
+        })
     },
     get user () {
         return this.state.user.data
@@ -39,6 +44,9 @@ const store = {
     },
     set reply (newVal) {
         this.state.reply.data = newVal
+    },
+    get emojis () {
+        return this.state.emojis.data
     }
 }
 export default store
