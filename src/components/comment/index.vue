@@ -3,21 +3,21 @@
         <template #template>
             <div class="m-comment-item">
                 <m-skeleton-item type="circle" style="width: 40px;height:40px;"></m-skeleton-item>
-                <div class="comment-user-container">
-                    <div class="comment-user-info">
+                <div class="m-comment-user-container">
+                    <div class="m-comment-user-info">
                         <m-skeleton-item class="mr-10" type="text" style="width: 60px;"></m-skeleton-item>
                         <m-skeleton-item class="mr-10" type="text" style="width: 80px;"></m-skeleton-item>
                         <m-skeleton-item class="mr-10" type="text" style="width: 80px;"></m-skeleton-item>
                     </div>
-                    <div class="comment-user-text">
+                    <div class="m-comment-user-text">
                         <m-skeleton-item type="text"></m-skeleton-item>
                         <m-skeleton-item type="text" style="width: 30%;"></m-skeleton-item>
                     </div>
-                    <div class="comment-user-meta">
-                        <span class="comment-time">
+                    <div class="m-comment-user-meta">
+                        <span class="m-comment-time">
                             <m-skeleton-item type="text" style="width: 30px;"></m-skeleton-item>
                         </span>
-                        <span class="comment-reply">
+                        <span class="m-comment-reply">
                             <m-skeleton-item type="text" style="width: 30px;"></m-skeleton-item>
                         </span>
                     </div>

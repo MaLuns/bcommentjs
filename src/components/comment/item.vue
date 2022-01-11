@@ -1,48 +1,48 @@
 <template>
     <div class="m-comment-item" :class="{ delete: comment.delete }">
         <m-avatar :src="getAvatar(comment)"></m-avatar>
-        <div class="comment-user-container">
-            <span class="comment-user-top" v-if="comment.top">
+        <div class="m-comment-user-container">
+            <span class="m-comment-user-top" v-if="comment.top">
                 <m-icon name="top" width="32"></m-icon>
             </span>
             <template v-if="$store.config.is_admin">
-                <span class="comment-user-top" v-if="comment.delete">
+                <span class="m-comment-user-top" v-if="comment.delete">
                     <m-icon name="delete" width="48"></m-icon>
                 </span>
-                <span class="comment-user-top" v-else-if="!comment.isAudit">
+                <span class="m-comment-user-top" v-else-if="!comment.isAudit">
                     <m-icon name="audit" width="48"></m-icon>
                 </span>
             </template>
-            <div class="comment-user-info">
+            <div class="m-comment-user-info">
                 <template v-if="comment.nick">
-                    <a v-if="comment.link" class="comment-user-nick link" rel="nofollow" :href="comment.link" target="_blank" v-text="comment.nick"></a>
-                    <span v-else class="comment-user-nick" v-text="comment.nick"></span>
+                    <a v-if="comment.link" class="m-comment-user-nick link" rel="nofollow" :href="comment.link" target="_blank" v-text="comment.nick"></a>
+                    <span v-else class="m-comment-user-nick" v-text="comment.nick"></span>
                 </template>
-                <span class="comment-user-tag" v-if="comment.tag">{{ comment.tag }}</span>
-                <span class="comment-user-sys">{{ comment.ua.browser }} {{ comment.ua.version }}</span>
-                <span class="comment-user-sys">{{ comment.ua.os }} {{ comment.ua.osVersion }}</span>
+                <span class="m-comment-user-tag" v-if="comment.tag">{{ comment.tag }}</span>
+                <span class="m-comment-user-sys">{{ comment.ua.browser }} {{ comment.ua.version }}</span>
+                <span class="m-comment-user-sys">{{ comment.ua.os }} {{ comment.ua.osVersion }}</span>
             </div>
-            <div class="comment-user-text">
+            <div class="m-comment-user-text">
                 <template v-if="comment.at">
-                    <a v-if="comment.at.link" class="comment-replylink link" rel="nofollow" :href="comment.at.link" target="_blank">@{{ comment.at.nick || comment.at.tag }}</a>
-                    <span v-else class="comment-replylink">@{{ comment.at.nick || comment.at.tag }}</span>
+                    <a v-if="comment.at.link" class="m-comment-replylink link" rel="nofollow" :href="comment.at.link" target="_blank">@{{ comment.at.nick || comment.at.tag }}</a>
+                    <span v-else class="m-comment-replylink">@{{ comment.at.nick || comment.at.tag }}</span>
                 </template>
                 <div v-html="formatContent(comment.content)"></div>
             </div>
-            <div class="comment-user-meta">
-                <span class="comment-time">{{ timeAgo(new Date(comment.created)) }}</span>
+            <div class="m-comment-user-meta">
+                <span class="m-comment-time">{{ timeAgo(new Date(comment.created)) }}</span>
                 <div>
-                    <span v-if="!comment.delete && comment.isAudit" class="comment-reply" @click="handleEmits('reply', comment)">回复</span>
+                    <span v-if="!comment.delete && comment.isAudit" class="m-comment-reply" @click="handleEmits('reply', comment)">回复</span>
                     <template v-if="$store.config.is_admin">
-                        <span v-if="!comment.delete && !comment.isAudit" class="comment-reply" @click="handleEmits('audit', comment)">审核</span>
-                        <span v-if="!comment.delete" class="comment-reply c-danger" @click="handleEmits('delete', comment)">删除</span>
+                        <span v-if="!comment.delete && !comment.isAudit" class="m-comment-reply" @click="handleEmits('audit', comment)">审核</span>
+                        <span v-if="!comment.delete" class="m-comment-reply c-danger" @click="handleEmits('delete', comment)">删除</span>
                     </template>
                 </div>
             </div>
-            <div class="comment-edit-container" v-if="app.replyComment && app.replyComment.id === comment.id">
+            <div class="m-comment-edit-container" v-if="app.replyComment && app.replyComment.id === comment.id">
                 <m-editor isCancel @sumbit="app.sumbit" @cancel="handleEmits('reply', null)"></m-editor>
             </div>
-            <div class="comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
+            <div class="m-comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">
                     <m-comment-item v-for="element in comment.childer" :key="element.id" :comment="element"></m-comment-item>
                 </template>

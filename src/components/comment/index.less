@@ -4,29 +4,31 @@
     }
 
     .m-comment-item {
-        display: flex;
-        padding: 1em 0;
+        display : flex;
+        padding : 1em 0;
+        overflow: hidden;
 
-        .comment-user-container {
+        .m-comment-user-container {
             flex       : 1;
-            margin-left: 1em;
+            margin-left: 10px;
             position   : relative;
+            width      : calc(100% - 50px);
 
-            .comment-user-top {
+            .m-comment-user-top {
                 position: absolute;
                 right   : 0;
                 top     : 0;
             }
 
             // 昵称
-            .comment-user-nick {
+            .m-comment-user-nick {
                 position    : relative;
                 margin-right: 0.875em;
                 display     : inline-block;
             }
 
             // 系统信息
-            .comment-user-sys {
+            .m-comment-user-sys {
                 display     : inline-block;
                 font-size   : 0.75em;
                 margin-right: 0.875em;
@@ -34,7 +36,7 @@
             }
 
             // 标识
-            .comment-user-tag {
+            .m-comment-user-tag {
                 color           : @ui-text-inversion;
                 background-color: @ui-info;
                 display         : inline-block;
@@ -44,19 +46,21 @@
                 margin-right    : 0.875em;
             }
 
-            // 用户次要信息
-            .comment-user-meta {
+            // 时间，操作按钮
+            .m-comment-user-meta {
                 margin-top     : 0.8em;
                 display        : flex;
                 justify-content: space-between;
+                align-items    : center;
+                height         : 1.2em;
 
-                .comment-time {
+                .m-comment-time {
                     color    : @ui-aide-text;
                     font-size: 0.9em;
                 }
 
-                .comment-reply,
-                .comment-reply {
+                .m-comment-reply,
+                .m-comment-reply {
                     cursor     : pointer;
                     font-size  : 0.9em;
                     user-select: none;
@@ -65,49 +69,49 @@
             }
         }
 
-        .comment-reply {
+        .m-comment-reply {
             /* opacity: 0; */
             margin-right: 1.2em;
         }
 
         &:hover {
-            >.comment-user-container>.comment-user-meta .comment-reply {
+            >.m-comment-user-container>.m-comment-user-meta .m-comment-reply {
                 opacity: 1;
             }
         }
 
-        +.comment-item {
+        +.m-comment-item {
             border-top: 1px dashed @ui-dividing-line;
         }
 
-        .comment-item {
+        .m-comment-item {
             padding: 1.2em 0;
 
-            +.comment-item {
+            +.m-comment-item {
                 border-top: 1px dashed @ui-dividing-line;
             }
         }
 
         // 回复内容块
-        .comment-reply-container {
+        .m-comment-reply-container {
             margin-top      : 1em;
             padding         : 0 1.2em;
             border-radius   : @ui-border-radius;
             background-color: @ui-bg-weak;
 
-            .comment-reply:last-child {
+            .m-comment-reply:last-child {
                 margin-right: 0;
             }
         }
 
         @media screen and (max-width: 600px) {
-            .comment-user-sys {
+            .m-comment-user-sys {
                 display: none;
             }
         }
 
         // 编辑器容器
-        .comment-edit-container {
+        .m-comment-edit-container {
             padding   : 5px 10px 10px;
             margin-top: 10px;
         }
@@ -121,10 +125,10 @@
         }
 
         // 评论内容 样式处理
-        .comment-user-text {
+        .m-comment-user-text {
             margin: 0.6em 0 0;
 
-            .comment-replylink {
+            .m-comment-replylink {
                 font-size    : 0.9rem;
                 outline      : 0;
                 margin-bottom: 4px;
@@ -135,22 +139,17 @@
             }
 
             //代码块
-            pre {
+
+            code {
                 font-family: Menlo, "Bitstream Vera Sans Mono",
                     "DejaVu Sans Mono", Monaco, Consolas, monospace;
                 position     : relative;
-                background   : #272822 !important;
-                margin       : 2em 0;
-                padding      : 40px 20px 10px;
+                font-size    : 12px;
+                margin       : 10px 0;
+                padding      : 30px 12px 10px;
                 overflow     : auto;
-                color        : #ccc !important;
                 border-radius: 4px;
-                line-height  : 20px;
 
-                code {
-                    font-family: Menlo, "Bitstream Vera Sans Mono",
-                        "DejaVu Sans Mono", Monaco, Consolas, monospace;
-                }
 
                 &::after {
                     content      : " ";
@@ -220,6 +219,10 @@
                         min-width  : 85px;
                     }
                 }
+            }
+
+            img {
+                max-width: 100%;
             }
         }
     }

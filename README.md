@@ -34,3 +34,11 @@
 ## 便捷管理
 [x] 内嵌式管理面板，通过密码登录，可方便地查看评论、隐藏评论、删除评论、修改配置
 [x] 通过密钥快捷回复
+
+
+##
+``` html
+<script src="//unpkg.com/vue@3.2.26/dist/vue.runtime.global.prod.js"></script>
+<script src="//unpkg.com/@highlightjs/cdn-assets@11.4.0/highlight.min.js"></script>
+<script src="//unpkg.com/commentjs/dist/index.min.js"></script>
+```

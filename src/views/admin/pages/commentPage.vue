@@ -18,28 +18,32 @@
             </m-skeleton>
         </div>
         <div class="layout-right">
-            <m-comment :list="comments" v-if="comments.length > 0">
-                <m-page class="mt-10" v-bind="page" @change="getComments"></m-page>
-            </m-comment>
-            <div v-else>
+            <template v-if="comments.length > 0">
+                <m-comment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
+                    <m-page class="mt-10" v-bind="page" @change="getComments"></m-page>
+                </m-comment>
+                <m-audit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit"></m-audit>
+            </template>
+            <template v-else>
                 <m-empty></m-empty>
-            </div>
+            </template>
         </div>
     </div>
 </template>
 <script>
+import commentMixin from '@/commentMixin';
 import tcb from '@/tcb'
+
 export default {
+    mixins: [commentMixin],
     data () {
         return {
             articles: [],
-            comments: [],
             curArticle: {},
-            page: {
-                total: 0,
-                pageIndex: 1,
-                pageSize: 10
-            },
+            audit: {
+                show: false,
+                comment: {}
+            }
         }
     },
     mounted () {

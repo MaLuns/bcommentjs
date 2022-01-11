@@ -4,7 +4,7 @@ export default {
         name: String,
         width: {
             type: String,
-            default: 32
+            default: '32'
         },
         height: {
             type: String

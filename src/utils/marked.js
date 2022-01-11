@@ -1,8 +1,17 @@
 import { marked } from 'marked';
-const hanabi = require('hanabi');
+import hljs from 'highlight.js/lib/common';
 
 marked.setOptions({
-    highlight: hanabi,
+    renderer: new marked.Renderer(),
+    highlight: function (code, lang) {
+        if (hljs) {
+            const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+            return hljs.highlight(code, { language }).value;
+        } else {
+            return code
+        }
+    },
+    langPrefix: 'hljs language-',
     gfm: true,
     tables: true,
     breaks: true,
