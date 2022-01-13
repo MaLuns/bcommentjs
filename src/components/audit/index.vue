@@ -1,5 +1,5 @@
 <template>
-    <m-model v-model="shows" title="评论审核" :width="500">
+    <m-model v-model="shows" title="评论审核" :width="500" :scroll="false">
         <h4 class="pb-10">@{{ comment.nick }}</h4>
         <textarea v-model="content" rows="5" class="w100p"></textarea>
         <div class="right mt-10">
@@ -27,8 +27,11 @@ export default {
         }
     },
     watch: {
-        shows () {
-            this.content = this.comment.content
+        shows: {
+            immediate: true,
+            handler () {
+                this.content = this.comment.content
+            }
         }
     },
     data () {

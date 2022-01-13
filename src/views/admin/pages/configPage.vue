@@ -1,6 +1,9 @@
 <template>
     <div class="config">
         <m-form ref="form" :model="config" labelWidth="6em">
+            <m-form-item>
+                <h2>评论配置</h2>
+            </m-form-item>
             <m-form-item label="博客名称">
                 <input class="w200" v-model.trim="config.site_name" type="text" placeholder="站点名称" autocomplete="off" />
                 <p class="tip">用于消息推送使用</p>
@@ -64,7 +67,9 @@
                 </div>
                 <p class="tip">开启后，将显示已删除评论</p>
             </m-form-item>
-
+            <m-form-item>
+                <h2>邮件配置</h2>
+            </m-form-item>
             <m-form-item label="SMTP地址">
                 <input class="w200" v-model.trim="config.smtp_host" type="text" placeholder="SMTP服务地址" autocomplete="off" />
                 <p class="tip">例如：腾讯企业邮箱为 smtp.exmail.qq.com</p>
@@ -114,7 +119,6 @@
             </m-form-item>
             <m-form-item>
                 <m-button type="primary" @click="handleSave">保存</m-button>
-
                 <m-button type="text" @click="handleTestEmail">邮箱测试</m-button>
             </m-form-item>
         </m-form>

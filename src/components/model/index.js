@@ -29,6 +29,10 @@ export default {
             type: String,
             default: "提示"
         },
+        scroll: {
+            type: Boolean,
+            default: true
+        },
     },
     methods: {
         handleClick () {
@@ -41,21 +45,25 @@ export default {
         }
     },
     unmounted () {
-        document.body.style.width = null;
-        document.body.style.overflow = null;
+        if (this.scroll) {
+            document.body.style.width = null;
+            document.body.style.overflow = null;
+        }
     },
     watch: {
         modelValue: {
             immediate: true,
             handler (val) {
-                if (val) {
-                    if (hasScrollbar()) {
-                        document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
-                        document.body.style.overflow = "hidden";
+                if (this.scroll) {
+                    if (val) {
+                        if (hasScrollbar()) {
+                            document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
+                            document.body.style.overflow = "hidden";
+                        }
+                    } else {
+                        document.body.style.width = null;
+                        document.body.style.overflow = null;
                     }
-                } else {
-                    document.body.style.width = null;
-                    document.body.style.overflow = null;
                 }
             }
         }

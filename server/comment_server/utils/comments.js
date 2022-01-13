@@ -11,10 +11,28 @@ const commentsDB = db.collection('db_comments')
 const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const { getEnvEmail, notAdminLimit } = require('./app')
+const { marked } = require('marked')
+const hljs = require('highlight.js');
 
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
-//const marked = require('marked')
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    highlight: function (code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+    },
+    langPrefix: 'hljs language-',
+    gfm: true,
+    tables: true,
+    breaks: true,
+    pedantic: false,
+    sanitize: true,
+    smartLists: true,
+    smartypants: true
+});
+
+
 
 // 获取浏览器标识
 const getua = (uaStr) => {
@@ -54,7 +72,7 @@ const parse = async (data, isAdmin = false) => {
         avatar: md5(data.email), // 头像
         link: data.link || '', // 链接
         ua: getua(data.ua), // 浏览器标识
-        content: DOMPurify.sanitize(data.content, { FORBID_TAGS: ['style'], FORBID_ATTR: ['style'] }), // 评论内容
+        content: DOMPurify.sanitize(marked.parse(data.content), { FORBID_TAGS: ['style'], FORBID_ATTR: ['style'] }), // 评论内容
         replyId: data.replyId || '', // 被回复ID
         created: timestamp, // 评论时间
         updated: timestamp,

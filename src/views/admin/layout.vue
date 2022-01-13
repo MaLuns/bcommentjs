@@ -1,7 +1,7 @@
 <template>
     <transition name="opacity">
         <div v-if="modelValue" class="admin-container">
-            <header>
+            <header class="header">
                 <ul class="nav-left tabs">
                     <li v-for="item in tabs" :key="item.value" @click="componentName = item.value;" class="tabs-item" :class="{ current: item.value === componentName }">{{ item.label }}</li>
                 </ul>
@@ -9,7 +9,7 @@
                     <m-icon name="close" width="22"></m-icon>
                 </div>
             </header>
-            <main>
+            <main class="main">
                 <transition name="staggered-fade" mode="out-in">
                     <keep-alive>
                         <component :is="componentName" :key="componentName"></component>
@@ -80,7 +80,7 @@ export default {
         }
     }
 
-    main {
+    .main {
         overflow-x: hidden;
         overflow-y: auto;
         padding: 1em 1.5em;

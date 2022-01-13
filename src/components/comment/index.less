@@ -141,28 +141,11 @@
             //代码块
 
             code {
-                font-family: Menlo, "Bitstream Vera Sans Mono",
-                    "DejaVu Sans Mono", Monaco, Consolas, monospace;
-                position     : relative;
                 font-size    : 12px;
                 margin       : 10px 0;
-                padding      : 30px 12px 10px;
+                padding      : 12px;
                 overflow     : auto;
                 border-radius: 4px;
-
-
-                &::after {
-                    content      : " ";
-                    position     : absolute;
-                    border-radius: 50%;
-                    background   : @ui-danger-weak;
-                    width        : 12px;
-                    height       : 12px;
-                    top          : 0;
-                    left         : 12px;
-                    margin-top   : 12px;
-                    box-shadow   : 20px 0 @ui-warning-weak, 40px 0 @ui-success-weak;
-                }
             }
 
             //分割线

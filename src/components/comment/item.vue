@@ -93,7 +93,6 @@ export default {
         },
         // 事件
         handleEmits (emit, ...data) {
-            console.log(emit, data);
             //this.$emit(emit, ...data)
             this.app[emit](...data)
         },

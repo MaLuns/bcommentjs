@@ -16,8 +16,7 @@ module.exports = merge(baseConf, {
     },
     externals: {
         vue: 'Vue',
-        '@cloudbase/js-sdk': 'cloudbase',
-        'highlight.js/lib/common': 'hljs'
+        '@cloudbase/js-sdk': 'cloudbase'
     },
     plugins: [
         new webpack.DefinePlugin({

@@ -16,7 +16,6 @@
 <script>
 import tcb from '@/tcb';
 import commentMixin from '@/commentMixin';
-import marked from '@/marked';
 
 export default {
     mixins: [commentMixin],
