@@ -1,7 +1,7 @@
 {
-  "name": "commentjs",
-  "version": "1.0.0",
-  "description": "",
+  "name": "b-comments",
+  "version": "0.0.4",
+  "description": "评论插件",
   "main": "./dist/index.min.js",
   "scripts": {
     "dev": "webpack server --config ./build/webpack.config.dev.js",
@@ -9,7 +9,11 @@
     "analyze": "webpack --config ./build/webpack.config.js --profile --json > stats.json && webpack-bundle-analyzer stats.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "comments",
+    "blog comment",
+    "web components"
+  ],
   "author": "imalun",
   "license": "ISC",
   "dependencies": {
@@ -45,5 +49,8 @@
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "3.11.3",
     "webpack-merge": "^5.8.0"
-  }
+  },
+  "files": [
+    "/dist"
+  ]
 }

@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path')
 const app = require('./app')
 const { notAdminLimit, getEnvEmail } = app
-const { formatRes } = require('./utils');
+const { formatRes, dateFormat } = require('./utils');
 
 /**
  * 获取 nodemailer
@@ -62,7 +62,7 @@ const sendEmail = async ({ title, href, type, nick, content, toEmail }) => {
         type,
         nick,
         content,
-        datetime: new Date(),
+        datetime: dateFormat(),
         siteName: app.config.site_name,
         siteLogo: app.config.site_logo
     })

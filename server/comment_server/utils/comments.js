@@ -305,16 +305,17 @@ const addComment = async (event) => {
 
     // 格式化数据
     let data = await parse(event, isAdmin);
+    const { data: { title = '', href = '' } } = await getArticle(data.articleID)
     const res = {
         ...data,
         gavatar: app.config.gavatar_url.replace('$hash', data.avatar),
     }
-    if (event.type === 0) {
+
+    if (event.type === 0) { // 评论
         let { id } = await commentsDB.add(data)
         res.id = id
-    } else {
-        // 查找被回复评论
-        const comment = await getCommentByID(data.replyId)
+    } else { // 回复
+        const comment = await getCommentByID(data.replyId) // 查找被回复评论
         data.at = getObjOfKeys(comment, ['link', 'nick', 'tag'])
         data.id = uuid(); // 唯一id
         res.id = data.id
@@ -325,16 +326,23 @@ const addComment = async (event) => {
             { _id: data.replyId },
             { 'childer.id': data.replyId }
         ])).update({ childer: _.push([data]) })
+
         // 通知被回复人
-        if (false && comment.email !== data.email && comment.email !== app.config.email.auth.user) {
-            sendEmail({ ...data, email: comment.email })
+        if (comment.email !== data.email && comment.email !== getEnvEmail() && comment.email !== app.config.sender_email) {
+            sendEmail({
+                title,
+                href,
+                type: 1,
+                nick: data.nick,
+                content: data.content,
+                toEmail: comment.email
+            })
         }
     }
 
     // 通知博主
     try {
         if (!isAdmin) {
-            let { data: { title = '', href = '' } } = await getArticle(data.articleID)
             sendEmail({
                 title,
                 href,

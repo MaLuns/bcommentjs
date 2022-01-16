@@ -64,7 +64,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .emoji {
     position: relative;
     user-select: none;
@@ -79,7 +79,7 @@ export default {
         background-color: @ui-bg;
         position: absolute;
         z-index: 2;
-        width: 330px;
+        width: 380px;
         height: 240px;
         margin-top: 0.5em;
         box-shadow: #6464640d 0px 0px 1px, #6464640d 0px 2px 3px,
@@ -94,12 +94,13 @@ export default {
             background-color: @ui-bg;
 
             span {
-                padding: 0 5px;
+                line-height: 32px;
+                padding: 0 10px;
                 display: inline-block;
                 cursor: pointer;
 
                 &.current {
-                    background-color: @ui-bg-weak;
+                    background-color: @ui-aide-bg;
                 }
             }
         }
@@ -118,7 +119,7 @@ export default {
 
             .emoji-item {
                 list-style-type: none;
-                background: @ui-aide-bg;
+                background-color: @ui-aide-bg;
                 padding: 5px 10px;
                 border-radius: 5px;
                 display: inline-block;

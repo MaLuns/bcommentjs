@@ -18,12 +18,12 @@
         <div class="emojis-btn">
             <m-emojis @checked="insertAtCaret"></m-emojis>
             <div class="btn-container">
-                <template v-if="!isCancel">
+                <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
+                <template v-else>
                     <input v-model="form.isPrivate" id="isPrivate" type="checkbox" />
                     <label for="isPrivate" class="ui-checkbox"></label>
                     <label for="isPrivate">私密评论</label>
                 </template>
-                <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
                 <m-button type="text" class="my-face" @click="handleSubmit">发布</m-button>
             </div>
         </div>

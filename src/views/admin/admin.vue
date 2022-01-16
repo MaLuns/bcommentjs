@@ -1,5 +1,5 @@
 <template>
-    <div class="login-icon pointer">
+    <div class="pointer">
         <template v-if="!user">
             <m-icon @click="showLoginPanel = true;" name="login"></m-icon>
         </template>
@@ -32,13 +32,11 @@ export default {
         menu () {
             if (this.$store.config.is_admin) {
                 return [
-                    { label: '个人信息', value: 'user' },
                     { label: '评论管理', value: 'mange' },
                     { label: '退出', value: 'out' }
                 ]
             } else {
                 return [
-                    { label: '个人信息', value: 'user' },
                     { label: '退出', value: 'out' }
                 ]
             }
@@ -111,13 +109,6 @@ export default {
 </script>
 <style lang="less">
 @import url("../../styles/index.less");
-.login-icon {
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    background-color: @ui-bg;
-    border-radius: 50%;
-}
 .admin-container {
     color: @ui-text;
     background-color: @ui-bg;
