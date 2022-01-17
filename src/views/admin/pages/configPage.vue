@@ -35,6 +35,13 @@
                 </div>
                 <p class="tip">开启后，评论需要博主审核通过后才显示</p>
             </m-form-item>
+            <m-form-item label="私密评论">
+                <div class="w200 inline">
+                    <input v-model="config.is_use_private" id="is_use_private" type="checkbox" />
+                    <label for="is_use_private" class="ui-switch"></label>
+                </div>
+                <p class="tip">开启后，允许用户私密留言评论</p>
+            </m-form-item>
             <m-form-item label="必填项">
                 <div class="w200 inline">
                     <input v-model="config.form.nick" id="form_nick" type="checkbox" />
@@ -66,6 +73,20 @@
                     <label for="is_show_deleted" class="ui-switch"></label>
                 </div>
                 <p class="tip">开启后，将显示已删除评论</p>
+            </m-form-item>
+            <m-form-item label="开启表情包">
+                <div class="w200 inline">
+                    <input v-model="config.is_show_emoji" id="is_show_emoji" type="checkbox" />
+                    <label for="is_show_emoji" class="ui-switch"></label>
+                </div>
+                <p class="tip">开启后，可使用表情包评论</p>
+            </m-form-item>
+            <m-form-item label="navigator">
+                <div class="w200 inline">
+                    <input v-model="config.is_show_browser" id="is_show_browser" type="checkbox" />
+                    <label for="is_show_browser" class="ui-switch"></label>
+                </div>
+                <p class="tip">开启后，显示用户浏览器标识信息</p>
             </m-form-item>
             <m-form-item>
                 <h2>邮件配置</h2>
@@ -176,7 +197,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import url('css/variables.less');
+@import url("css/variables.less");
 .config-page {
     border-radius: @ui-border-radius;
     background-color: @ui-bg;

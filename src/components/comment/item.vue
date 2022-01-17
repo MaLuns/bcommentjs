@@ -19,8 +19,10 @@
                     <span v-else class="m-comment-user-nick" v-text="comment.nick"></span>
                 </template>
                 <span class="m-comment-user-tag" v-if="comment.tag">{{ comment.tag }}</span>
-                <span class="m-comment-user-sys">{{ comment.ua.browser }} {{ comment.ua.version }}</span>
-                <span class="m-comment-user-sys">{{ comment.ua.os }} {{ comment.ua.osVersion }}</span>
+                <template v-if="$store.config.is_show_browser">
+                    <span class="m-comment-user-sys">{{ comment.ua.browser }} {{ comment.ua.version }}</span>
+                    <span class="m-comment-user-sys">{{ comment.ua.os }} {{ comment.ua.osVersion }}</span>
+                </template>
             </div>
             <div class="m-comment-user-text">
                 <template v-if="comment.at">
@@ -40,7 +42,7 @@
                 </div>
             </div>
             <div class="m-comment-edit-container" v-if="app.replyComment && app.replyComment.id === comment.id">
-                <m-editor isCancel @sumbit="app.sumbit" @cancel="handleEmits('reply', null)"></m-editor>
+                <m-editor type="rp" isCancel @sumbit="app.sumbit" @cancel="handleEmits('reply', null)"></m-editor>
             </div>
             <div class="m-comment-reply-container" v-if="comment.childer && comment.childer.length > 0">
                 <template v-if="comment.childer.length < 3">

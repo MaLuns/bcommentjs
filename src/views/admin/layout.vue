@@ -3,7 +3,9 @@
         <div v-if="modelValue" class="admin-container">
             <header class="header">
                 <ul class="nav-left tabs">
-                    <li v-for="item in tabs" :key="item.value" @click="componentName = item.value;" class="tabs-item" :class="{ current: item.value === componentName }">{{ item.label }}</li>
+                    <template v-for="item in tabs">
+                        <li v-if="!item.hide" :key="item.value" @click="componentName = item.value;" class="tabs-item" :class="{ current: item.value === componentName }">{{ item.label }}</li>
+                    </template>
                 </ul>
                 <div class="nav-right" @click="handleClose">
                     <m-icon name="close" width="22"></m-icon>
@@ -35,7 +37,7 @@ export default {
     data () {
         return {
             tabs: [
-                { label: '首页', value: 'HomePage' },
+                { label: '首页', value: 'HomePage', hide: window.echarts ? false : true },
                 { label: '评论管理', value: 'CommentPage' },
                 { label: '配置管理', value: 'ConfigPage' }
             ],
@@ -50,7 +52,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .admin-container {
     position: fixed;
     left: 0;

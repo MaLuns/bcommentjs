@@ -1,7 +1,7 @@
 <template>
     <div class="comment-editor">
-        <div v-if="$store.config.is_admin" class="admin-tips"></div>
-        <m-form v-else ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
+        <!-- <div v-if="$store.config.is_admin"></div> -->
+        <m-form ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
                 <input @blur="handleBlur" v-model.trim="form.nick" type="text" placeholder="取个昵称吧～" autocomplete="off" />
             </m-form-item>
@@ -12,14 +12,16 @@
                 <input @blur="handleBlur" v-model.trim="form.link" type="text" placeholder="相信你，不会打广告的~" autocomplete="off" />
             </m-form-item>
         </m-form>
-        <div class="comment-editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
+        <div @keyup.ctrl.enter="handleSubmit" class="comment-editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
             <div ref="editor" class="comment-editor-instance" contenteditable @drop="handleDrop" @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
         </div>
         <div class="comment-editor-emojis">
-            <m-emojis @checked="insertAtCaret"></m-emojis>
+            <div>
+                <m-emojis v-if="$store.config.is_show_emoji" @checked="insertAtCaret"></m-emojis>
+            </div>
             <div class="comment-editor-emojis-btn">
                 <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
-                <template v-else>
+                <template v-if="$store.config.is_use_private && !isCancel">
                     <input v-model="form.isPrivate" id="isPrivate" type="checkbox" />
                     <label for="isPrivate" class="ui-checkbox"></label>
                     <label for="isPrivate">私密评论</label>
@@ -67,6 +69,10 @@ export default {
     },
     props: {
         isCancel: Boolean,
+        type: {
+            type: String,
+            default: 'pl'
+        }
     },
     mounted () {
         this.init()
@@ -74,7 +80,7 @@ export default {
     methods: {
         init () {
             this.lastEditRange = null;
-            this.form.content = localStorage.getItem('editor_text') || ''
+            this.form.content = localStorage.getItem(this.type + '_editor_text') || ''
             let { nick = '', email = '', link = '' } = JSON.parse(localStorage.getItem('user_info') || '{}')
             this.form.nick = nick
             this.form.email = email
@@ -100,7 +106,7 @@ export default {
         // 存储
         handleBlur () {
             let { nick, email, link, content } = this.form
-            localStorage.setItem('editor_text', content)
+            localStorage.setItem(this.type + '_editor_text', content)
             localStorage.setItem('user_info', JSON.stringify({ nick, email, link }))
         },
         // 记录光标位置
@@ -116,6 +122,7 @@ export default {
         // 输入
         handleInput ($event) {
             this.form.content = $event.target.innerText;
+            localStorage.setItem(this.type + '_editor_text', this.form.content)
             this.updateLastEditRange()// 重新获取光标位置
         },
         // 插入表情
@@ -150,7 +157,7 @@ export default {
                         () => {
                             this.$refs.editor.innerText = ''
                             this.form.content = ''
-                            localStorage.setItem('editor_text', '')
+                            localStorage.setItem(this.type + '_editor_text', '')
                         }
                     )
                 }
