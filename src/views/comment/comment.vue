@@ -38,10 +38,6 @@ export default {
     data () {
         return {
             reply: null,
-            user: {
-                email: '',
-                nick: ''
-            },
             audit: {
                 show: false,
                 comment: {}
@@ -52,21 +48,17 @@ export default {
         init () {
             tcb.initApp({ env: this.env }).then(_ => {
                 const setUser = (user) => {
+                    this.$store.mutations.refreshConfig()
                     if (user && user.loginType === "EMAIL") {
-                        let { email, nickName } = user
-                        this.user.email = email
-                        this.user.nick = nickName
+                        this.$store.user = user;
                     }
                 }
                 setUser(tcb.cloudbase.auth.currentUser)
-                tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
-                    if (loginState) {
-                        setUser(loginState.user)
-                        this.$store.refreshConfig()
-                    }
-                });
-                this.$store.refreshConfig()
                 this.getList(1)
+
+                tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
+                    if (loginState) setUser(loginState.user)
+                });
             })
         },
         // 设置回复
@@ -95,7 +87,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;

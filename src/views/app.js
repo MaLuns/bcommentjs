@@ -1,5 +1,6 @@
 
 import { VueElement, defineComponent, createApp, h } from 'vue'
+import { getCurrentScript } from "@/util";
 import message from '+/message'
 import coms from '+/'
 import store from 's/'
@@ -65,7 +66,7 @@ const createVueApp = (com, props) => {
     app.config.globalProperties.$store = store
 
     const requireAll = requireContext => requireContext.keys().map(requireContext).map(e => e.default.content);
-    const req = require.context('../assets/', true, /\.svg$/);
+    const req = require.context('../assets/svg/', true, /\.svg$/);
     const icons = requireAll(req)
 
     return {
@@ -91,13 +92,14 @@ export const createComponent = (App = { props: {} }, exportMethods = {}) => ({
     },
     render () {
         return [
+            h('link', { rel: "stylesheet", href: `//unpkg.com/highlightjs@9.16.2/styles/${this.highlight}.css` }),
+            h('svg', { ref: 'svg', style: 'position: absolute;height: 0;width: 0;overflow: hidden;' }),
             h('style', { ref: 'style' }),
-            h('link', { href: `//unpkg.com/highlightjs@9.16.2/styles/${this.highlight}.css`, rel: "stylesheet" }),
-            h('svg', { ref: 'svg', xmlns: 'http://www.w3.org/2000/svg', 'xmlns:xlink': 'http://www.w3.org/1999/xlink', style: 'position: absolute;height: 0;width: 0;overflow: hidden;' }),
             h('div', { ref: 'app' })
         ]
     },
     mounted () {
+        let script = (getCurrentScript());
         const { highlight, ...prop } = this.$props
         const { app, styles, icons = [] } = createVueApp(App, prop)// 注入样式
         this.$refs.style.innerHTML = styles

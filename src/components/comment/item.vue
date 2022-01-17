@@ -58,12 +58,10 @@
 <script>
 import mAvatar from '+/avatar'
 import mEditor from '+/editor'
-import { timeAgo } from "@/timeago.js";
-import { parse } from "@/emojis";
+import { emojiParse, timeAgo } from "@/util";
 
 export default {
     name: "m-comment-item",
-    //emits: ['sumbit', 'reply', 'audit', 'delete'],
     components: {
         mAvatar,
         mEditor
@@ -82,7 +80,7 @@ export default {
         timeAgo,
         // 格式化内容
         formatContent (html = '') {
-            return parse(html)
+            return emojiParse(this.$store.emojis, html)
         },
         // 头像显示
         getAvatar (comment) {

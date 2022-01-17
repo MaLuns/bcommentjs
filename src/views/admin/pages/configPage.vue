@@ -1,5 +1,5 @@
 <template>
-    <div class="config">
+    <div class="config-page">
         <m-form ref="form" :model="config" labelWidth="6em">
             <m-form-item>
                 <h2>评论配置</h2>
@@ -175,9 +175,9 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
-@import url("css/variables.less");
-.config {
+<style lang="less">
+@import url('css/variables.less');
+.config-page {
     border-radius: @ui-border-radius;
     background-color: @ui-bg;
     padding: 1em;

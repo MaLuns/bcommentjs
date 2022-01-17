@@ -1,6 +1,6 @@
 <template>
     <div class="pointer">
-        <template v-if="!user">
+        <template v-if="!$store.user">
             <m-icon @click="showLoginPanel = true;" name="login"></m-icon>
         </template>
         <template v-else>
@@ -44,7 +44,6 @@ export default {
     },
     data () {
         return {
-            user: null,
             config: {},
             showLoginPanel: false,// 登录面板
             showAdminPanel: false,// 管理面板
@@ -69,20 +68,20 @@ export default {
         init () {
             tcb.initApp({ env: this.env }).then(_ => {
                 const setUser = (user) => {
-                    if (user && user.loginType !== "ANONYMOUS") {
-                        this.user = tcb.cloudbase.auth.currentUser
+                    if (user && user.loginType === "EMAIL") {
+                        this.$store.user = user;
                     }
                 }
                 setUser(tcb.cloudbase.auth.currentUser)
+                this.$store.mutations.refreshConfig()
+
                 tcb.cloudbase.auth.onLoginStateChanged((loginState) => {
                     if (loginState) {
                         setUser(loginState.user)
-                        this.$store.refreshConfig()
+                        this.$store.mutations.refreshConfig()
                     }
                 });
-                this.$store.refreshConfig()
             })
-
         },
         handleShowAdminPanel () {
             if (this.$store.config.is_admin) {
@@ -93,7 +92,7 @@ export default {
             switch (value) {
                 case 'out':
                     tcb.signOut().then(_ => {
-                        this.user = null
+                        this.$store.user = null
                     });
                     break;
                 case 'mange':
@@ -108,7 +107,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .admin-container {
     color: @ui-text;
     background-color: @ui-bg;

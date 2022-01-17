@@ -39,6 +39,7 @@ module.exports.baseConf = {
                 test: /\.svg$/,
                 loader: 'svg-sprite-loader',
                 options: {
+                    //extract: true,
                     runtimeGenerator: require.resolve('./svg-to-icon'),
                 }
             },
@@ -56,12 +57,12 @@ module.exports.baseConf = {
                 ]
             },
             { test: /\.css$/, use: ['css-loader'] },
-            { test: /\.css$/, use: ['css-loader'] },
             { test: /\.less$/, use: ["to-string-loader", "css-loader", "less-loader"] }
         ]
     },
     plugins: [
         new webpack.BannerPlugin(banner),
         new VueLoaderPlugin(),
+        //new SpriteLoaderPlugin()
     ]
 }

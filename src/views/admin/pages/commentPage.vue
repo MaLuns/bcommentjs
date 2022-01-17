@@ -1,7 +1,7 @@
 <template>
-    <div class="layout">
-        <div class="layout-left">
-            <div class="layout-left-title">文章列表</div>
+    <div class="comment-page">
+        <div class="comment-page-left">
+            <div class="comment-page-left-title">文章列表</div>
             <m-skeleton class="m-comment-list" :count="6" :loading="articles.length < 1">
                 <template #default>
                     <ul>
@@ -17,7 +17,7 @@
                 </template>
             </m-skeleton>
         </div>
-        <div class="layout-right">
+        <div class="comment-page-right">
             <template v-if="comments.length > 0">
                 <m-comment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
                     <m-page class="mt-10" v-bind="page" @change="getComments"></m-page>
@@ -79,18 +79,18 @@ export default {
     },
 }
 </script>
-<style lang="less" scoped>
-@import url("css/variables.less");
-.layout {
+<style lang="less">
+@import url('css/variables.less');
+.comment-page {
     display: flex;
     height: 100%;
 
-    .layout-left {
+    .comment-page-left {
         width: 260px;
         background-color: @ui-bg;
         border-radius: @ui-border-radius;
 
-        .layout-left-title {
+        .comment-page-left-title {
             line-height: 50px;
             text-align: center;
         }
@@ -112,7 +112,7 @@ export default {
         }
     }
 
-    .layout-right {
+    .comment-page-right {
         flex: 1;
         margin-left: 10px;
         padding: 10px;

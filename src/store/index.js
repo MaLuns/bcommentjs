@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 import { debounce } from '@/util'
-import { emojis } from "@/emojis";
+import emojis from '../assets/emojis.json';
 import tcb from '@/tcb';
 
 // 全局状态管理
@@ -17,10 +17,6 @@ const store = {
                 form: {}
             }
         }),
-        // 回复
-        reply: reactive({
-            data: null
-        }),
         // 表情
         emojis: reactive({
             data: emojis
@@ -35,18 +31,17 @@ const store = {
     get config () {
         return this.state.config.data
     },
-    refreshConfig: debounce(async () => {
-        let config = await tcb.callFunction('getConfig')
-        store.state.config.data = config || { form: { nick: true, email: true } }
-    }),
-    get reply () {
-        return this.state.reply.data
-    },
-    set reply (newVal) {
-        this.state.reply.data = newVal
-    },
     get emojis () {
         return this.state.emojis.data
-    }
+    },
+    mutations: {
+        refreshConfig: debounce(async () => {
+            let config = await tcb.callFunction('getConfig')
+            store.state.config.data = config || { form: { nick: true, email: true } }
+        }),
+        addEmojis (key, val) {
+
+        }
+    },
 }
 export default store

@@ -190,3 +190,144 @@ export const regexp = {
     link: /^((ht|f)tps?:\/\/)?[\w-]+(\.[\w-]+)+$/, // 网址
     nick: /^[\u4E00-\u9FA5A-Za-z0-9_]+$/ // 昵称
 }
+
+// 表情转换
+export const emojiParse = (emojiList, str) => String(str).replace(/::(.+?)::/g, (placeholder, key) => {
+    let keys = Object.keys(emojiList);
+    for (let index = 0; index < keys.length; index++) {
+        const item = emojiList[keys[index]];
+        if (['image'].includes(item.type)) {
+            let emoji = item.container.find(element => element.text === key)
+            if (emoji) { return `<i class="emoji-icon"><img alt referrerpolicy="no-referrer" src="${emoji.icon}" /></i>`; }
+        }
+    }
+    return placeholder
+})
+
+// 时间格式化
+export const format = (time, fmt) => {
+    let o = {
+        'M+': time.getMonth() + 1, // 月份
+        'd+': time.getDate(), // 日
+        'h+': time.getHours(), // 小时
+        'm+': time.getMinutes(), // 分
+        's+': time.getSeconds(), // 秒
+        'q+': Math.floor((time.getMonth() + 3) / 3), // 季度
+        'S': time.getMilliseconds() // 毫秒
+    };
+    if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (time.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp('(' + k + ')').test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
+        }
+    }
+    return fmt;
+}
+
+export const timeAgo = (date) => {
+    if (date) {
+        try {
+            var oldTime = date.getTime();
+            var currTime = new Date().getTime();
+            var diffValue = currTime - oldTime;
+
+            var days = Math.floor(diffValue / (24 * 3600 * 1000));
+            if (days === 0) {
+                //计算相差小时数
+                var leave1 = diffValue % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+                var hours = Math.floor(leave1 / (3600 * 1000));
+                if (hours === 0) {
+                    //计算相差分钟数
+                    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+                    var minutes = Math.floor(leave2 / (60 * 1000));
+                    if (minutes === 0) {
+                        //计算相差秒数
+                        var leave3 = leave2 % (60 * 1000); //计算分钟数后剩余的毫秒数
+                        var seconds = Math.round(leave3 / 1000);
+                        return seconds + `秒前`;
+                    }
+                    return minutes + `分钟前`;
+                }
+                return hours + `小时前`;
+            }
+            if (days < 0) return '刚刚';
+
+            if (days < 8) {
+                return days + `天前`;
+            } else if (days > 7 && days < 31) {
+                return parseInt(days / 7) + `周前`
+            } else if (days > 30 && days < 365) {
+                return Math.ceil(days / 31) + `月前`
+            } else {
+                return format(date, 'yyyy-MM-dd hh:mm')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+// 获取当前script
+export const getCurrentScript = () => {
+    var descriptor = Object.getOwnPropertyDescriptor(document, 'currentScript')
+    // for chrome
+    if (!descriptor && 'currentScript' in document && document.currentScript) {
+        return document.currentScript
+    }
+
+    // for other browsers with native support for currentScript
+    if (descriptor && descriptor.get !== getCurrentScript && document.currentScript) {
+        return document.currentScript
+    }
+
+    // IE 8-10 support script readyState
+    // IE 11+ & Firefox support stack trace
+    try {
+        throw new Error();
+    }
+    catch (err) {
+        // Find the second match for the "at" string to get file src url from stack.
+        var ieStackRegExp = /.*at [^(]*\((.*):(.+):(.+)\)$/ig,
+            ffStackRegExp = /@([^@]*):(\d+):(\d+)\s*$/ig,
+            stackDetails = ieStackRegExp.exec(err.stack) || ffStackRegExp.exec(err.stack),
+            scriptLocation = (stackDetails && stackDetails[1]) || false,
+            line = (stackDetails && stackDetails[2]) || false,
+            currentLocation = document.location.href.replace(document.location.hash, ''),
+            pageSource,
+            inlineScriptSourceRegExp,
+            inlineScriptSource,
+            scripts = document.getElementsByTagName('script'); // Live NodeList collection
+
+        if (scriptLocation === currentLocation) {
+            pageSource = document.documentElement.outerHTML;
+            inlineScriptSourceRegExp = new RegExp('(?:[^\\n]+?\\n){0,' + (line - 2) + '}[^<]*<script>([\\d\\D]*?)<\\/script>[\\d\\D]*', 'i');
+            inlineScriptSource = pageSource.replace(inlineScriptSourceRegExp, '$1').trim();
+        }
+
+        for (var i = 0; i < scripts.length; i++) {
+            // If ready state is interactive, return the script tag
+            if (scripts[i].readyState === 'interactive') {
+                return scripts[i];
+            }
+
+            // If src matches, return the script tag
+            if (scripts[i].src === scriptLocation) {
+                return scripts[i];
+            }
+
+            // If inline source matches, return the script tag
+            if (
+                scriptLocation === currentLocation &&
+                scripts[i].innerHTML &&
+                scripts[i].innerHTML.trim() === inlineScriptSource
+            ) {
+                return scripts[i];
+            }
+        }
+
+        // If no match, return null
+        return null;
+    }
+}

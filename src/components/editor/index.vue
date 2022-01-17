@@ -12,12 +12,12 @@
                 <input @blur="handleBlur" v-model.trim="form.link" type="text" placeholder="相信你，不会打广告的~" autocomplete="off" />
             </m-form-item>
         </m-form>
-        <div class="editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
-            <div ref="editor" class="editor" contenteditable @drop="handleDrop" @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
+        <div class="comment-editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
+            <div ref="editor" class="comment-editor-instance" contenteditable @drop="handleDrop" @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
         </div>
-        <div class="emojis-btn">
+        <div class="comment-editor-emojis">
             <m-emojis @checked="insertAtCaret"></m-emojis>
-            <div class="btn-container">
+            <div class="comment-editor-emojis-btn">
                 <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
                 <template v-else>
                     <input v-model="form.isPrivate" id="isPrivate" type="checkbox" />
@@ -71,16 +71,6 @@ export default {
     mounted () {
         this.init()
     },
-    watch: {
-        '$store.user': {
-            deep: true,
-            handler (val) {
-                let { nick, email } = val
-                if (nick) this.form.nick = nick
-                if (email) this.form.email = email
-            }
-        }
-    },
     methods: {
         init () {
             this.lastEditRange = null;
@@ -92,6 +82,16 @@ export default {
             this.$refs.editor.innerText = this.form.content;
 
             this.RootNode = this.$root.$el.getRootNode()
+
+            this.$watch(
+                '$store.user',
+                (val) => {
+                    let { nick, email } = val || {}
+                    if (nick) this.form.nick = nick
+                    if (email) this.form.email = email
+                },
+                { immediate: true, deep: true, }
+            )
         },
         // 是否必填
         isRequired (key) {
@@ -159,74 +159,3 @@ export default {
     },
 }
 </script>
-
-<style lang="less" scoped>
-@import url("../../styles/variables.less");
-.comment-editor {
-    padding: 5px 0 0;
-
-    // 编辑框
-    .editor-container {
-        display: block;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 0.5px solid @ui-form-control-line;
-        border-radius: @ui-border-radius;
-        transition: all @ui-transition-duration;
-
-        &.placeholder-shown::before {
-            content: attr(placeholder);
-            position: absolute;
-            pointer-events: none;
-            color: @ui-aide-text;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-        }
-
-        &:hover {
-            border-color: @ui-form-control-line-hover;
-        }
-
-        &:focus,
-        &:focus-within {
-            outline-offset: 0px;
-            outline: none;
-            border-color: @ui-form-control-line-active;
-            &.placeholder-shown::before {
-                display: none;
-            }
-        }
-
-        .editor {
-            vertical-align: baseline;
-            outline: none;
-            letter-spacing: 1px;
-            box-sizing: border-box;
-            background: transparent;
-            overflow: hidden;
-            resize: none;
-            border: none;
-            width: 100%;
-            min-height: 100px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-    }
-
-    .emojis-btn {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        .btn-container {
-            display: flex;
-            align-items: center;
-        }
-    }
-}
-
-.admin-tips {
-    height: 42px;
-    line-height: 42px;
-}
-</style>

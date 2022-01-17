@@ -1,5 +1,5 @@
 <template>
-    <div class="emoji" ref="emojis">
+    <div class="emoji-panel " ref="emojis">
         <span class="emoji-btn my-face" @click="handleShow">
             <m-icon name="emoji" width="26"></m-icon>
         </span>
@@ -63,91 +63,3 @@ export default {
     },
 }
 </script>
-<style lang="less" scoped>
-@import url("../../styles/variables.less");
-.emoji {
-    position: relative;
-    user-select: none;
-    .emoji-btn {
-        cursor: pointer;
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-    }
-
-    .emoji-container {
-        background-color: @ui-bg;
-        position: absolute;
-        z-index: 2;
-        width: 380px;
-        height: 240px;
-        margin-top: 0.5em;
-        box-shadow: #6464640d 0px 0px 1px, #6464640d 0px 2px 3px,
-            #6464640d 0px 3px 6px, #6464640d 0px 4px 10px,
-            #6464640d 0px 5px 15px, #6464640d 0px 6px 21px;
-        display: flex;
-        flex-direction: column;
-
-        .emoji-nav {
-            height: 32px;
-            line-height: 32px;
-            background-color: @ui-bg;
-
-            span {
-                line-height: 32px;
-                padding: 0 10px;
-                display: inline-block;
-                cursor: pointer;
-
-                &.current {
-                    background-color: @ui-aide-bg;
-                }
-            }
-        }
-
-        .emoji-items {
-            flex: 1;
-            margin: 0;
-            padding: 10px 0 0 10px;
-            list-style: none;
-            display: none;
-            overflow: scroll;
-
-            &.show {
-                display: block;
-            }
-
-            .emoji-item {
-                list-style-type: none;
-                background-color: @ui-aide-bg;
-                padding: 5px 10px;
-                border-radius: 5px;
-                display: inline-block;
-                font-size: 12px;
-                line-height: 14px;
-                margin: 0 10px 12px 0;
-                cursor: pointer;
-                -webkit-transition: 0.3s;
-                transition: 0.3s;
-
-                &.emoji {
-                    line-height: 20px;
-                    font-size: 20px;
-                }
-
-                &.image {
-                    :deep(img) {
-                        width: 20px;
-                        pointer-events: none;
-                    }
-                }
-
-                &:hover {
-                    box-shadow: 0 2px 2px 0 @ui-shadow,
-                        0 3px 1px -2px @ui-shadow, 0 1px 5px 0 @ui-light-shadow;
-                }
-            }
-        }
-    }
-}
-</style>

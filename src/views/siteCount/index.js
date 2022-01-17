@@ -20,11 +20,8 @@ export default {
     },
     computed: {
         pageHash () {
-            if (this.hash === '') {
-                return location.pathname
-            }
-            return this.hash
-        }
+            return this.hash ? this.hash : location.pathname
+        },
     },
     async created () {
         await tcb.initApp({ env: this.env })
