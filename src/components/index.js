@@ -1,6 +1,7 @@
 import audit from "./audit/index.vue";
 import avatar from './avatar'
 import button from './button'
+import card from "./card";
 import comment from './comment'
 import dropdown from './dropdown'
 import editor from './editor'
@@ -19,6 +20,7 @@ export default [
     audit,
     avatar,
     button,
+    card,
     comment,
     dropdown,
     editor,

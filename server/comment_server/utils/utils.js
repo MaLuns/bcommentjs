@@ -125,7 +125,35 @@ const uuid = () => nodeuuid.v1().replace(/\-/g, '');
  * 获取今天00:00:00 时间
  * @returns 
  */
-const toDayStart = () => new Date(new Date().setHours(0, 0, 0, 0))
+const getDayStart = (days = 0) => {
+    let date = new Date(new Date().setHours(0, 0, 0, 0));
+    date.setTime(date.getTime() - 3600 * 1000 * 24 * days)
+    return date
+}
+
+/**
+ * 
+ * @param {*} data  
+ * @param {*} key 
+ */
+const generateYearMonthData = (data = []) => {
+    let res = [];
+    for (let i = 0; i < 12; i++) {
+        let d = new Date();
+        d.setDate(1);
+        d.setMonth(d.getMonth() - i);
+        let m = d.getMonth() + 1;
+        m = m < 10 ? "0" + m : m;
+        let key = `${d.getFullYear()}${m}`;
+        let item = data.find(item => item._id === key)
+        if (item) {
+            res.unshift({ date: key, num: item.num })
+        } else {
+            res.unshift({ date: key, num: 0 })
+        }
+    }
+    return res
+}
 
 /**
  * 是否是Obj
@@ -185,9 +213,10 @@ module.exports = {
     validata,
     RES_CODE,
     formatRes,
+    isNullOrEmpty,
+    dateFormat,
     getQQAvatar,
     getObjOfKeys,
-    isNullOrEmpty,
-    toDayStart,
-    dateFormat
+    getDayStart,
+    generateYearMonthData
 }

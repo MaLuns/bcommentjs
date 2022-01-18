@@ -1,7 +1,7 @@
 const tcb = require("@cloudbase/node-sdk");
 const { initConfig, updateConfig, getConfig } = require('./utils/app')
 const { getComments, addComment, updateComment } = require('./utils/comments')
-const { addPVUV, getPV, getBatchPV, getUV } = require('./utils/count')
+const { addPVUV, getPV, getBatchPV, getUV, getChartData } = require('./utils/count')
 const { getArticles, updateArticle } = require('./utils/articles')
 const { validata, RES_CODE, formatRes, } = require('./utils/utils')
 const { testEmail } = require('./utils/notice')
@@ -20,6 +20,7 @@ const handler = {
     getConfig, // 获取配置
     updateConfig, // 更新配置
     testEmail,// 邮件测试
+    getChartData,// 获取图表统计数据
 }
 
 /**

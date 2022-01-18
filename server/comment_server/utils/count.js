@@ -1,6 +1,6 @@
 // 站点统计
-const { db, getIp, _, $ } = require('./app')
-const { validata, toDayStart, formatRes } = require('./utils')
+const { db, getIp, _, $, isAdministrator } = require('./app')
+const { validata, getDayStart, formatRes, generateYearMonthData } = require('./utils')
 const site = db.collection('db_site')
 
 /**
@@ -70,7 +70,7 @@ const addPVUV = async (event) => {
 
     let result = await site.where({
         hash,
-        date: _.gte(toDayStart())
+        date: _.gte(getDayStart())
     }).update({
         childer: _.push([{
             ip: getIp(),
@@ -95,9 +95,37 @@ const addPVUV = async (event) => {
     return formatRes(result.updated || result.inserted)
 }
 
+
+const getChartData = async (event) => {
+    const isAdmin = await isAdministrator();
+    let res = {}
+    if (isAdmin) {
+        // PV 统计
+        let { data } = await site.aggregate()
+            .match({
+                date: _.gte(getDayStart(365))
+            }).unwind({
+                path: '$childer',
+            }).group({
+                _id: $.dateToString({
+                    date: '$childer.time',
+                    format: '%Y%m'
+                }),
+                num: $.sum(1)
+            }).end()
+        res.PV = generateYearMonthData(data)
+        // UV 统计
+
+        // 评论 统计
+    }
+    return formatRes(res)
+}
+
+
 module.exports = {
     getPV,
     getBatchPV,
     getUV,
-    addPVUV
+    addPVUV,
+    getChartData
 }

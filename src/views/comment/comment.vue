@@ -87,7 +87,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url("../../styles/index.less");
+@import url('../../styles/index.less');
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;

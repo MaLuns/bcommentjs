@@ -1,5 +1,5 @@
 <template>
-    <div class="comment-editor">
+    <div class="m-editor">
         <!-- <div v-if="$store.config.is_admin"></div> -->
         <m-form ref="form" inline :model="form" :rules="rules" labelWidth="3.6em">
             <m-form-item :required="isRequired('nick')" prop="nick" label="昵称">
@@ -12,14 +12,14 @@
                 <input @blur="handleBlur" v-model.trim="form.link" type="text" placeholder="相信你，不会打广告的~" autocomplete="off" />
             </m-form-item>
         </m-form>
-        <div @keyup.ctrl.enter="handleSubmit" class="comment-editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
-            <div ref="editor" class="comment-editor-instance" contenteditable @drop="handleDrop" @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
+        <div @keyup.ctrl.enter="handleSubmit" class="m-editor-container" :class="{ 'placeholder-shown': form.content === '' }" placeholder="来都来了，说一句吧～">
+            <div ref="editor" class="m-editor-instance" contenteditable @drop="handleDrop" @paste="handlePaste" @click="updateLastEditRange" @input="handleInput"></div>
         </div>
-        <div class="comment-editor-emojis">
+        <div class="m-editor-emojis">
             <div>
                 <m-emojis v-if="$store.config.is_show_emoji" @checked="insertAtCaret"></m-emojis>
             </div>
-            <div class="comment-editor-emojis-btn">
+            <div class="m-editor-emojis-btn">
                 <m-button type="text" class="my-face" v-if="isCancel" @click="handleCancel">取消回复</m-button>
                 <template v-if="$store.config.is_use_private && !isCancel">
                     <input v-model="form.isPrivate" id="isPrivate" type="checkbox" />

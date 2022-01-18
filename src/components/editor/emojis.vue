@@ -1,18 +1,18 @@
 <template>
-    <div class="emoji-panel " ref="emojis">
-        <span class="emoji-btn my-face" @click="handleShow">
+    <div class="m-emoji-panel " ref="emojis">
+        <span class="m-emoji-btn my-face" @click="handleShow">
             <m-icon name="emoji" width="26"></m-icon>
         </span>
         <transition name="opacity">
             <template v-if="first">
-                <div v-show="show" class="emoji-container" @click="handleCheckEmojis">
-                    <ul v-for="item,key in $store.emojis" :key="key" class="emoji-items" :class="{ show: key === currentEmoji }">
-                        <li :data-text="['text', 'emoji'].includes(item.type) ? element.icon : `::${element.text}::`" class="emoji-item my-face" :key="element.text" :class="[item.type]" v-for="element in item.container">
+                <div v-show="show" class="m-emoji-container" @click="handleCheckEmojis">
+                    <ul v-for="item,key in $store.emojis" :key="key" class="m-emoji-items" :class="{ show: key === currentEmoji }">
+                        <li :data-text="['text', 'emoji'].includes(item.type) ? element.icon : `::${element.text}::`" class="m-emoji-item my-face" :key="element.text" :class="[item.type]" v-for="element in item.container">
                             <template v-if="['text', 'emoji'].includes(item.type)">{{ element.icon }}</template>
                             <img v-else alt referrerpolicy="no-referrer" :src="element.icon" />
                         </li>
                     </ul>
-                    <div class="emoji-nav" @click.stop>
+                    <div class="m-emoji-nav" @click.stop>
                         <span :class="{ current: key === currentEmoji }" @click="currentEmoji = key;" v-for="item,key  in $store.emojis" :key="key">{{ key }}</span>
                     </div>
                 </div>
@@ -21,7 +21,6 @@
     </div>
 </template>
 <script>
-
 export default {
     data () {
         return {
