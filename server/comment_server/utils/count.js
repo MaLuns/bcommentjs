@@ -101,19 +101,32 @@ const getChartData = async (event) => {
     let res = {}
     if (isAdmin) {
         // PV 统计
-        let { data } = await site.aggregate()
-            .match({
+        const getPVData = async () => {
+            let { data } = await site.aggregate().match({
                 date: _.gte(getDayStart(365))
             }).unwind({
                 path: '$childer',
             }).group({
                 _id: $.dateToString({
                     date: '$childer.time',
-                    format: '%Y%m'
+                    format: '%Y-%m'
                 }),
                 num: $.sum(1)
             }).end()
-        res.PV = generateYearMonthData(data)
+            let count = await site.aggregate().match({
+                date: _.gte(getDayStart(7))
+            }).group({
+                _id: null,
+                count: $.sum($.size('$childer'))
+            }).end().then(res => res.data[0].count)
+
+            return {
+                chart: generateYearMonthData(data),
+                count
+            }
+        }
+        res.pvData = await getPVData()
+
         // UV 统计
 
         // 评论 统计

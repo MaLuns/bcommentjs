@@ -144,7 +144,7 @@ const generateYearMonthData = (data = []) => {
         d.setMonth(d.getMonth() - i);
         let m = d.getMonth() + 1;
         m = m < 10 ? "0" + m : m;
-        let key = `${d.getFullYear()}${m}`;
+        let key = `${d.getFullYear()}-${m}`;
         let item = data.find(item => item._id === key)
         if (item) {
             res.unshift({ date: key, num: item.num })

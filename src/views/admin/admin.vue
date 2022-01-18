@@ -46,7 +46,7 @@ export default {
         return {
             config: {},
             showLoginPanel: false,// 登录面板
-            showAdminPanel: false,// 管理面板
+            showAdminPanel: true,// 管理面板
         }
     },
     watch: {
@@ -107,7 +107,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import url('../../styles/index.less');
+@import url("../../styles/index.less");
 .admin-container {
     color: @ui-text;
     background-color: @ui-bg;
