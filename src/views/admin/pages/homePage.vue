@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="summary">
-            <m-card title="站点PV">
+            <m-card title="PV">
                 <div class="numeral">2142,000</div>
                 <div class="content" ref="one"></div>
                 <div class="footer">
@@ -9,12 +9,12 @@
                     <span>{{ pvSum }}</span>
                 </div>
             </m-card>
-            <m-card title="站点UV">
+            <m-card title="UV">
                 <div class="numeral">142,000</div>
                 <div class="content" ref="two"></div>
                 <div class="footer">
                     <span>近七天</span>
-                    <span>40</span>
+                    <span>{{ uvSum }}</span>
                 </div>
             </m-card>
             <m-card title="评论量">
@@ -50,7 +50,8 @@ export default {
     name: "HomePage",
     data () {
         return {
-            pvSum: 0
+            pvSum: 0,
+            uvSum: 0
         }
     },
     mounted () {
@@ -59,17 +60,22 @@ export default {
     methods: {
         init () {
             tcb.callFunction('getChartData', {}).then(res => {
-                let { pvData } = res
-                let xData = [];
-                let yData = []
-                pvData.chart.forEach(element => {
-                    xData.push(element.date)
-                    yData.push(element.num)
-                });
+                console.log(res);
+                let { pvData, uvData } = res
                 this.pvSum = pvData.count
-                echarts.init(this.$refs.one).setOption(this.barLineOption('line', xData, yData));
-                echarts.init(this.$refs.two).setOption(this.barLineOption('bar', xData, yData));
+                this.uvSum = uvData.count
+                this.initChart(pvData.chart, 'one', 'line')
+                this.initChart(uvData.chart, 'two', 'bar')
             })
+        },
+        initChart (data, ref, type) {
+            let xData = [];
+            let yData = []
+            data.forEach(element => {
+                xData.push(element.date)
+                yData.push(element.num)
+            });
+            echarts.init(this.$refs[ref]).setOption(this.barLineOption(type, xData, yData));
         },
         barLineOption (type, xData, yData) {
             return {

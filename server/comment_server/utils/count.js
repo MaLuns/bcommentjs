@@ -128,6 +128,44 @@ const getChartData = async (event) => {
         res.pvData = await getPVData()
 
         // UV 统计
+        const getUVData = async () => {
+            let { data } = await site.aggregate().match({
+                date: _.gte(getDayStart(365))
+            }).unwind({ path: '$childer' }).group({
+                _id: {
+                    date: $.dateToString({
+                        date: '$date',
+                        format: '%Y-%m'
+                    }),
+                    ip: '$childer.ip'
+                },
+                num: $.sum(1)
+            }).group({
+                _id: '$_id.date',
+                num: $.sum(1)
+            }).sort({ _id: 1 }).end()
+
+            let count = await site.aggregate().match({
+                date: _.gte(getDayStart(7))
+            }).unwind({ path: '$childer' }).group({
+                _id: {
+                    date: $.dateToString({
+                        date: '$date',
+                        format: '%Y-%m'
+                    }),
+                    ip: '$childer.ip'
+                },
+                num: $.sum(1)
+            }).group({
+                _id: null,
+                count: $.sum(1)
+            }).end().then(res => res.data[0].count)
+            return {
+                chart: generateYearMonthData(data),
+                count
+            }
+        }
+        res.uvData = await getUVData()
 
         // 评论 统计
     }
