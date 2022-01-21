@@ -1,17 +1,3 @@
-<template>
-    <div>
-        <div class="m-form-item">
-            <span class="m-form-item-label" :class="{ required: isValidationEnabled }" :style="{ width: form.labelWidth }">
-                <slot name="title">{{ label }}</slot>
-            </span>
-            <div class="m-form-item-content" :class="{ error }">
-                <slot></slot>
-            </div>
-        </div>
-        <div class="error-msg" :style="{ paddingLeft: form.labelWidth }" v-if="error && msg">{{ msg }}</div>
-    </div>
-</template>
-<script>
 import { debugWarn, IsNullOrEmpty } from "@/util";
 
 export default {
@@ -32,6 +18,21 @@ export default {
         }
     },
     inject: ['form'],
+    render () {
+        return (
+            <div>
+                <div class="m-form-item">
+                    <span class="m-form-item-label" class={{ required: this.isValidationEnabled }} style={{ width: this.form.labelWidth }}>
+                        {this.$slots.title ? this.$slots.title() : this.label}
+                    </span>
+                    <div class="m-form-item-content" class={{ error: this.error }}>
+                        {this.$slots.default?.()}
+                    </div>
+                </div>
+                {this.error && this.msg ? <div class="error-msg" style={{ paddingLeft: this.form.labelWidth }} >{this.msg}</div> : null}
+            </div>
+        )
+    },
     created () {
         //this.stop = () => { }
         this.form.addField(this)
@@ -101,4 +102,3 @@ export default {
         }
     }
 }
-</script>

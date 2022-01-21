@@ -197,7 +197,7 @@ export default {
 }
 </script>
 <style lang="less">
-@import url("css/variables.less");
+@import url('css/variables.less');
 .config-page {
     border-radius: @ui-border-radius;
     background-color: @ui-bg;

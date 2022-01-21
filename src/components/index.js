@@ -1,4 +1,4 @@
-import audit from "./audit/index.vue";
+import audit from "./audit/index";
 import avatar from './avatar'
 import button from './button'
 import card from "./card";

@@ -106,11 +106,3 @@ export default {
     }
 }
 </script>
-<style lang="less">
-@import url("../../styles/index.less");
-.admin-container {
-    color: @ui-text;
-    background-color: @ui-bg;
-}
-</style>
-

@@ -1,7 +1,7 @@
-const path = require("path")
+const path = require('path')
 const webpack = require('webpack')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { VueLoaderPlugin } = require('vue-loader')
-const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 const { version, author } = require('../package.json')
 
 const banner =
@@ -37,13 +37,27 @@ module.exports.baseConf = {
         rules: [
             {
                 test: /\.svg$/,
-                loader: 'svg-sprite-loader',
-                options: {
-                    //extract: true,
-                    runtimeGenerator: require.resolve('./svg-to-icon'),
-                }
+                use: [
+                    {
+                        loader: 'svg-sprite-loader',
+                        options: {
+                            //extract: true,
+                            runtimeGenerator: require.resolve('./svg-to-icon'),
+                        }
+                    }
+                ]
             },
-            { test: /\.vue$/, use: [{ loader: 'vue-loader', options: { customElement: true } }] },
+            {
+                test: /\.vue$/,
+                use: [
+                    {
+                        loader: 'vue-loader',
+                        options: {
+                            customElement: true
+                        }
+                    }
+                ]
+            },
             {
                 test: /\.js$/,
                 use: [
@@ -56,13 +70,26 @@ module.exports.baseConf = {
                     }
                 ]
             },
-            { test: /\.css$/, use: ['css-loader'] },
-            { test: /\.less$/, use: ["to-string-loader", "css-loader", "less-loader"] }
+            {
+                test: /\.css$/, use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.less$/, use: [
+                    MiniCssExtractPlugin.loader,
+                    'to-string-loader',
+                    'css-loader',
+                    'less-loader'
+                ]
+            }
         ]
     },
     plugins: [
         new webpack.BannerPlugin(banner),
         new VueLoaderPlugin(),
+        new MiniCssExtractPlugin()
         //new SpriteLoaderPlugin()
     ]
 }

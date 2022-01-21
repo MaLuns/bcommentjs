@@ -52,14 +52,15 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .admin-container {
     position: fixed;
     left: 0;
     top: 0;
     height: 100vh;
     width: 100vw;
-    background-color: #f0f2f5;
+    color: @ui-text;
+    background-color: @ui-aide-bg;
     z-index: 99;
 
     header {

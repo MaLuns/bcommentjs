@@ -1,6 +1,6 @@
-const path = require("path")
+const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env.local') });
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const { baseConf } = require('./webpack.config.base')
 const { merge } = require('webpack-merge')

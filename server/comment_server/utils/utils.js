@@ -160,9 +160,7 @@ const generateYearMonthData = (data = []) => {
  * @param {*} obj 
  * @returns 
  */
-const isObject = (obj) => {
-    return obj !== null && typeof obj === 'object'
-}
+const isObject = (obj) => obj !== null && typeof obj === 'object'
 
 /**
  * 将一个对象填充到另一个上
@@ -172,12 +170,10 @@ const isObject = (obj) => {
  */
 const extend = (to, from) => {
     for (const key in to) {
-        if (Object.hasOwnProperty.call(from, key)) {
-            if (isObject(from[key])) {
-                to[key] = extend(to[key], from[key]);
-            } else {
-                to[key] = from[key]
-            }
+        if (isObject(from[key])) {
+            to[key] = extend(to[key], from[key]);
+        } else {
+            to[key] = from[key]
         }
     }
     return to

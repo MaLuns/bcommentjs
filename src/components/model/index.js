@@ -3,7 +3,7 @@ import { getScrollWidth, hasScrollbar } from '@/util'
 import { TransitionGroup } from 'vue'
 
 export default {
-    name: 'MModel',
+    name: 'm-model',
     computed: {
         style () {
             return {

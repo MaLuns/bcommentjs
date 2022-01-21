@@ -1,6 +1,7 @@
 
 import { VueElement, defineComponent, createApp, h } from 'vue'
 import { getCurrentScript } from "@/util";
+import styleModule from 'css/index.less'
 import message from '+/message'
 import coms from '+/'
 import store from 's/'
@@ -99,10 +100,9 @@ export const createComponent = (App = { props: {} }, exportMethods = {}) => ({
         ]
     },
     mounted () {
-        let script = (getCurrentScript());
         const { highlight, ...prop } = this.$props
         const { app, styles, icons = [] } = createVueApp(App, prop)// 注入样式
-        this.$refs.style.innerHTML = styles
+        this.$refs.style.innerHTML = styles + styleModule
         this.$refs.svg.innerHTML = icons.join('')
         app.mount(this.$refs.app)
     },

@@ -1,26 +1,3 @@
-<template>
-    <m-model v-model="shows" :title="info.title" :width="400">
-        <m-form ref="form" :model="form" :rules="rules" labelWidth="4.5em" :key="type">
-            <m-form-item prop="email" label="邮箱">
-                <input v-model.trim="form.email" type="text" placeholder="请输入邮箱" autocomplete="off" />
-            </m-form-item>
-            <m-form-item prop="password" label="密码" v-if="['login', 'reg'].includes(type)">
-                <input v-model.trim="form.password" type="password" placeholder="请输入密码" autocomplete="off" />
-            </m-form-item>
-            <m-form-item prop="password2" label="确认密码" v-if="type === 'reg'">
-                <input v-model.trim="form.password2" type="password" placeholder="请输入确认密码" autocomplete="off" />
-            </m-form-item>
-            <m-form-item class="right">
-                <div class="link" @click="type = 'login';" v-if="['reg', 'reset'].includes(type)">去登录</div>
-                <div class="link" @click="type = 'reg';" v-if="['login', 'reset'].includes(type)">注册账号</div>
-                <div class="link" @click="type = 'reset';" v-if="['login', 'reg'].includes(type)">重置密码</div>
-            </m-form-item>
-            <m-button long @click="submit" :type="info.btntype">{{ info.btn }}</m-button>
-        </m-form>
-    </m-model>
-</template>
-
-<script>
 import { regexp } from "@/util";
 import tcb from '@/tcb'
 
@@ -112,6 +89,35 @@ export default {
             }
         },
     },
+    render () {
+        return (
+            <m-model v-model={this.shows} title={this.info.title} width={400}>
+                <m-form ref="form" model={this.form} rules={this.rules} labelWidth="4.5em" key={this.type}>
+                    <m-form-item prop="email" label="邮箱">
+                        <input v-model={this.form.email} type="text" placeholder="请输入邮箱" autocomplete="off" />
+                    </m-form-item>
+                    {
+                        ['login', 'reg'].includes(this.type) ?
+                            <m-form-item prop="password" label="密码" >
+                                <input v-model={this.form.password} type="password" placeholder="请输入密码" autocomplete="off" />
+                            </m-form-item>
+                            : null
+                    }
+                    {
+                        this.type === 'reg' ?
+                            <m-form-item prop="password2" label="确认密码">
+                                <input v-model={this.form.password2} type="password" placeholder="请输入确认密码" autocomplete="off" />
+                            </m-form-item>
+                            : null
+                    }
+                    <m-form-item class="right">
+                        {['reg', 'reset'].includes(this.type) ? <div class="link" onClick={() => this.type = 'login'} >去登录</div> : null}
+                        {['login', 'reset'].includes(this.type) ? <div class="link" onClick={() => this.type = 'reg'} >注册账号</div> : null}
+                        {['login', 'reg'].includes(this.type) ? <div class="link" onClick={() => this.type = 'reset'} >重置密码</div> : null}
+                    </m-form-item>
+                    <m-button long onClick={this.submit} type={this.info.btntype}>{this.info.btn}</m-button>
+                </m-form>
+            </m-model>
+        )
+    }
 }
-</script>
-

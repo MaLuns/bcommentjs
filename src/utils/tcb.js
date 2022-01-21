@@ -47,6 +47,11 @@ const tcb = {
  * @param {*} param
  */
 const initApp = async ({ env, region = '' }) => {
+    if (typeof cloudbase === 'undefined') {
+        logger.error('请添加云开发SDK :\n<script src="//imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.1/cloudbase.full.js"></script>')
+        return null
+    }
+
     if (tcb.app !== null) {
         return tcb
     } else {
