@@ -27,7 +27,6 @@
 
 ## 使用
 ``` html
-<script src="//unpkg.com/vue@3.2.26/dist/vue.runtime.global.prod.js"></script>
 <script src="//imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.1/cloudbase.full.js"></script>
 <script src="//unpkg.com/b-comments/dist/index.min.js"></script>
 

@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { VueLoaderPlugin } = require('vue-loader')
 const { version, author } = require('../package.json')
 
@@ -20,6 +19,7 @@ module.exports.baseConf = {
             type: 'umd',
             export: 'default'
         },
+        clean: true
     },
     resolve: {
         alias: {
@@ -72,13 +72,11 @@ module.exports.baseConf = {
             },
             {
                 test: /\.css$/, use: [
-                    MiniCssExtractPlugin.loader,
                     'css-loader'
                 ]
             },
             {
                 test: /\.less$/, use: [
-                    MiniCssExtractPlugin.loader,
                     'to-string-loader',
                     'css-loader',
                     'less-loader'
@@ -89,7 +87,9 @@ module.exports.baseConf = {
     plugins: [
         new webpack.BannerPlugin(banner),
         new VueLoaderPlugin(),
-        new MiniCssExtractPlugin()
         //new SpriteLoaderPlugin()
-    ]
+    ],
+    stats: {
+        colors: true,
+    },
 }

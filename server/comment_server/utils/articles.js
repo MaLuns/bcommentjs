@@ -38,7 +38,7 @@ const updateArticle = async (event) => {
 // 获取文章列表
 const getArticles = async (event) => {
     await notAdminLimit();
-    let { data } = await articleDB.get();
+    let { data } = await articleDB.orderBy("date", "desc").get();
     // 连表统计评论数
     return formatRes(data)
 }

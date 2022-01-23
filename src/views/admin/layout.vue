@@ -22,12 +22,16 @@
     </transition>
 </template>
 <script>
-import HomePage from './pages/homePage.vue'
+//import HomePage from './pages/homePage.vue'
 import ConfigPage from './pages/configPage.vue';
 import CommentPage from './pages/commentPage.vue'
 
 export default {
-    components: { HomePage, ConfigPage, CommentPage },
+    components: {
+        //HomePage,
+        ConfigPage,
+        CommentPage
+    },
     props: {
         modelValue: {
             type: Boolean,
@@ -37,11 +41,11 @@ export default {
     data () {
         return {
             tabs: [
-                { label: '首页', value: 'HomePage', hide: window.echarts ? false : true },
+                //{ label: '首页', value: 'HomePage', hide: window.echarts ? false : true },
                 { label: '评论管理', value: 'CommentPage' },
                 { label: '配置管理', value: 'ConfigPage' }
             ],
-            componentName: 'HomePage',
+            componentName: 'CommentPage',
         };
     },
     methods: {
@@ -52,7 +56,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .admin-container {
     position: fixed;
     left: 0;

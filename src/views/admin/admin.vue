@@ -46,7 +46,7 @@ export default {
         return {
             config: {},
             showLoginPanel: false,// 登录面板
-            showAdminPanel: true,// 管理面板
+            showAdminPanel: false,// 管理面板
         }
     },
     watch: {
