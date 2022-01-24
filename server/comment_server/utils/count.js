@@ -40,7 +40,7 @@ const getPV = async (event) => {
  * @param {*} event 
  * @returns 
  */
-const getUV = async (event) => {
+const getUV = async () => {
     let count = await site.aggregate()
         .unwind({
             path: '$childer',
@@ -95,8 +95,12 @@ const addPVUV = async (event) => {
     return formatRes(result.updated || result.inserted)
 }
 
-
-const getChartData = async (event) => {
+/**
+ * 
+ * @param {*} event 
+ * @returns 
+ */
+const getChartData = async () => {
     const isAdmin = await isAdministrator();
     let res = {}
     if (isAdmin) {

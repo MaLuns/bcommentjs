@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const https = require('https')
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path')
@@ -40,9 +41,7 @@ const getTransporter = async () => {
  * @param {*} data 
  */
 const sendNotice = (data) => {
-    Object.keys(noticeQueue).forEach(key => {
-        noticeQueue[key](data)
-    })
+    Object.keys(noticeQueue).forEach(key => noticeQueue[key](data))
 }
 
 /**
@@ -97,7 +96,10 @@ const testEmail = async (event) => {
  */
 const noticeQueue = {
     noticeWeChat (data) {
+        if (app.config.wechart.agent_id && app.config.wechart.secret) {
+            // 读取token 
 
+        }
     }
 }
 module.exports = {

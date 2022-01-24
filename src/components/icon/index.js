@@ -1,5 +1,5 @@
 export default {
-    name: 'm-icon',
+    name: 'MIcon',
     props: {
         name: String,
         width: {

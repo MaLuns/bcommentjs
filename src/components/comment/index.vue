@@ -1,59 +1,62 @@
 <template>
-    <m-skeleton class="m-comment-list" :count="3" :loading="loading">
+    <MSkeleton class="m-comment-list" :count="3" :loading="loading">
         <template #template>
             <div class="m-comment-item">
-                <m-skeleton-item type="circle" style="width: 40px;height:40px;"></m-skeleton-item>
+                <MSkeletonItem type="circle" style="width: 40px;height:40px;" />
                 <div class="m-comment-user-container">
                     <div class="m-comment-user-info">
-                        <m-skeleton-item class="mr-10" type="text" style="width: 60px;"></m-skeleton-item>
-                        <m-skeleton-item class="mr-10" type="text" style="width: 80px;"></m-skeleton-item>
-                        <m-skeleton-item class="mr-10" type="text" style="width: 80px;"></m-skeleton-item>
+                        <MSkeletonItem class="mr-10" type="text" style="width: 60px;" />
+                        <MSkeletonItem class="mr-10" type="text" style="width: 80px;" />
+                        <MSkeletonItem class="mr-10" type="text" style="width: 80px;" />
                     </div>
                     <div class="m-comment-user-text">
-                        <m-skeleton-item type="text"></m-skeleton-item>
-                        <m-skeleton-item type="text" style="width: 30%;"></m-skeleton-item>
+                        <MSkeletonItem type="text" />
+                        <MSkeletonItem type="text" style="width: 30%;" />
                     </div>
                     <div class="m-comment-user-meta">
                         <span class="m-comment-time">
-                            <m-skeleton-item type="text" style="width: 30px;"></m-skeleton-item>
+                            <MSkeletonItem type="text" style="width: 30px;" />
                         </span>
                         <span class="m-comment-reply">
-                            <m-skeleton-item type="text" style="width: 30px;"></m-skeleton-item>
+                            <MSkeletonItem type="text" style="width: 30px;" />
                         </span>
                     </div>
                 </div>
             </div>
         </template>
         <template #default>
-            <m-comment-item v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index"></m-comment-item>
-            <slot></slot>
+            <MCommentItem v-for="(item,index) in list" :key="item.id" :comment="item" :data-index="index" />
+            <slot />
         </template>
-    </m-skeleton>
+    </MSkeleton>
 </template>
 
 <script>
-import mCommentItem from './item.vue'
+import MCommentItem from './item.vue'
 
 export default {
-    name: 'm-comment',
-    emits: ['audit', 'delete', 'sumbit'],
-    components: { mCommentItem },
-    props: {
-        list: Array,
-    },
-    computed: {
-        loading () {
-            return this.list.length === 0
-        }
-    },
+    name: 'MComment',
+    components: { MCommentItem },
     provide () {
         return {
             app: this
         }
     },
+    props: {
+        list: {
+            type: Array,
+            default: () => []
+        },
+    },
+    emits: ['audit', 'delete', 'sumbit'],
     data () {
         return {
             replyComment: null
+        }
+    },
+    computed: {
+        loading () {
+            return this.list.length === 0
         }
     },
     methods: {

@@ -1,6 +1,6 @@
 
 import { VueElement, defineComponent, createApp, h } from 'vue'
-import { getCurrentScript } from "@/util";
+import { debugWarn } from '@/util';
 import styleModule from 'css/index.less'
 import message from '+/message'
 import coms from '+/'
@@ -93,13 +93,14 @@ export const createComponent = (App = { props: {} }, exportMethods = {}) => ({
     },
     render () {
         return [
-            h('link', { rel: "stylesheet", href: `//unpkg.com/highlightjs@9.16.2/styles/${this.highlight}.css` }),
+            h('link', { rel: 'stylesheet', href: `//unpkg.com/highlightjs@9.16.2/styles/${this.highlight}.css` }),
             h('svg', { ref: 'svg', style: 'position: absolute;height: 0;width: 0;overflow: hidden;' }),
             h('style', { ref: 'style' }),
             h('div', { ref: 'app' })
         ]
     },
     mounted () {
+        // eslint-disable-next-line no-unused-vars
         const { highlight, ...prop } = this.$props
         const { app, styles, icons = [] } = createVueApp(App, prop)// 注入样式
         this.$refs.style.innerHTML = styles + styleModule
@@ -118,10 +119,10 @@ export const createComponent = (App = { props: {} }, exportMethods = {}) => ({
 export const registe = async (data) => {
     for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
-            //处理子组件样式
+            // 处理子组件样式
             const component = data[key]
             component.styles = deepStylesOf(component)
-            let name = key.replace(/([A-Z])/g, "-$1").toLowerCase().replace('-', '')
+            let name = key.replace(/([A-Z])/g, '-$1').toLowerCase().replace('-', '')
             !customElements.get(name) && customElements.define(name, defineCustomElement(component))
         }
     }

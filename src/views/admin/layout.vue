@@ -4,31 +4,34 @@
             <header class="header">
                 <ul class="nav-left tabs">
                     <template v-for="item in tabs">
-                        <li v-if="!item.hide" :key="item.value" @click="componentName = item.value;" class="tabs-item" :class="{ current: item.value === componentName }">{{ item.label }}</li>
+                        <li v-if="!item.hide" :key="item.value" class="tabs-item" :class="{ current: item.value === componentName }" @click="componentName = item.value;">
+                            {{ item.label }}
+                        </li>
                     </template>
                 </ul>
                 <div class="nav-right" @click="handleClose">
-                    <m-icon name="close" width="22"></m-icon>
+                    <MIcon name="close" width="22" />
                 </div>
             </header>
             <main class="main">
                 <transition name="staggered-fade" mode="out-in">
-                    <keep-alive>
-                        <component :is="componentName" :key="componentName"></component>
-                    </keep-alive>
+                    <KeepAlive>
+                        <component :is="componentName" :key="componentName" />
+                    </KeepAlive>
                 </transition>
             </main>
         </div>
     </transition>
 </template>
 <script>
-//import HomePage from './pages/homePage.vue'
+// import HomePage from './pages/homePage.vue'
 import ConfigPage from './pages/configPage.vue';
 import CommentPage from './pages/commentPage.vue'
 
 export default {
+    name: 'AdminLayoutView',
     components: {
-        //HomePage,
+        // HomePage,
         ConfigPage,
         CommentPage
     },
@@ -38,10 +41,11 @@ export default {
             default: false,
         },
     },
+    emits: ['update:modelValue'],
     data () {
         return {
             tabs: [
-                //{ label: '首页', value: 'HomePage', hide: window.echarts ? false : true },
+                // { label: '首页', value: 'HomePage', hide: window.echarts ? false : true },
                 { label: '评论管理', value: 'CommentPage' },
                 { label: '配置管理', value: 'ConfigPage' }
             ],
@@ -56,7 +60,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url("../../styles/variables.less");
+@import url('../../styles/variables.less');
 .admin-container {
     position: fixed;
     left: 0;

@@ -1,15 +1,12 @@
 <template>
     <div class="comment">
-        <div class="comment-header">
-            <slot name="comment-header"></slot>
+        <div v-show="!reply" class="comment-edit-container">
+            <MEditor @sumbit="addComment" />
         </div>
-        <div class="comment-edit-container" v-show="!reply">
-            <m-editor @sumbit="addComment"></m-editor>
-        </div>
-        <m-comment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
-            <m-page class="mt-10" v-bind="page" @change="getList"></m-page>
-        </m-comment>
-        <m-audit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit"></m-audit>
+        <MComment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
+            <MPage class="mt-10" v-bind="page" @change="getList" />
+        </MComment>
+        <MAudit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit" />
     </div>
 </template>
 
@@ -18,18 +15,17 @@ import tcb from '@/tcb';
 import commentMixin from '@/commentMixin';
 
 export default {
+    name: 'CommentList',
     mixins: [commentMixin],
-    computed: {
-        pageHash () {
-            return this.hash ? this.hash : location.pathname
-        },
-        pageTitle () {
-            return this.title ? this.title : document.title
-        }
-    },
     props: {
-        hash: String,
-        title: String,
+        hash: {
+            type: String,
+            default: () => ''
+        },
+        title: {
+            type: String,
+            default: () => ''
+        },
         env: {
             type: String,
             required: true
@@ -44,12 +40,23 @@ export default {
             }
         }
     },
+    computed: {
+        pageHash () {
+            return this.hash ? this.hash : location.pathname
+        },
+        pageTitle () {
+            return this.title ? this.title : document.title
+        }
+    },
+    created () {
+        this.init()
+    },
     methods: {
         init () {
-            tcb.initApp({ env: this.env }).then(_ => {
+            tcb.initApp({ env: this.env }).then(() => {
                 const setUser = (user) => {
                     this.$store.mutations.refreshConfig()
-                    if (user && user.loginType === "EMAIL") {
+                    if (user && user.loginType === 'EMAIL') {
                         this.$store.user = user;
                     }
                 }
@@ -79,9 +86,6 @@ export default {
                 this.comments = list;
             })
         },
-    },
-    created () {
-        this.init()
     }
 }
 </script>

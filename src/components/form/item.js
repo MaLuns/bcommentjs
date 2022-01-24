@@ -1,7 +1,7 @@
-import { debugWarn, IsNullOrEmpty } from "@/util";
+import { debugWarn, IsNullOrEmpty } from '@/util';
 
 export default {
-    name: 'm-form-item',
+    name: 'MFormItem',
     data () {
         return {
             error: false,
@@ -34,13 +34,13 @@ export default {
         )
     },
     created () {
-        //this.stop = () => { }
+        // this.stop = () => { }
         this.form.addField(this)
         this.evaluateValidationEnabled()
     },
     beforeUnmount () {
         this.form.removeField(this)
-        //this.stop()
+        // this.stop()
     },
     watch: {
         required () {
@@ -50,7 +50,7 @@ export default {
     methods: {
         evaluateValidationEnabled () {
             let { form, prop } = this
-            let { model, rules = {} } = form
+            let { rules = {} } = form
             if (this.required && prop) {
                 if (!rules[prop]) {
                     debugWarn('Form', `rules [${prop}] is not found !`)

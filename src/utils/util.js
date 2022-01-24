@@ -30,6 +30,7 @@ export const insertAtCaret = (edit, val, shadowRoot, lastEditRange) => {
         selection.addRange(lastEditRange)
     }
 
+    var range;
     // 判断选定对象范围是编辑框还是文本节点
     if (selection.anchorNode.nodeName != '#text') {
         // 如果是编辑框范围。则创建表情文本节点进行插入
@@ -47,7 +48,7 @@ export const insertAtCaret = (edit, val, shadowRoot, lastEditRange) => {
             edit.appendChild(emojiText)
         }
         // 创建新的光标对象
-        var range = document.createRange()
+        range = document.createRange()
         // 光标对象的范围界定为新建的表情节点
         range.selectNodeContents(emojiText)
         // 光标位置定位在表情节点的最大长度
@@ -60,7 +61,7 @@ export const insertAtCaret = (edit, val, shadowRoot, lastEditRange) => {
         selection.addRange(range)
     } else {
         // 如果是文本节点则先获取光标对象
-        var range = selection.getRangeAt(0)
+        range = selection.getRangeAt(0)
         // 获取光标对象的范围界定对象，一般就是textNode对象
         var textNode = range.startContainer;
         // 获取光标位置
@@ -186,7 +187,7 @@ export const throttle = function (fn, time) {
 export const regexp = {
     email: /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/, // 邮箱
     qq: /^[1-9][0-9]{6,}@qq.com/, // qq邮箱
-    pass: /^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/,//密码
+    pass: /^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/,// 密码
     link: /^((ht|f)tps?:\/\/)?[\w-]+(\.[\w-]+)+$/, // 网址
     nick: /^[\u4E00-\u9FA5A-Za-z0-9_]+$/ // 昵称
 }
@@ -235,31 +236,31 @@ export const timeAgo = (date) => {
 
             var days = Math.floor(diffValue / (24 * 3600 * 1000));
             if (days === 0) {
-                //计算相差小时数
-                var leave1 = diffValue % (24 * 3600 * 1000); //计算天数后剩余的毫秒数
+                // 计算相差小时数
+                var leave1 = diffValue % (24 * 3600 * 1000); // 计算天数后剩余的毫秒数
                 var hours = Math.floor(leave1 / (3600 * 1000));
                 if (hours === 0) {
-                    //计算相差分钟数
-                    var leave2 = leave1 % (3600 * 1000); //计算小时数后剩余的毫秒数
+                    // 计算相差分钟数
+                    var leave2 = leave1 % (3600 * 1000); // 计算小时数后剩余的毫秒数
                     var minutes = Math.floor(leave2 / (60 * 1000));
                     if (minutes === 0) {
-                        //计算相差秒数
-                        var leave3 = leave2 % (60 * 1000); //计算分钟数后剩余的毫秒数
+                        // 计算相差秒数
+                        var leave3 = leave2 % (60 * 1000); // 计算分钟数后剩余的毫秒数
                         var seconds = Math.round(leave3 / 1000);
-                        return seconds + `秒前`;
+                        return seconds + '秒前';
                     }
-                    return minutes + `分钟前`;
+                    return minutes + '分钟前';
                 }
-                return hours + `小时前`;
+                return hours + '小时前';
             }
             if (days < 0) return '刚刚';
 
             if (days < 8) {
-                return days + `天前`;
+                return days + '天前';
             } else if (days > 7 && days < 31) {
-                return parseInt(days / 7) + `周前`
+                return parseInt(days / 7) + '周前'
             } else if (days > 30 && days < 365) {
-                return Math.ceil(days / 31) + `月前`
+                return Math.ceil(days / 31) + '月前'
             } else {
                 return format(date, 'yyyy-MM-dd hh:mm')
             }

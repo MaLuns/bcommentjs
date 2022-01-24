@@ -1,5 +1,5 @@
 export default {
-    name: 'm-skeleton',
+    name: 'MSkeleton',
     props: {
         animated: {
             type: Boolean,
@@ -26,7 +26,6 @@ export default {
     },
     watch: {
         loading (val) {
-            console.log(val);
             if (val) {
                 if (this._settime) {
                     clearTimeout(this._settime)

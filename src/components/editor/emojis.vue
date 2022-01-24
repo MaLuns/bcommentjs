@@ -1,19 +1,21 @@
 <template>
-    <div class="m-emoji-panel " ref="emojis">
+    <div ref="emojis" class="m-emoji-panel ">
         <span class="m-emoji-btn my-face" @click="handleShow">
-            <m-icon name="emoji" width="26"></m-icon>
+            <m-icon name="emoji" width="26" />
         </span>
         <transition name="opacity">
             <template v-if="first">
                 <div v-show="show" class="m-emoji-container" @click="handleCheckEmojis">
                     <ul v-for="item,key in $store.emojis" :key="key" class="m-emoji-items" :class="{ show: key === currentEmoji }">
-                        <li :data-text="['text', 'emoji'].includes(item.type) ? element.icon : `::${element.text}::`" class="m-emoji-item my-face" :key="element.text" :class="[item.type]" v-for="element in item.container">
-                            <template v-if="['text', 'emoji'].includes(item.type)">{{ element.icon }}</template>
-                            <img v-else alt referrerpolicy="no-referrer" :src="element.icon" />
+                        <li v-for="element in item.container" :key="element.text" :data-text="['text', 'emoji'].includes(item.type) ? element.icon : `::${element.text}::`" class="m-emoji-item my-face" :class="[item.type]">
+                            <template v-if="['text', 'emoji'].includes(item.type)">
+                                {{ element.icon }}
+                            </template>
+                            <img v-else alt referrerpolicy="no-referrer" :src="element.icon">
                         </li>
                     </ul>
                     <div class="m-emoji-nav" @click.stop>
-                        <span :class="{ current: key === currentEmoji }" @click="currentEmoji = key;" v-for="item,key  in $store.emojis" :key="key">{{ key }}</span>
+                        <span v-for="item,key in $store.emojis" :key="key" :class="{ current: key === currentEmoji }" @click="currentEmoji = key;">{{ key }}</span>
                     </div>
                 </div>
             </template>
@@ -22,6 +24,8 @@
 </template>
 <script>
 export default {
+    name: 'MEmojis',
+    emits: ['checked'],
     data () {
         return {
             first: false,

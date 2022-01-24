@@ -1,9 +1,9 @@
 export default {
-    name: 'm-card',
+    name: 'MCard',
     props: {
         title: String
     },
-    render (h) {
+    render () {
         return (
             <div class="m-card">
                 <div class="m-card-header">{this.title}</div>

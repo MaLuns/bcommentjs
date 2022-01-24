@@ -1,30 +1,36 @@
 <template>
     <div class="comment-page">
         <div class="comment-page-left">
-            <div class="comment-page-left-title">文章列表</div>
-            <m-skeleton class="m-comment-list" :count="6" :loading="articles.length < 1">
+            <div class="comment-page-left-title">
+                文章列表
+            </div>
+            <MSkeleton class="m-comment-list" :count="6" :loading="articles.length < 1">
                 <template #default>
                     <ul>
-                        <li class="article-item" :title="item.title || item.url" :key="item._id" :class="{ current: item === curArticle }" v-for="item in articles" @click="handleCurArticle(item)">{{ item.title || item.url }}</li>
+                        <li v-for="item in articles" :key="item._id" class="article-item" :title="item.title || item.url" :class="{ current: item === curArticle }" @click="handleCurArticle(item)">
+                            {{ item.title || item.url }}
+                        </li>
                     </ul>
                 </template>
                 <template #template>
                     <div class="pl-20 pr-20">
-                        <m-skeleton-item class="mt-10 mb-10" type="text"></m-skeleton-item>
+                        <MSkeletonItem class="mt-10 mb-10" type="text" />
                     </div>
                 </template>
-            </m-skeleton>
+            </MSkeleton>
         </div>
         <div class="comment-page-right">
-            <h2 class="center pt-10 pb-20">{{ curArticle.title }}</h2>
+            <h2 class="center pt-10 pb-20">
+                {{ curArticle.title }}
+            </h2>
             <template v-if="comments.length > 0">
-                <m-comment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
-                    <m-page class="mt-10" v-bind="page" @change="getComments"></m-page>
-                </m-comment>
-                <m-audit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit"></m-audit>
+                <MComment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
+                    <Mpage class="mt-10" v-bind="page" @change="getComments" />
+                </MComment>
+                <m-audit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit" />
             </template>
             <template v-else>
-                <m-empty class="mt-20"></m-empty>
+                <MEmpty class="mt-20" />
             </template>
         </div>
     </div>
@@ -39,7 +45,7 @@ export default {
         return {
             articles: [],
             curArticle: {
-                title: ""
+                title: ''
             },
             audit: {
                 show: false,

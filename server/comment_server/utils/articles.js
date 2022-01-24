@@ -1,9 +1,13 @@
 // 文章信息存储
-const { validata, uuid, formatRes } = require('./utils')
+const { validata, formatRes } = require('./utils')
 const { db, notAdminLimit, } = require('./app')
 const articleDB = db.collection('db_articles');
 
-// 获取文章信息
+/**
+ * 获取文章信息
+ * @param {*} articleID 
+ * @returns 
+ */
 const getArticle = async (articleID) => {
     let { data } = await articleDB.where({ _id: articleID }).field({ _id: 0 }).get();
     if (data.length === 0) {
@@ -12,7 +16,11 @@ const getArticle = async (articleID) => {
     return formatRes(data[0])
 }
 
-//更新文章信息
+/**
+ * 更新文章信息
+ * @param {*} event 
+ * @returns 
+ */
 const updateArticle = async (event) => {
     validata(event, ['hash'])
     try {
@@ -35,10 +43,14 @@ const updateArticle = async (event) => {
     }
 }
 
-// 获取文章列表
-const getArticles = async (event) => {
+/**
+ * 获取文章列表
+ * @param {*} event 
+ * @returns 
+ */
+const getArticles = async () => {
     await notAdminLimit();
-    let { data } = await articleDB.orderBy("date", "desc").get();
+    let { data } = await articleDB.orderBy('date', 'desc').get();
     // 连表统计评论数
     return formatRes(data)
 }

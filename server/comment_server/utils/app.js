@@ -2,12 +2,13 @@
 /**
  * 初始化cloudbase
  */
-const tcb = require("@cloudbase/node-sdk");
-const { validata, formatRes, RES_CODE, extend } = require("./utils");
+const tcb = require('@cloudbase/node-sdk');
+const { validata, formatRes, RES_CODE, extend } = require('./utils');
 const app = tcb.init({ env: tcb.SYMBOL_CURRENT_ENV });
 const auth = app.auth()
 const db = app.database();
 
+// 全局配置
 let admin_email = '';
 let config = {
     site_name: '',// 站点名称
@@ -16,7 +17,7 @@ let config = {
     tag: '博主',// 评论标识
     limit_per_minute_user: 10,// 个人限流
     limit_thirty_minute_all: 150,// 全部限流
-    is_audit: true,//评论审核
+    is_audit: true,// 评论审核
     form: { // 控制提交评论必填项
         nick: true,
         email: true,
@@ -39,6 +40,11 @@ let config = {
     subject: '', // 邮件主题
     is_email_template: false,// 是否使用自定义模版
     email_template_ejs: '',// 自定义模版
+
+    wechart: { // 企业微信推送
+        secret: '',// 凭证密钥
+        agent_id: '',// 应用的id
+    }
 };
 
 
@@ -124,7 +130,7 @@ const filterConfig = () => {
  * @param {*} event 
  * @returns 
  */
-const getConfig = async (event) => {
+const getConfig = async () => {
     const is_admin = await isAdministrator()
     let _config = { ...config }
     if (!is_admin) {

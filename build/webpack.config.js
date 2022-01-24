@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const { baseConf } = require('./webpack.config.base')
 const { merge } = require('webpack-merge')
 
@@ -19,7 +19,7 @@ module.exports = merge(baseConf, {
         ],
     },
     externals: {
-        //vue: 'Vue',
+        // vue: 'Vue',
         '@cloudbase/js-sdk': 'cloudbase'
     },
     plugins: [

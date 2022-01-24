@@ -1,9 +1,9 @@
 
 
-import { debugWarn } from "@/util";
+import { debugWarn } from '@/util';
 
 export default {
-    name: 'm-form',
+    name: 'MForm',
     data () {
         return {
             fields: []
@@ -36,7 +36,7 @@ export default {
         }
         return { form }
     },
-    render (h) {
+    render () {
         return (
             <div class="m-form" class={{ inline: this.inline }}>
                 {this.$slots.default?.()}

@@ -41,7 +41,7 @@ module.exports.baseConf = {
                     {
                         loader: 'svg-sprite-loader',
                         options: {
-                            //extract: true,
+                            // extract: true,
                             runtimeGenerator: require.resolve('./svg-to-icon'),
                         }
                     }
@@ -87,7 +87,7 @@ module.exports.baseConf = {
     plugins: [
         new webpack.BannerPlugin(banner),
         new VueLoaderPlugin(),
-        //new SpriteLoaderPlugin()
+        // new SpriteLoaderPlugin()
     ],
     stats: {
         colors: true,

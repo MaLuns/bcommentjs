@@ -1,5 +1,5 @@
 export default {
-    name: 'm-audit',
+    name: 'MAudit',
     emits: ['pass', 'update:show'],
     props: {
         show: Boolean,
@@ -12,7 +12,7 @@ export default {
             },
             set (val) {
                 console.log(this.content);
-                this.$emit("update:show", val)
+                this.$emit('update:show', val)
             }
         }
     },
@@ -36,14 +36,14 @@ export default {
     },
     render () {
         return (
-            <m-model v-model={this.shows} title="评论审核" width={500} scroll={false}>
+            <MModel v-model={this.shows} title="评论审核" width={500} scroll={false}>
                 <h4 class="pb-10">@{this.comment.nick}</h4>
                 <textarea v-model={this.content} rows="5" class="w100p"></textarea>
                 <div class="right mt-10">
-                    <m-button type="primary" onClick={this.handlePassAudit}>通过</m-button>
-                    <m-button class="ml-10" onClick={() => this.shows = false}>关闭</m-button>
+                    <MButton type="primary" onClick={this.handlePassAudit}>通过</MButton>
+                    <MButton class="ml-10" onClick={() => this.shows = false}>关闭</MButton>
                 </div>
-            </m-model>
+            </MModel>
         )
     },
 }

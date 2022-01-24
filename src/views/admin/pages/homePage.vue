@@ -1,53 +1,61 @@
 <template>
     <div>
         <div class="summary">
-            <m-card title="PV">
-                <div class="numeral">2142,000</div>
-                <div class="content" ref="one"></div>
+            <MCard title="PV">
+                <div class="numeral">
+                    2142,000
+                </div>
+                <div ref="one" class="content"></div>
                 <div class="footer">
                     <span>近七天</span>
                     <span>{{ pvSum }}</span>
                 </div>
-            </m-card>
-            <m-card title="UV">
-                <div class="numeral">142,000</div>
-                <div class="content" ref="two"></div>
+            </MCard>
+            <MCard title="UV">
+                <div class="numeral">
+                    142,000
+                </div>
+                <div ref="two" class="content"></div>
                 <div class="footer">
                     <span>近七天</span>
                     <span>{{ uvSum }}</span>
                 </div>
-            </m-card>
-            <m-card title="评论量">
-                <div class="numeral">890</div>
+            </MCard>
+            <MCard title="评论量">
+                <div class="numeral">
+                    890
+                </div>
                 <div class="content"></div>
                 <div class="footer">
                     <span>近七天</span>
                     <span>16</span>
                 </div>
-            </m-card>
-            <m-card title="用户类型">
-                <div class="numeral">322</div>
+            </MCard>
+            <MCard title="用户类型">
+                <div class="numeral">
+                    322
+                </div>
                 <div class="content"></div>
                 <div class="footer">
                     <span>近七天</span>
                     <span>23</span>
                 </div>
-            </m-card>
+            </MCard>
         </div>
         <div class="summary mt-10">
-            <m-card title="PV">
+            <MCard title="PV">
                 <div class="card-body"></div>
-            </m-card>
-            <m-card title="PV">
+            </MCard>
+            <MCard title="PV">
                 <div class="card-body"></div>
-            </m-card>
+            </MCard>
         </div>
     </div>
 </template>
 <script>
 import tcb from '@/tcb';
 export default {
-    name: "HomePage",
+    name: 'HomePage',
     data () {
         return {
             pvSum: 0,
@@ -75,7 +83,7 @@ export default {
                 xData.push(element.date)
                 yData.push(element.num)
             });
-            echarts.init(this.$refs[ref]).setOption(this.barLineOption(type, xData, yData));
+            window.echarts.init(this.$refs[ref]).setOption(this.barLineOption(type, xData, yData));
         },
         barLineOption (type, xData, yData) {
             return {
@@ -89,7 +97,7 @@ export default {
                 series: [{
                     type,
                     smooth: true,
-                    symbol: "none",
+                    symbol: 'none',
                     lineStyle: { opacity: 1, color: '#975fe4' },
                     areaStyle: { normal: { opacity: 1, color: '#975fe4' } },
                     data: yData
@@ -100,16 +108,16 @@ export default {
 }
 </script>
 <style lang="less">
-@import url("css/variables.less");
+@import url('css/variables.less');
 
 .summary {
     display: flex;
     width: 100%;
 
-    .m-card {
+    .MCard {
         flex: 1;
 
-        + .m-card {
+        + .MCard {
             margin-left: 10px;
         }
     }

@@ -1,9 +1,9 @@
 // 评论回复
 
 const md5 = require('blueimp-md5')
-const bowser = require("bowser")
+const bowser = require('bowser')
 const app = require('./app')
-const { db, $, _, getUid, getIp, getUserInfo, isAdministrator } = app
+const { db, $, _, getUid, getIp, isAdministrator } = app
 const { updateArticle, getArticle } = require('./articles')
 const { regexp, validata, getQQAvatar, uuid, formatRes, getObjOfKeys, RES_CODE } = require('./utils')
 const { sendEmail, sendNotice } = require('./notice')
@@ -12,8 +12,9 @@ const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 const { getEnvEmail, notAdminLimit } = require('./app')
 const { marked } = require('marked')
-const hljs = require('highlight.js');
 
+// markdown 转换
+const hljs = require('highlight.js');
 const window = new JSDOM('').window;
 const DOMPurify = createDOMPurify(window);
 marked.setOptions({
@@ -32,9 +33,11 @@ marked.setOptions({
     smartypants: true
 });
 
-
-
-// 获取浏览器标识
+/**
+ * 获取浏览器标识
+ * @param {*} uaStr 
+ * @returns 
+ */
 const getua = (uaStr) => {
     const ua = bowser.getParser(uaStr)
     const os = ua.getOS()
@@ -52,7 +55,7 @@ const getua = (uaStr) => {
  * @returns 
  */
 const parse = async (data, isAdmin = false) => {
-    let email = getEnvEmail()
+    const email = getEnvEmail()
     if (!isAdmin) {
         // 限制SMTP服务邮箱和管理员邮箱
         if (email === data.email || data.email === app.config.sender_email) throw new Error('请先登录管理面板，再使用博主身份发送评论')
@@ -62,7 +65,7 @@ const parse = async (data, isAdmin = false) => {
     }
 
     const timestamp = new Date()
-    let articleID = await updateArticle(data).then(res => res.data)
+    const articleID = await updateArticle(data).then(res => res.data)
     const commentDo = {
         uid: await getUid(),// 用户ID 
         ip: getIp(),// 用户IP
@@ -83,7 +86,7 @@ const parse = async (data, isAdmin = false) => {
     if (app.config.is_use_qq_avatar && regexp.qq.test(commentDo.email)) {
         commentDo.qqAvatar = await getQQAvatar(data.email)
     }
-    //if (data.at) commentDo.at = data.at
+    // if (data.at) commentDo.at = data.at
     if (isAdmin) commentDo.tag = app.config.tag || '博主'
     return commentDo
 }
@@ -117,7 +120,7 @@ const currentLimit = async () => {
                 return res.data[0].total
             })
         if (pCount + rCount > limitPerMinuteUser) {
-            throw new Error("发言频率过高");
+            throw new Error('发言频率过高');
         }
     }
 
@@ -141,7 +144,7 @@ const currentLimit = async () => {
                 return res.data[0].total
             })
         if (pCount + rCount > limitThirtyMinuteAll) {
-            throw new Error("发言频率过高");
+            throw new Error('发言频率过高');
         }
     }
 }
@@ -158,7 +161,7 @@ const getComments = async (data) => {
     validata(data, ['pageIndex', 'hash'])
     let { pageIndex = 1, pagesize = 10 } = data
     if (isNaN(parseInt(pageIndex)) || pageIndex < 1) {
-        throw new Error(`参数pageIndex不合法`)
+        throw new Error('参数pageIndex不合法')
     }
     let articleID;
     if (data.articleID) {
@@ -204,7 +207,7 @@ const getComments = async (data) => {
         .skip((pageIndex - 1) * pagesize).limit(pagesize)
         .project({
             _id: 0,
-            id: "$_id",
+            id: '$_id',
             ...filed,
             gavatar: $.concat([avatars[0], '$avatar', avatars[1] || '']),
             childer: $.filter({
@@ -224,7 +227,7 @@ const getComments = async (data) => {
                     input: '$childer',
                     as: 'item',
                     in: {
-                        id: "$$item.id",
+                        id: '$$item.id',
                         articleID: '$$item.articleID',
                         nick: '$$item.nick',
                         link: '$$item.link',
@@ -288,9 +291,13 @@ const getCommentByID = async (id) => {
     }
 }
 
-// 添加评论
+/**
+ * 添加评论
+ * @param {*} event 
+ * @returns 
+ */
 const addComment = async (event) => {
-    //#region 数据校验
+    // #region 数据校验
     const isAdmin = await isAdministrator()
     const par = ['hash', 'ua', 'content']
     if (!isAdmin) {
@@ -301,14 +308,17 @@ const addComment = async (event) => {
     }
     if (event.type === 1) par.push('replyId')// type 0评论 1回复
     validata(event, par)
-    //#endregion
+    // #endregion
 
     // 格式化数据
-    let data = await parse(event, isAdmin);
-    const { data: { title = '', href = '' } } = await getArticle(data.articleID)
-    const res = {
-        ...data,
-        gavatar: app.config.gavatar_url.replace('$hash', data.avatar),
+    const data = await parse(event, isAdmin);
+    const { data: { title = '', href = '' } } = await getArticle(data.articleID) // 文章信息
+    const res = { ...data, gavatar: app.config.gavatar_url.replace('$hash', data.avatar), }
+    const noticeData = {
+        title,
+        href,
+        nick: data.nick,
+        content: data.content,
     }
 
     if (event.type === 0) { // 评论
@@ -329,28 +339,14 @@ const addComment = async (event) => {
 
         // 通知被回复人
         if (comment.email !== data.email && comment.email !== getEnvEmail() && comment.email !== app.config.sender_email) {
-            sendEmail({
-                title,
-                href,
-                type: 1,
-                nick: data.nick,
-                content: data.content,
-                toEmail: comment.email
-            })
+            sendEmail({ ...noticeData, type: 1, toEmail: comment.email })
         }
     }
 
     // 通知博主
     try {
         if (!isAdmin) {
-            sendEmail({
-                title,
-                href,
-                type: 2,
-                nick: data.nick,
-                content: data.content,
-                toEmail: getEnvEmail() || app.config.sender_email
-            })
+            sendEmail({ ...noticeData, type: 2, toEmail: getEnvEmail() || app.config.sender_email })
             sendNotice(data)
         }
     } catch (error) {
@@ -360,7 +356,11 @@ const addComment = async (event) => {
     return formatRes(res)
 }
 
-// 修改评论
+/**
+ * 修改评论
+ * @param {*} event 
+ * @returns 
+ */
 const updateComment = async (event) => {
     await notAdminLimit();
     validata(event, ['id']);

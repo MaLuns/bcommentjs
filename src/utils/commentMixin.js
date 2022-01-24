@@ -55,7 +55,7 @@ export default {
         addComment (comment, callback, reply = null) {
             let par = {
                 ...comment,
-                //content: marked(comment.content),
+                // content: marked(comment.content),
                 isPrivate: reply === null ? comment.isPrivate : false,
                 type: reply === null ? 0 : 1,
                 hash: this.pageHash,

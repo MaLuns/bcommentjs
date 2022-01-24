@@ -1,5 +1,5 @@
 export default {
-    name: "m-skeleton-item",
+    name: 'MSkeletonItem',
     props: {
         type: {
             type: String,

@@ -1,5 +1,5 @@
 export default {
-    name: 'm-dropdown',
+    name: 'MDropdown',
     emits: ['item-click'],
     data () {
         return {
@@ -23,7 +23,7 @@ export default {
         return (
             <div class="m-dropdown">
                 {this.$slots.default?.()}
-                <ul class={"m-dropdown-menu " + (this.right ? 'right' : '')}>{
+                <ul class={'m-dropdown-menu ' + (this.right ? 'right' : '')}>{
                     this.$slots.items ?
                         this.$slots.items() :
                         this.menu.map((item, key) => {

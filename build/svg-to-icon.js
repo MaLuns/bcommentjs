@@ -1,4 +1,4 @@
-module.exports = function runtimeGenerator ({ symbol, config, context, loaderContext }) {
+module.exports = function runtimeGenerator ({ symbol }) {
     return `export default {
         content: \`${symbol.render()}\`
     }`

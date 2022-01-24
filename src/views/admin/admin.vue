@@ -1,31 +1,39 @@
 <template>
     <div class="pointer">
         <template v-if="!$store.user">
-            <m-icon @click="showLoginPanel = true;" name="login"></m-icon>
+            <MIcon name="login" @click="showLoginPanel = true;" />
         </template>
         <template v-else>
-            <m-dropdown :menu="menu" @item-click="handleNavClick">
-                <m-icon name="logined"></m-icon>
-            </m-dropdown>
+            <MDropdown :menu="menu" @item-click="handleNavClick">
+                <MIcon name="logined" />
+            </MDropdown>
         </template>
     </div>
-    <m-login v-if="showLoginPanel" v-model:show="showLoginPanel"></m-login>
+    <MLogin v-if="showLoginPanel" v-model:show="showLoginPanel" />
     <transition name="opacity">
-        <m-manger v-if="showAdminPanel" v-model="showAdminPanel"></m-manger>
+        <AdminLayoutView v-if="showAdminPanel" v-model="showAdminPanel" />
     </transition>
 </template>
 
 <script>
 import tcb from '@/tcb'
 import { getScrollWidth, hasScrollbar } from '@/util'
-import mManger from './layout.vue'
+import AdminLayoutView from './layout.vue'
 
 export default {
-    components: { mManger },
+    name: 'AdminView',
+    components: { AdminLayoutView },
     props: {
         env: {
             type: String,
             required: true
+        }
+    },
+    data () {
+        return {
+            config: {},
+            showLoginPanel: false,// 登录面板
+            showAdminPanel: false,// 管理面板
         }
     },
     computed: {
@@ -42,33 +50,29 @@ export default {
             }
         }
     },
-    data () {
-        return {
-            config: {},
-            showLoginPanel: false,// 登录面板
-            showAdminPanel: false,// 管理面板
-        }
-    },
     watch: {
         showAdminPanel: function (val) {
             if (val) {
                 if (hasScrollbar()) {
                     document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
-                    document.body.style.overflow = "hidden";
+                    document.body.style.overflow = 'hidden';
                 }
             } else {
                 if (hasScrollbar()) {
-                    document.body.style.width = "";
-                    document.body.style.overflow = "";
+                    document.body.style.width = '';
+                    document.body.style.overflow = '';
                 }
             }
         }
     },
+    created () {
+        this.init()
+    },
     methods: {
         init () {
-            tcb.initApp({ env: this.env }).then(_ => {
+            tcb.initApp({ env: this.env }).then(() => {
                 const setUser = (user) => {
-                    if (user && user.loginType === "EMAIL") {
+                    if (user && user.loginType === 'EMAIL') {
                         this.$store.user = user;
                     }
                 }
@@ -91,7 +95,7 @@ export default {
         handleNavClick ({ value }) {
             switch (value) {
                 case 'out':
-                    tcb.signOut().then(_ => {
+                    tcb.signOut().then(() => {
                         this.$store.user = null
                     });
                     break;
@@ -100,9 +104,6 @@ export default {
                     break;
             }
         }
-    },
-    created () {
-        this.init()
     }
 }
 </script>

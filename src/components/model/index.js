@@ -3,7 +3,7 @@ import { getScrollWidth, hasScrollbar } from '@/util'
 import { TransitionGroup } from 'vue'
 
 export default {
-    name: 'm-model',
+    name: 'MModel',
     computed: {
         style () {
             return {
@@ -27,7 +27,7 @@ export default {
         },
         title: {
             type: String,
-            default: "提示"
+            default: '提示'
         },
         scroll: {
             type: Boolean,
@@ -58,7 +58,7 @@ export default {
                     if (val) {
                         if (hasScrollbar()) {
                             document.body.style.width = `calc(100% - ${getScrollWidth()}px)`;
-                            document.body.style.overflow = "hidden";
+                            document.body.style.overflow = 'hidden';
                         }
                     } else {
                         document.body.style.width = null;
@@ -88,8 +88,8 @@ export default {
                         const moveX = mouseXEnd - mouseXStart + rectLeft;
                         const moveY = mouseYEnd - mouseYStart + rectTop;
                         // 限制不可移出屏幕外
-                        el.style["top"] = Math.min(Math.max(0, moveY), window.innerHeight - eh) + "px";
-                        el.style["left"] = Math.min(Math.max(0, moveX), window.innerWidth - ew) + "px";
+                        el.style['top'] = Math.min(Math.max(0, moveY), window.innerHeight - eh) + 'px';
+                        el.style['left'] = Math.min(Math.max(0, moveX), window.innerWidth - ew) + 'px';
                     };
                     document.onmouseup = () => {
                         // 取消事件
@@ -108,7 +108,7 @@ export default {
                         <div class="m-model-header">
                             <p class="m-model-title">{this.title}</p>
                             <span class="close-btn" onClick={this.handleClose}>
-                                <m-icon name="close2" width="16"></m-icon>
+                                <MIcon name="close2" width="16" />
                             </span>
                         </div>
                         <div class="m-model-body" onMousedown={(e) => e.stopPropagation()}>

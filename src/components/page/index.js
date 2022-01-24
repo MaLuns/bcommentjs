@@ -1,5 +1,5 @@
 export default {
-    name: 'm-page',
+    name: 'MPage',
     emits: ['change'],
     data () {
         return {
@@ -8,9 +8,9 @@ export default {
     },
     render () {
         return this.total > this.pageSize ? (<div class="m-page center">
-            <m-button type="text" disabled={this.pageIndex < 2} onClick={this.handleLast}>上一页</m-button>
+            <MButton type="text" disabled={this.pageIndex < 2} onClick={this.handleLast}>上一页</MButton>
             <span class="ml-10 mr-10">{this.pageIndex} / {this.maxPageIndex}</span>
-            <m-button type="text" disabled={this.maxPageIndex === this.pageIndex} onClick={this.handleNext}> 下一页</m-button>
+            <MButton type="text" disabled={this.maxPageIndex === this.pageIndex} onClick={this.handleNext}> 下一页</MButton>
         </div>) : null;
     },
     props: {
@@ -34,10 +34,10 @@ export default {
     },
     methods: {
         handleLast () {
-            this.$emit("change", this.pageIndex - 1)
+            this.$emit('change', this.pageIndex - 1)
         },
         handleNext () {
-            this.$emit("change", this.pageIndex + 1)
+            this.$emit('change', this.pageIndex + 1)
         }
     },
 }

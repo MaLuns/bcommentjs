@@ -1,6 +1,6 @@
 
 export default {
-    name: 'm-button',
+    name: 'MButton',
     emits: ['click'],
     props: {
         disabled: Boolean,
@@ -19,7 +19,7 @@ export default {
                 this.$emit('click')
         }
     },
-    render (h) {
+    render () {
         let className = {
             [this.type]: this.type, long: this.long
         }

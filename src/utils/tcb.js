@@ -1,4 +1,4 @@
-import cloudbase from "@cloudbase/js-sdk";
+import cloudbase from '@cloudbase/js-sdk';
 import message from '+/message'
 
 const msg = {
@@ -48,7 +48,7 @@ const tcb = {
  */
 const initApp = async ({ env, region = '' }) => {
     if (typeof cloudbase === 'undefined') {
-        logger.error('请添加云开发SDK :\n<script src="//imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.1/cloudbase.full.js"></script>')
+        console.error('请添加云开发SDK :\n<script src="//imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.1/cloudbase.full.js"></script>')
         return null
     }
 
@@ -144,7 +144,7 @@ const reset = async (email) => {
  */
 const callFunction = async (handlerName, data = {}) => {
     if (tcb.app) {
-        if (__DEBUGGER__) {
+        if (window.__DEBUGGER__) {
             console.log(JSON.stringify({ handlerName, ...data }))
         }
         return await tcb.app.callFunction({

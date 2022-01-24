@@ -1,6 +1,6 @@
 
 export default {
-    name: 'm-loading',
+    name: 'MLoading',
     render () {
         return (
             <div class="loading-box">

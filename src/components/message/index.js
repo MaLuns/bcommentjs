@@ -43,7 +43,7 @@ const v = h({
 }, {})
 
 const div = document.createElement('div')
-div.setAttribute("class", "com-message")
+div.setAttribute('class', 'com-message')
 render(v, div)
 
 const show = (props) => {

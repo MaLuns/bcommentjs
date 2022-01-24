@@ -1,3 +1,3 @@
 import { createComponent } from '../app'
-import App from './comment.vue'
+import App from './list.vue'
 export default createComponent(App)

@@ -1,5 +1,5 @@
 const nodeuuid = require('node-uuid');
-const https = require("https")
+const https = require('https')
 
 // 返回状态码
 const RES_CODE = {
@@ -17,16 +17,16 @@ const RES_CODE = {
 
 // 状态码对应消息
 const RES_INFO = {
-    0: "调用成功",
-    1000: "调用失败",
-    1001: "未找到处理程序",
-    1010: "请先登录再修改密码",
-    1020: "配置信息读取失败",
-    1021: "未配置登录私钥",
-    1025: "无效的私钥文件",
-    1022: "未配置管理密码",
-    1023: "密码错误",
-    1024: "请登录后访问",
+    0: '调用成功',
+    1000: '调用失败',
+    1001: '未找到处理程序',
+    1010: '请先登录再修改密码',
+    1020: '配置信息读取失败',
+    1021: '未配置登录私钥',
+    1025: '无效的私钥文件',
+    1022: '未配置管理密码',
+    1023: '密码错误',
+    1024: '请登录后访问',
 }
 
 /**
@@ -98,11 +98,11 @@ const validata = (event = {}, requiredParams = [], err) => {
 const getQQAvatar = async (qq) => {
     try {
         const qqNum = qq.replace(/@qq.com/ig, '')
-        const result = await new Promise((resolve, reject) => {
+        const result = await new Promise((resolve) => {
             https.get(`https://ptlogin2.qq.com/getface?imgtype=4&uin=${qqNum}`, function (res) {
                 let data = ''
-                res.on("data", (str) => data += str)
-                res.on("end", () => resolve(data))
+                res.on('data', (str) => data += str)
+                res.on('end', () => resolve(data))
             })
         })
         if (result) {
@@ -143,7 +143,7 @@ const generateYearMonthData = (data = []) => {
         d.setDate(1);
         d.setMonth(d.getMonth() - i);
         let m = d.getMonth() + 1;
-        m = m < 10 ? "0" + m : m;
+        m = m < 10 ? '0' + m : m;
         let key = `${d.getFullYear()}-${m}`;
         let item = data.find(item => item._id === key)
         if (item) {
