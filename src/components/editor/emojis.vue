@@ -48,7 +48,7 @@ export default {
         // document 事件的 target 是自定义元素本身,不会到自定义元素内部去,需要在自定义元素类在做一次监听
         this.$root.$el.addEventListener('click', this.fun2)
     },
-    beforeDestroy () {
+    beforeUnmount () {
         document.removeEventListener('click', this.fun)
         this.$root.$el.removeEventListener('click', this.fun2)
     },

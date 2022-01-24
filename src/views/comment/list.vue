@@ -7,12 +7,16 @@
             <MPage class="mt-10" v-bind="page" @change="getList" />
         </MComment>
         <MAudit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit" />
+        <p class="center pt-10">
+            <a class="link" :href="'https://www.npmjs.com/package/'+name" target="_blank" rel="noopener noreferrer">{{ name }}</a> - v{{ version }}
+        </p>
     </div>
 </template>
 
 <script>
 import tcb from '@/tcb';
 import commentMixin from '@/commentMixin';
+import { name, version } from '../../../package.json'
 
 export default {
     name: 'CommentList',
@@ -33,6 +37,8 @@ export default {
     },
     data () {
         return {
+            name,
+            version,
             reply: null,
             audit: {
                 show: false,

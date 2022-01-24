@@ -88,7 +88,7 @@ export default {
         timeAgo,
         // 格式化内容
         formatContent (html = '') {
-            return emojiParse(this.$store.emojis, html)
+            return this.$store.config.is_show_emoji ? emojiParse(this.$store.emojis, html) : html
         },
         // 头像显示
         getAvatar (comment) {

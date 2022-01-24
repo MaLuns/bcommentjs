@@ -9,7 +9,6 @@ import empty from './empty';
 import form from './form'
 import formItem from './form/item'
 import icon from './icon';
-import loading from './loading'
 import login from './login'
 import model from './model'
 import page from './page'
@@ -28,7 +27,6 @@ export default [
     form,
     formItem,
     icon,
-    loading,
     login,
     model,
     page,
