@@ -1,14 +1,17 @@
 <template>
     <div class="comment">
-        <div v-show="!reply" class="comment-edit-container">
+        <div class="comment-edit-container">
             <MEditor @sumbit="addComment" />
         </div>
-        <MComment :list="comments" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
+        <MComment :list="comments" :loaded="loaded" @audit="auditComment" @delete="deleteComment" @sumbit="addComment">
             <MPage class="mt-10" v-bind="page" @change="getList" />
+            <template v-if="!comments.length">
+                <h2 class="empty-title center p-20">还没有人来到，快来抢了这个沙发～</h2>
+            </template>
         </MComment>
         <MAudit v-model:show="audit.show" :comment="audit.comment" @pass="handlePassAudit" />
-        <p class="center pt-10">
-            <a class="link" :href="'https://www.npmjs.com/package/'+name" target="_blank" rel="noopener noreferrer">{{ name }}</a> - v{{ version }}
+        <p class="comment-footer center pt-10">
+            <a class="link" :href="'https://www.npmjs.com/package/' + name" target="_blank" rel="noopener noreferrer">BComments - v{{ version }}</a>
         </p>
     </div>
 </template>
@@ -39,7 +42,7 @@ export default {
         return {
             name,
             version,
-            reply: null,
+            loaded: false,
             audit: {
                 show: false,
                 comment: {}
@@ -74,10 +77,6 @@ export default {
                 });
             })
         },
-        // 设置回复
-        replyComment (reply) {
-            this.reply = reply
-        },
         // 获取列表
         getList (pageIndex) {
             tcb.callFunction('getComments', {
@@ -90,6 +89,9 @@ export default {
                 let { list = [], page } = data
                 this.page = page;
                 this.comments = list;
+                this.loaded = true
+            }).catch(() => {
+                this.loaded = true
             })
         },
     }
@@ -97,12 +99,20 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../../styles/variables.less');
+@import url("../../styles/variables.less");
 .comment {
     padding: 1em 1.5em;
     min-width: 560px;
     color: @ui-text;
     background-color: @ui-bg;
+
+    .empty-title {
+        color: @ui-text-weak;
+        font-size: @ui-font-size-card-title;
+    }
+    .comment-footer {
+        font-size: @ui-font-size;
+    }
 }
 
 @media screen and (max-width: 520px) {

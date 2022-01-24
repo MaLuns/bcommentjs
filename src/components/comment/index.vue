@@ -36,6 +36,7 @@ import MCommentItem from './item.vue'
 
 export default {
     name: 'MComment',
+    emits: ['audit', 'delete', 'sumbit'],
     components: { MCommentItem },
     provide () {
         return {
@@ -47,8 +48,11 @@ export default {
             type: Array,
             default: () => []
         },
+        loaded: {
+            type: Boolean,
+            default: () => false
+        }
     },
-    emits: ['audit', 'delete', 'sumbit'],
     data () {
         return {
             replyComment: null
@@ -56,7 +60,7 @@ export default {
     },
     computed: {
         loading () {
-            return this.list.length === 0
+            return this.list.length === 0 && !this.loaded
         }
     },
     methods: {
