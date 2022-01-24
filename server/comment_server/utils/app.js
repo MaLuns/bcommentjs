@@ -118,7 +118,7 @@ const initConfig = async (context) => {
  */
 const filterConfig = () => {
     let userConfig = {}
-    let keys = ['gavatar_url', 'is_use_qq_avatar', 'form']
+    let keys = ['gavatar_url', 'is_use_qq_avatar', 'form', 'is_show_emoji', 'is_show_browser', 'is_use_private',]
     keys.forEach(key => {
         userConfig[key] = config[key]
     })
