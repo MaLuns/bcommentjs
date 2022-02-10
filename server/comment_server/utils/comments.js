@@ -163,11 +163,13 @@ const getComments = async (data) => {
     if (isNaN(parseInt(pageIndex)) || pageIndex < 1) {
         throw new Error('参数pageIndex不合法')
     }
-    let articleID;
+
+    let articleID; // 文章ID 
     if (data.articleID) {
         articleID = data.articleID
     } else {
-        articleID = await updateArticle(data).then(res => res.data)
+        articleID = await updateArticle(data, false).then(res => res.data)
+        if (!articleID) return formatRes({ list: [], page: { pagesize, pageIndex } })
     }
 
     const filed = { articleID: 1, nick: 1, link: 1, qqAvatar: 1, tag: 1, content: 1, top: 1, ua: 1, at: 1, created: 1, isAudit: 1, delete: 1, isPrivate: 1 }

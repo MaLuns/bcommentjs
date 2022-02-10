@@ -21,15 +21,19 @@ const getArticle = async (articleID) => {
  * @param {*} event 
  * @returns 
  */
-const updateArticle = async (event) => {
+const updateArticle = async (event, isAdd = true) => {
     validata(event, ['hash'])
     try {
         let { hash, url = '', title = '' } = event
         let { data } = await articleDB.field({ _id: 1 }).where({ hash }).get();
         let articleID = '';
         if (data.length === 0) {
-            let { id } = await articleDB.add({ date: new Date(), url, hash, title })
-            articleID = id;
+            if (isAdd) {
+                let { id } = await articleDB.add({ date: new Date(), url, hash, title })
+                articleID = id;
+            } else {
+                articleID = null
+            }
         } else {
             if (url || title) {
                 articleDB.where({ hash }).update({ url, title })
