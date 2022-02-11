@@ -4,10 +4,10 @@ import md5 from 'md5'
 /**
  * 错误日志
  */
-class CommentjsError extends Error {
+class BCommentsError extends Error {
     constructor(m) {
         super(m)
-        this.name = 'CommentjsError'
+        this.name = 'BCommentsError'
     }
 }
 
@@ -89,7 +89,7 @@ export const insertAtCaret = (edit, val, shadowRoot, lastEditRange) => {
  */
 export const debugWarn = (name, message) => {
     if (process.env.NODE_ENV !== 'production') {
-        console.warn(new CommentjsError(`[${name}] ${message}`))
+        console.warn(new BCommentsError(`[${name}] ${message}`))
     }
 }
 

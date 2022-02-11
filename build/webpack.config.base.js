@@ -4,7 +4,7 @@ const { VueLoaderPlugin } = require('vue-loader')
 const { version, author } = require('../package.json')
 
 const banner =
-    'Commentjs v' + version + '\n' +
+    'BComments v' + version + '\n' +
     '(c) 2021-' + new Date().getFullYear() + ' ' + author + '\n' +
     'Released under the MIT License.\n' +
     'Last Update: ' + (new Date()).toLocaleString()
@@ -15,7 +15,7 @@ module.exports.baseConf = {
         filename: '[name].min.js',
         globalObject: 'this',
         library: {
-            name: 'CommentJS',
+            name: 'BComments',
             type: 'umd',
             export: 'default'
         },
