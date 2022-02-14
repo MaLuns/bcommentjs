@@ -1,11 +1,15 @@
 <template>
-    <div class="pointer">
-        <template v-if="!$store.user">
-            <MIcon name="login" @click="showLoginPanel = true;" />
-        </template>
+    <div class="pointer inline">
+        <div v-if="!$store.user" @click="showLoginPanel = true;">
+            <slot name="unlogin">
+                <MIcon name="login" />
+            </slot>
+        </div>
         <template v-else>
             <MDropdown :menu="menu" @item-click="handleNavClick">
-                <MIcon name="logined" />
+                <slot name="logined">
+                    <MIcon name="logined" />
+                </slot>
             </MDropdown>
         </template>
     </div>

@@ -48,7 +48,7 @@ const formatRes = (data = null, code = RES_CODE.SUCCESS, message) => ({
  * @param {*} time 
  * @returns 
  */
-const dateFormat = (fmt = 'yyyy-MM-dd Hh:mm:ss', time = new Date()) => {
+const dateFormat = (fmt = 'yyyy-MM-dd hh:mm:ss', time = new Date()) => {
     let o = {
         'M+': time.getMonth() + 1, // 月份
         'd+': time.getDate(), // 日

@@ -1,6 +1,6 @@
 {
   "name": "b-comments",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "评论插件",
   "main": "./dist/index.min.js",
   "scripts": {

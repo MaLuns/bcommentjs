@@ -27,7 +27,24 @@
     <div class="main">
         <!-- <com-site-count no-statistical env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-site-count>
         <com-site-count no-statistical env="<%= htmlWebpackPlugin.options.envId %>"></com-site-count> -->
-        <com-comment-admin env="<%= htmlWebpackPlugin.options.envId %>"></com-comment-admin>
+        <com-comment-admin env="<%= htmlWebpackPlugin.options.envId %>">
+            <div slot="unlogin">
+                <div class="login">登录</div>
+                <style scoped>
+                    .login {
+                        font-size: 20px;
+                    }
+                </style>
+            </div>
+            <div slot="logined">
+                <div class="logined">退出</div>
+                <style scoped>
+                    .logined {
+                        font-size: 20px;
+                    }
+                </style>
+            </div>
+        </com-comment-admin>
         <com-comment env="<%= htmlWebpackPlugin.options.envId %>" hash="<%= htmlWebpackPlugin.options.pageHash %>"></com-comment>
     </div>
 </body>

@@ -1,5 +1,4 @@
-
-import { VueElement, defineComponent, createApp, h } from 'vue'
+import { VueElement, defineComponent, createApp, h, withDirectives } from 'vue'
 import { debugWarn } from '@/util';
 import styleModule from 'css/index.less'
 import message from '+/message'
@@ -54,8 +53,16 @@ const deepStylesOf = ({ styles = [], components = {} }) => {
  * @param {*} props 
  * @returns 
  */
-const createVueApp = (com, props) => {
-    const app = createApp(com, { ...props })
+const createVueApp = (com, props, slots = []) => {
+    const app = createApp({
+        render () {
+            const slotObj = {}
+            slots.forEach(item => {
+                slotObj[item.slot] = () => h(item.tagName, { innerHTML: item.innerHTML })
+            })
+            return h(defineComponent(com), { ...props }, slotObj)
+        }
+    })
     // 全局注册组件 
     let styles = deepStylesOf(com)
     coms.forEach(item => {
@@ -63,6 +70,7 @@ const createVueApp = (com, props) => {
         app.component(item.name, item)
     })
     styles = [...new Set(styles)].join('')
+    // 挂载 store
     app.config.globalProperties.$message = message
     app.config.globalProperties.$store = store
 
@@ -100,9 +108,12 @@ export const createComponent = (App = { props: {} }, exportMethods = {}) => ({
         ]
     },
     mounted () {
+        // 获取插槽
+        const root = this.$root.$el.parentNode.getRootNode().host
+        const slots = root.querySelectorAll('[slot]')
         // eslint-disable-next-line no-unused-vars
         const { highlight, ...prop } = this.$props
-        const { app, styles, icons = [] } = createVueApp(App, prop)// 注入样式
+        const { app, styles, icons = [] } = createVueApp(App, prop, slots)// 注入样式
         this.$refs.style.innerHTML = styles + styleModule
         this.$refs.svg.innerHTML = icons.join('')
         app.mount(this.$refs.app)
