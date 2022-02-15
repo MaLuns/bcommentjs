@@ -97,6 +97,7 @@
             padding         : 0 1.2em;
             border-radius   : @ui-border-radius;
             background-color: @ui-bg-weak;
+            .transitionMixin();
 
             .m-comment-reply:last-child {
                 margin-right: 0;
@@ -133,8 +134,7 @@
                 margin-bottom: 4px;
                 display      : inline-block;
                 color        : @ui-aide-text-stress;
-                transition   : color @ui-transition-duration,
-                    background-color @ui-transition-duration;
+                .transitionMixin();
             }
 
             //代码块
@@ -170,6 +170,7 @@
             }
 
             a {
+                color          : @ui-link ;
                 text-decoration: none;
                 outline        : 0;
             }

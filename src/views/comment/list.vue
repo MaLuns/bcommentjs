@@ -105,6 +105,7 @@ export default {
     min-width: 560px;
     color: @ui-text;
     background-color: @ui-bg;
+    .transitionMixin();
 
     .empty-title {
         color: @ui-text-weak;
