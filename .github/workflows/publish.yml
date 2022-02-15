@@ -35,10 +35,8 @@ jobs:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-    - name: Publish to NPM
+    - run: npm install
+    - run: npm run build --if-present
+    - run: npm publish || true
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: |
-        npm install
-        npm run build --if-present
-        npm publish || true
