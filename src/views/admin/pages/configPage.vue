@@ -4,6 +4,12 @@
             <MFormItem>
                 <h2>评论配置</h2>
             </MFormItem>
+            <MFormItem label="博客地址">
+                <input v-model.trim="config.site_url" class="w200" type="text" placeholder="站点地址" autocomplete="off">
+                <p class="tip">
+                    用于消息推送使用
+                </p>
+            </MFormItem>
             <MFormItem label="博客名称">
                 <input v-model.trim="config.site_name" class="w200" type="text" placeholder="站点名称" autocomplete="off">
                 <p class="tip">

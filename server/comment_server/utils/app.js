@@ -11,6 +11,7 @@ const db = app.database();
 // 全局配置
 let admin_email = '';
 let config = {
+    site_url: '',// 站点url
     site_name: '',// 站点名称
     site_logo: '',// loggo
     nick: '',// 昵称

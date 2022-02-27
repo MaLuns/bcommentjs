@@ -6,7 +6,7 @@
             </slot>
         </div>
         <template v-else>
-            <MDropdown :menu="menu" @item-click="handleNavClick">
+            <MDropdown :menu="menu" @item-click="handleNavClick" right>
                 <slot name="logined">
                     <MIcon name="logined" />
                 </slot>

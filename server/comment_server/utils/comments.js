@@ -318,7 +318,7 @@ const addComment = async (event) => {
     const res = { ...data, gavatar: app.config.gavatar_url.replace('$hash', data.avatar), }
     const noticeData = {
         title,
-        href,
+        href: app.config.site_url + href,
         nick: data.nick,
         content: data.content,
     }
