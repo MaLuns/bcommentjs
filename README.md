@@ -27,6 +27,7 @@
 - 内嵌式管理面板，通过邮箱登录，可方便地查看评论、回复评论、删除评论、修改配置、站点统计信息
 
 ## 使用
+插件是基于 Vue3 构建的 web components，所以使用方式和普通 HTML 标签使用方法一致。
 ``` html
 <script src="//imgcache.qq.com/qcloud/cloudbase-js-sdk/1.7.1/cloudbase.full.js"></script>
 <script src="//unpkg.com/b-comments/dist/index.min.js"></script>
