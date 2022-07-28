@@ -8,9 +8,3 @@ const customElementObj = {
 }
 
 registe(customElementObj)
-
-export default {
-    setConfig () {
-        console.log(1);
-    }
-}
